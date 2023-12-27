@@ -1,13 +1,14 @@
 package controller;
 
 import javafx.scene.layout.Pane;
+import presentation.BaseView;
 
-public class MainMenuViewController extends BaseViewController {
+public class JourneySelectionViewController extends BaseViewController {
 	
-	public MainMenuViewController() {
+	public JourneySelectionViewController() {
 		
 	}
-	
+
 	@Override
 	public void initialize() {
 		// TODO Auto-generated method stub
@@ -19,5 +20,5 @@ public class MainMenuViewController extends BaseViewController {
 		// TODO Auto-generated method stub
 		
 	}
-	
+
 }

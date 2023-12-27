@@ -4,25 +4,24 @@ import javafx.scene.control.Button;
 import presentation.uicomponents.CurrentSongView;
 import presentation.uicomponents.VolumeView;
 
-public class InGameView extends BaseView {
+public class JourneySelectionView extends BaseView {
 	
-	public Button menuButton;
+	public Button backButton;
 	public VolumeView volumeView;
 	public CurrentSongView currentSongView;
 
-	public InGameView() {
-
+	public JourneySelectionView() {
 		// Nodes for BorderPane
 		super();
-		
+
 		// Instantiate UI Components
-		menuButton = new Button();
+		backButton = new Button();
 		volumeView = new VolumeView();
 		currentSongView = new CurrentSongView();
-		
+
 		// Ad UI Components to Nodes
-		top.getChildren().addAll(menuButton);
+		top.getChildren().addAll(backButton);
 		bottom.getChildren().addAll(currentSongView, volumeView);
-		
 	}
+
 }

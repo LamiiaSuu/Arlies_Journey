@@ -3,8 +3,6 @@ package application;
 import java.util.HashMap;
 
 import business.music.MP3Player;
-import controller.PlayerViewController;
-import controller.PlaylistViewController;
 import javafx.application.Application;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.stage.Stage;
@@ -28,18 +26,6 @@ public class App extends Application {
 	}
 	
 	public void initialize(){
-		player = new MP3Player();
-		primaryViews = new HashMap<>();
-
-		PlayerViewController controller = new PlayerViewController(player, this);
-		playerView = controller.getRoot();
-		primaryViews.put(PrimaryViewNames.PLAYER_VIEW, playerView);
-
-		PlaylistViewController controller2 = new PlaylistViewController (player, this);
-		playlistView = controller2.getRoot();
-		primaryViews.put(PrimaryViewNames.PLAYLIST_VIEW, playlistView);
-
-		
 		
 	}
 	
@@ -56,7 +42,7 @@ public class App extends Application {
         primaryStage.setScene(scene);
 
         currentView = new SimpleObjectProperty<PrimaryViewNames>();
-        switchView(PrimaryViewNames.PLAYER_VIEW);
+//        switchView();
         
 
         primaryStage.setMinHeight(800);
