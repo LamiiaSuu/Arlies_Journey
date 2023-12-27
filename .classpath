@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk-21">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX21"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="libraries/eibo_simpleminim_new.jar"/>
+	<classpathentry kind="lib" path="libraries/jl1.0.1.jar"/>
+	<classpathentry kind="lib" path="libraries/jsminim.jar"/>
+	<classpathentry kind="lib" path="libraries/minim.jar"/>
+	<classpathentry kind="lib" path="libraries/mp3agic.jar"/>
+	<classpathentry kind="lib" path="libraries/mp3playerUtil.jar"/>
+	<classpathentry kind="lib" path="libraries/mp3spi1.9.5.jar"/>
+	<classpathentry kind="lib" path="libraries/ProgUtil_StaticScanner.jar"/>
+	<classpathentry kind="lib" path="libraries/tritonus_aos.jar"/>
+	<classpathentry kind="lib" path="libraries/tritonus_share.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
