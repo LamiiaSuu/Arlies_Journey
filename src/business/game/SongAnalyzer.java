@@ -8,7 +8,7 @@ public abstract class SongAnalyzer {
 
 	
 	public void analyzeSong() {
-		try (BufferedReader bufferedReader = new BufferedReader(new FileReader("src/music/"+  ".m3u"))) {
+		try (BufferedReader bufferedReader = new BufferedReader(new FileReader("src/music/" +  ".m3u"))) {
 //            Playlist playlist = new Playlist(name);
 //       }     String readLine = bufferedReader.readLine();
 //            while (readLine != null) {
