@@ -2,10 +2,12 @@ package application;
 
 import java.util.HashMap;
 
+import business.game.elements.Arlie;
 import business.music.MP3Player;
 import javafx.application.Application;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.stage.Stage;
+import presentation.InGameView;
 import presentation.PrimaryViewNames;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -16,9 +18,7 @@ public class App extends Application {
 	private Stage primaryStage;
 	private HashMap<PrimaryViewNames, Pane> primaryViews;
 	private SimpleObjectProperty<PrimaryViewNames> currentView;
-	Pane playerView;
-	Pane playlistView;
-	MP3Player player;
+	private InGameView inGameView;
 	
 	
 	public static void main(String[] args) {
@@ -26,19 +26,22 @@ public class App extends Application {
 	}
 	
 	public void initialize(){
+		inGameView = new InGameView();
 		
 	}
 	
 	@Override
     public void start(Stage primaryStage) throws Exception {
 		initialize();
+		
+		
         this.primaryStage = primaryStage;
 
         Pane root = new Pane();
+      
 
-        Scene scene = new Scene(root, 630, 480);
-        scene.getStylesheets().add(getClass().getResource("/assets/styles.CSS").toExternalForm());
-        primaryStage.setTitle("MP3 Player");
+        Scene scene = new Scene(inGameView, 630, 480);
+        primaryStage.setTitle("mf is gaming");
         primaryStage.setScene(scene);
 
         currentView = new SimpleObjectProperty<PrimaryViewNames>();
@@ -51,7 +54,7 @@ public class App extends Application {
         primaryStage.setMaxWidth(1000);
         primaryStage.show();
         primaryStage.setOnCloseRequest(event -> {
-            player.stop();
+           
             primaryStage.close();
         });
 
