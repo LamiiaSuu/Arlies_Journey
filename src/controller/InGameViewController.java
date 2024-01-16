@@ -2,6 +2,7 @@ package controller;
 
 import application.App;
 import controller.uicomponents.ArlieController;
+import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import presentation.InGameView;
 
@@ -11,15 +12,18 @@ public class InGameViewController extends BaseViewController {
 	ArlieController arlieController;
 	
 	
-	public InGameViewController(App app) {
+	public InGameViewController(App app, Scene scene) {
 		root = new InGameView();
 		
-		arlieController = new ArlieController(root);
+		arlieController = new ArlieController(root, scene);
+		
+		
+		initialize();
 	}
 
 	@Override
 	public void initialize() {
-		// TODO Auto-generated method stub
+		arlieController.initialize();
 		
 	}
 

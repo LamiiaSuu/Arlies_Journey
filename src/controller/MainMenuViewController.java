@@ -1,6 +1,7 @@
 package controller;
 
 import application.App;
+import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import presentation.MainMenuView;
 
@@ -8,7 +9,7 @@ public class MainMenuViewController extends BaseViewController {
 		
 	MainMenuView root;
 	
-	public MainMenuViewController(App app) {
+	public MainMenuViewController(App app, Scene scene) {
 		root = new MainMenuView();
 		
 		

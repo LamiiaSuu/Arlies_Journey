@@ -29,25 +29,27 @@ public class App extends Application {
 		launch();
 	}
 	
-	public void initialize(){
+	public void initialize(Scene scene){
 		primaryViews = new HashMap<>();
 		
-		InGameViewController inGameViewController = new InGameViewController(this);
+		InGameViewController inGameViewController = new InGameViewController(this, scene);
 		inGameView = inGameViewController.getRoot();
 		primaryViews.put(PrimaryViewNames.IN_GAME_VIEW, inGameView);
 
-		JourneySelectionViewController journeySelectionViewController = new JourneySelectionViewController(this);
+		JourneySelectionViewController journeySelectionViewController = new JourneySelectionViewController(this, scene);
 		journeySelectionView = journeySelectionViewController.getRoot();
 		primaryViews.put(PrimaryViewNames.JOURNEY_SELECTION_VIEW, journeySelectionView);
 		
-		MainMenuViewController mainMenuViewController = new MainMenuViewController(this);
+		MainMenuViewController mainMenuViewController = new MainMenuViewController(this, scene);
 		mainMenuView = mainMenuViewController.getRoot();
 		primaryViews.put(PrimaryViewNames.MAIN_MENU_VIEW, mainMenuView);
 	}
 	
+	
+	
 	@Override
     public void start(Stage primaryStage) throws Exception {
-		initialize();
+		
 		
 		
         this.primaryStage = primaryStage;
@@ -56,6 +58,7 @@ public class App extends Application {
       
 
         Scene scene = new Scene(root, 630, 480);
+        initialize(scene);
         primaryStage.setTitle("Arlie's Journey");
         primaryStage.setScene(scene);
         currentView = new SimpleObjectProperty<PrimaryViewNames>();
@@ -71,7 +74,6 @@ public class App extends Application {
            
             primaryStage.close();
         });
-
     }
 
 	public void switchView(PrimaryViewNames viewName) {

@@ -1,6 +1,7 @@
 package controller;
 
 import application.App;
+import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import presentation.BaseView;
 import presentation.InGameView;
@@ -10,7 +11,7 @@ public class JourneySelectionViewController extends BaseViewController {
 	
 	JourneySelectionView root;
 	
-	public JourneySelectionViewController(App app) {
+	public JourneySelectionViewController(App app, Scene scene) {
 		root = new JourneySelectionView();
 		
 		
