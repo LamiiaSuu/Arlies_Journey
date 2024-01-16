@@ -1,41 +1,26 @@
 package presentation;
 
 import business.game.elements.Arlie;
-import business.game.elements.Floor;
 import javafx.scene.layout.Pane;
 
 public class InGameView extends Pane {
 
-    private Arlie arlie;
-    private Floor floor;
+    public Arlie arlie;
 
     public InGameView() {
-        initialize();
-    }
+        arlie = new Arlie();
 
-    private void initialize() {
-        // Create Arlie with a size of 50x50
-        arlie = new Arlie(50, 50);
-        
+        getChildren().add(arlie.arlieBody);
 
-        getChildren().add(arlie);
+        layoutChildren();
     }
 
     @Override
     protected void layoutChildren() {
-        // Create Floor at the bottom quarter of the window
-        double floorY = getHeight() * 0.75; // Adjust the percentage as needed
-        arlie.setLayoutY(floorY - arlie.getHeight());
-        if (floor == null) {
-            floor = new Floor(0, floorY, getWidth(), floorY);
-            getChildren().add(floor);
-        } else {
-            floor.setStartY(floorY);
-            floor.setEndY(floorY);
-        }
-
         super.layoutChildren();
-    }
 
-    // You can add additional methods or properties specific to the in-game view
+        // Update the position and dimensions based on the current size of the pane
+        arlie.arlieBody.setTranslateX(getWidth() * 0.2 - arlie.arlieBody.getWidth());
+        arlie.arlieBody.setTranslateY(getHeight() * 0.8 - arlie.arlieBody.getHeight());
+    }
 }

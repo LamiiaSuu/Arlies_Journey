@@ -1,10 +1,16 @@
 package controller;
 
+import application.App;
 import javafx.scene.layout.Pane;
+import presentation.MainMenuView;
 
 public class MainMenuViewController extends BaseViewController {
+		
+	MainMenuView root;
 	
-	public MainMenuViewController() {
+	public MainMenuViewController(App app) {
+		root = new MainMenuView();
+		
 		
 	}
 	
@@ -20,4 +26,7 @@ public class MainMenuViewController extends BaseViewController {
 		
 	}
 	
+    public Pane getRoot() {
+        return root;
+    }
 }

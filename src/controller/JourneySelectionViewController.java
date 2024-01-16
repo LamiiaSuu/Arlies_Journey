@@ -1,11 +1,18 @@
 package controller;
 
+import application.App;
 import javafx.scene.layout.Pane;
 import presentation.BaseView;
+import presentation.InGameView;
+import presentation.JourneySelectionView;
 
 public class JourneySelectionViewController extends BaseViewController {
 	
-	public JourneySelectionViewController() {
+	JourneySelectionView root;
+	
+	public JourneySelectionViewController(App app) {
+		root = new JourneySelectionView();
+		
 		
 	}
 
@@ -21,4 +28,8 @@ public class JourneySelectionViewController extends BaseViewController {
 		
 	}
 
+    public Pane getRoot() {
+        return root;
+    }
+	
 }

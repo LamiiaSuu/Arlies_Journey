@@ -1,11 +1,20 @@
 package controller;
 
+import application.App;
+import controller.uicomponents.ArlieController;
 import javafx.scene.layout.Pane;
+import presentation.InGameView;
 
 public class InGameViewController extends BaseViewController {
 	
-	public InGameViewController() {
+	InGameView root;
+	ArlieController arlieController;
+	
+	
+	public InGameViewController(App app) {
+		root = new InGameView();
 		
+		arlieController = new ArlieController(root);
 	}
 
 	@Override
@@ -20,4 +29,7 @@ public class InGameViewController extends BaseViewController {
 		
 	}
 	
+    public Pane getRoot() {
+        return root;
+    }
 }
