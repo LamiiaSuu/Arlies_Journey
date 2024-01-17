@@ -16,21 +16,29 @@ public class MainMenuView extends BaseView {
 	
 	public MainMenuView() {
 		
+		
 		// Nodes for BorderPane
-		super();
+//				super();
+		
+		VBox layout = new VBox();
 		
 		// Instantiate UI Components
-		continueButton = new Button();
-		newJourneyButton = new Button();
-		musicButton = new Button();
-		settingsButton = new Button();
-		volumeView = new VolumeView();
-		currentSongView = new CurrentSongView();
+		continueButton = new Button("Continue");
+        newJourneyButton = new Button("New Journey");
+        musicButton = new Button("Music");
+        settingsButton = new Button("Settings");
+        volumeView = new VolumeView();
+        currentSongView = new CurrentSongView();
+        
+        
 		
 		// Ad UI Components to Nodes
-		center.getChildren().addAll(continueButton, newJourneyButton, musicButton, settingsButton);
-		bottom.getChildren().addAll(currentSongView, volumeView);
-		
+//		center.getChildren().addAll(continueButton, newJourneyButton, musicButton, settingsButton);
+//		bottom.getChildren().addAll(currentSongView, volumeView);
+
+        layout.getChildren().addAll(continueButton, newJourneyButton, musicButton, settingsButton, currentSongView, volumeView);
+	
+        setCenter(layout);
 	}
 
 }

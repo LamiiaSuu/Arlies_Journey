@@ -62,7 +62,7 @@ public class App extends Application {
         primaryStage.setTitle("Arlie's Journey");
         primaryStage.setScene(scene);
         currentView = new SimpleObjectProperty<PrimaryViewNames>();
-        switchView(PrimaryViewNames.IN_GAME_VIEW);
+        switchView(PrimaryViewNames.MAIN_MENU_VIEW);
         
 
         primaryStage.setMinHeight(400);
