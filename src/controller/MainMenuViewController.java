@@ -12,19 +12,19 @@ import presentation.PrimaryViewNames;
 public class MainMenuViewController extends BaseViewController {
     private App app;  // Correcting the variable name to lowercase
     MainMenuView root;
-    public Button continueButton;
+    private Button newJourneyButton;
 
     public MainMenuViewController(App app, Scene scene) {
         root = new MainMenuView();
+        newJourneyButton = root.newJourneyButton;
         this.app = app;  // Corrected variable name to lowercase
         
-        root.continueButton.setOnAction(event -> app.switchView(PrimaryViewNames.IN_GAME_VIEW));
+        initialize();
         }
 
     @Override
     public void initialize() {
-//        continueButton = root.continueButton;  // Assigning the button from the MainMenuView
-//        continueButton.setOnAction(event -> app.switchView(PrimaryViewNames.IN_GAME_VIEW));
+        newJourneyButton.setOnAction(event -> app.switchView(PrimaryViewNames.IN_GAME_VIEW));
     }
 
     @Override

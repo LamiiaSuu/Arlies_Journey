@@ -7,7 +7,6 @@ import presentation.uicomponents.*;
 
 public class MainMenuView extends BaseView {
 	
-	public Button continueButton;
 	public Button newJourneyButton;
 	public Button musicButton;
 	public Button settingsButton;
@@ -23,7 +22,6 @@ public class MainMenuView extends BaseView {
 		VBox layout = new VBox();
 		
 		// Instantiate UI Components
-		continueButton = new Button("Continue");
         newJourneyButton = new Button("New Journey");
         musicButton = new Button("Music");
         settingsButton = new Button("Settings");
@@ -36,7 +34,7 @@ public class MainMenuView extends BaseView {
 //		center.getChildren().addAll(continueButton, newJourneyButton, musicButton, settingsButton);
 //		bottom.getChildren().addAll(currentSongView, volumeView);
 
-        layout.getChildren().addAll(continueButton, newJourneyButton, musicButton, settingsButton, currentSongView, volumeView);
+        layout.getChildren().addAll(newJourneyButton, musicButton, settingsButton, currentSongView, volumeView);
 	
         setCenter(layout);
 	}
