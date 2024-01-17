@@ -6,26 +6,46 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 public class Arlie {
-    public SimpleObjectProperty<ArlieConditions> condition;
+	
+    public enum ArlieConditions {
+    	RUNNING, JUMPING, CROUCHING, CONFUSED;
+    }
+	
+    private SimpleObjectProperty<ArlieConditions> conditionProperty;
     public ImageView arlieBody;
 
     public Arlie() {
-        condition = new SimpleObjectProperty<>();
-        
+        conditionProperty = new SimpleObjectProperty<ArlieConditions>(ArlieConditions.RUNNING);
 
 
-            // Load an image (replace "path/to/your/image.png" with the actual path to your image file)
-            Image arlieImage = new Image(getClass().getResourceAsStream("/assets/Arlie_Transparent.png"));
+            // Load Arlie's Standard Image
+            Image arlieImage = new Image(getClass().getResourceAsStream("/assets/arlie-running.png"));
 
             // Create an ImageView with the loaded image
             arlieBody = new ImageView(arlieImage);
-            arlieBody.setFitWidth(150);  // Set the desired width
-            arlieBody.setFitHeight(150); // Set the desired height
+            arlieBody.setPreserveRatio(true);
+            arlieBody.setFitWidth(100);  // Set the desired width
+
 
 
     }
-
-    public ImageView getArlieImageView() {
-        return arlieBody;
+    
+    public SimpleObjectProperty ConditionProperty() {
+    	
+		return conditionProperty;
+    	
     }
+    
+    public void setConditionProperty(ArlieConditions condition) {
+    	conditionProperty.set(condition);
+    	
+    }
+    
+    public ArlieConditions getConditionProperty() {
+    	return conditionProperty.get();
+    	
+    }
+    
+    
+
 }
