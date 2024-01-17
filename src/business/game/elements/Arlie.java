@@ -1,20 +1,31 @@
 package business.game.elements;
 
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 public class Arlie {
-
-    public Rectangle arlieBody;
+    public SimpleObjectProperty<ArlieConditions> condition;
+    public ImageView arlieBody;
 
     public Arlie() {
-        arlieBody = new Rectangle(50, 50);
-        arlieBody.setFill(Color.GREENYELLOW);  // You can customize the color here
+        condition = new SimpleObjectProperty<>();
+        
+
+
+            // Load an image (replace "path/to/your/image.png" with the actual path to your image file)
+            Image arlieImage = new Image(getClass().getResourceAsStream("/assets/Arlie_Transparent.png"));
+
+            // Create an ImageView with the loaded image
+            arlieBody = new ImageView(arlieImage);
+            arlieBody.setFitWidth(150);  // Set the desired width
+            arlieBody.setFitHeight(150); // Set the desired height
+
+
     }
 
-    public Rectangle getArlieRectangle() {
+    public ImageView getArlieImageView() {
         return arlieBody;
     }
-
-    // Add any additional methods or properties for Arlie as needed
 }

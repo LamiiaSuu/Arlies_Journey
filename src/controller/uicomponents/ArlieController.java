@@ -3,20 +3,21 @@ package controller.uicomponents;
 import business.game.elements.Arlie;
 import controller.BaseViewController;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Rectangle;
 import presentation.InGameView;
 
 public class ArlieController extends BaseViewController {
 
-    Rectangle arlieBody;
+    ImageView arlieBody;
     InGameView root;
     Scene scene;
 
     public ArlieController(InGameView root, Scene scene) {
         if (root != null) {
             this.root = root;
-            arlieBody = root.arlie.getArlieRectangle();
+            arlieBody = root.arlie.getArlieImageView();
 
             // Set focus on the root to enable key events
             root.setFocusTraversable(true);
@@ -46,10 +47,10 @@ public class ArlieController extends BaseViewController {
     private void handleKeyPress(KeyCode code) {
         switch (code) {
             case SPACE:
-                arlieBody.setTranslateY(arlieBody.getTranslateY() - 50);
+            	jump();
                 break;
             case DOWN:
-                arlieBody.setHeight(arlieBody.getHeight() / 2);
+            	crouch();
                 break;
             // Add more cases for other actions if needed
         }
@@ -57,17 +58,29 @@ public class ArlieController extends BaseViewController {
 
     private void handleKeyRelease(KeyCode code) {
         switch (code) {
-        case SPACE:
-            arlieBody.setTranslateY(arlieBody.getTranslateY() + 50);
-            break;
+        	case SPACE:
+        		jumpRelease();
+            	break;
             case DOWN:
-                arlieBody.setHeight(arlieBody.getHeight() * 2);
+                crouchRelease();
                 break;
             // Add more cases for other actions if needed
         }
     }
     
-    private void duck() {
+    private void crouch() {
+    	
+    }
+    
+    private void crouchRelease() {
+    	
+    }
+    
+    private void jump() {
+    	
+    }
+    
+    private void jumpRelease() {
     	
     }
     
