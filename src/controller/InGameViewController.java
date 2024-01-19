@@ -13,16 +13,19 @@ public class InGameViewController extends BaseViewController {
 	
 	
 	public InGameViewController(App app, Scene scene) {
+		
 		root = new InGameView();
 		
 		arlieController = new ArlieController(root, scene);
 		
 		
 		initialize();
+		
 	}
 
 	@Override
 	public void initialize() {
+		
 		arlieController.initialize();
 		
 	}
