@@ -1,0 +1,32 @@
+#new-journey-button, #music-button, #settings-button {
+    -fx-background-color: transparent;
+    -fx-background-repeat: no-repeat no-repeat;
+    -fx-background-position: center;
+}
+
+.menu-button {
+
+    -fx-min-width: 367px;
+    -fx-min-height: 121px;
+    
+}
+
+#new-journey-button {
+    -fx-background-image: url("/assets/icons/continue-button.png");
+}
+
+#new-journey-button:hover {
+    -fx-background-image: url("/assets/icons/continue-button-hover.png");
+}
+
+#music-button {
+    -fx-background-image: url("/assets/icons/placeholder-button.png");
+}
+
+#settings-button {
+    -fx-background-image: url("/assets/icons/placeholder-button.png");
+}
+
+#main-menu-panel {
+    
+}

@@ -51,7 +51,7 @@ public class InGameViewController extends BaseViewController {
                     System.out.println("PAUSE");
                 } else if (newValue == PrimaryViewNames.IN_GAME_VIEW){
                     resumeGame();
-                    System.out.println("RESME");
+                    System.out.println("RESuME");
                 }
             }
         });
@@ -65,6 +65,8 @@ public class InGameViewController extends BaseViewController {
         		if(!gamePaused)
                 handleKeyPress(event.getCode());
             });
+        	
+        	
             scene.setOnKeyReleased(event -> {
             	if(!gamePaused)
                 handleKeyRelease(event.getCode());
@@ -81,10 +83,16 @@ public class InGameViewController extends BaseViewController {
             case UP:
             	arlieController.jump();
                 break;
+            case W:
+            	arlieController.jump();
+                break;
             case DOWN:
             	arlieController.crouch();
                 break;
             case CONTROL:
+            	arlieController.crouch();
+                break;
+            case S:
             	arlieController.crouch();
                 break;
             case ESCAPE:
@@ -93,6 +101,7 @@ public class InGameViewController extends BaseViewController {
             
         }
     }
+    
 
     private void handleKeyRelease(KeyCode code) {
         switch (code) {
@@ -102,13 +111,18 @@ public class InGameViewController extends BaseViewController {
         	case UP:
         		arlieController.jumpRelease();
             	break;
+        	case W:
+        		arlieController.jumpRelease();
+            	break;
             case DOWN:
             	arlieController.crouchRelease();
                 break;
             case CONTROL:
             	arlieController.crouchRelease();
                 break;
-           
+            case S:
+            	arlieController.crouchRelease();
+                break;
         }
     }
 	

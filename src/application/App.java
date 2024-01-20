@@ -58,17 +58,18 @@ public class App extends Application {
         currentView = new SimpleObjectProperty<PrimaryViewNames>();
 
         Scene scene = new Scene(root, 630, 480);
+        scene.getStylesheets().add(getClass().getResource("/assets/styles.CSS").toExternalForm());
         initialize(scene);
         primaryStage.setTitle("Arlie's Journey");
         primaryStage.setScene(scene);
         
         switchView(PrimaryViewNames.MAIN_MENU_VIEW);
         
-
-        primaryStage.setMinHeight(400);
-        primaryStage.setMinWidth(600);
-        primaryStage.setMaxHeight(600);
-        primaryStage.setMaxWidth(800);
+        primaryStage.setMinHeight(720);
+        primaryStage.setMinWidth(1280);
+        primaryStage.setMaxHeight(720);
+        primaryStage.setMaxWidth(1280);
+        primaryStage.setResizable(false);
         primaryStage.show();
         primaryStage.setOnCloseRequest(event -> {
            

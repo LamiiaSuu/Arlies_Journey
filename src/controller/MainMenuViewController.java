@@ -10,14 +10,14 @@ import presentation.MainMenuView;
 import presentation.PrimaryViewNames;
 
 public class MainMenuViewController extends BaseViewController {
-    private App app;  // Correcting the variable name to lowercase
+    private App app;  
     MainMenuView root;
     private Button newJourneyButton;
 
     public MainMenuViewController(App app, Scene scene) {
         root = new MainMenuView();
         newJourneyButton = root.newJourneyButton;
-        this.app = app;  // Corrected variable name to lowercase
+        this.app = app;  
         
         initialize();
         }

@@ -18,14 +18,11 @@ public class Arlie {
         conditionProperty = new SimpleObjectProperty<ArlieConditions>(ArlieConditions.RUNNING);
 
 
-            // Load Arlie's Standard Image
-            Image arlieImage = new Image(getClass().getResourceAsStream("/assets/arlie-running.png"));
+            Image arlieImage = new Image(getClass().getResourceAsStream("/assets/images/arlie-running.png"));
 
-            // Create an ImageView with the loaded image
             arlieBody = new ImageView(arlieImage);
             arlieBody.setPreserveRatio(true);
-            arlieBody.setFitWidth(100);  // Set the desired width
-
+            arlieBody.setFitWidth(125);  
 
 
     }

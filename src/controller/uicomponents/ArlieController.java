@@ -4,6 +4,7 @@ import application.App;
 import business.game.elements.Arlie;
 import business.game.elements.Arlie.ArlieConditions;
 import controller.BaseViewController;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
@@ -18,10 +19,12 @@ public class ArlieController extends BaseViewController {
 	private static final double GRAVITY = 1.0; 
 	private static final double JUMP_INITIAL_VELOCITY = -25.0;
 	private static final double ARLIE_RUNNING_ANIMATION_INTENSITY = 7;
-	private static final double ARLIE_RUNNING_ANIMATION_FREQUENCY_MILIS = 200;
+	private static final double ARLIE_RUNNING_ANIMATION_FREQUENCY_MILLIS = 200;
+	private static final boolean SMALL_CROUCH = false;
 	private double jumpVelocity;
 	private double gravityModifier;
 	private double groundY;
+	private boolean crouchPressed;
 	private boolean doubleJumpable;
 	private boolean doubleJumped;
 	private long lastUpdateTime = System.currentTimeMillis();
@@ -38,8 +41,8 @@ public class ArlieController extends BaseViewController {
         if (root != null) {
             this.root = root;
             this.app = app;
-            arlie = root.arlie;
-            arlieBody = root.arlie.arlieBody;
+            this.arlie = this.root.arlie;
+            this.arlieBody = this.root.arlie.arlieBody;
             
             
             root.setFocusTraversable(true);
@@ -54,16 +57,23 @@ public class ArlieController extends BaseViewController {
 	@SuppressWarnings("unchecked")
 	@Override
     public void initialize() {
+		
 		groundY = this.scene.getHeight() * 0.7 - arlie.arlieBody.getFitHeight();
+		
+		
 		
         scene.heightProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
-                groundY = newValue.doubleValue() * 0.7 - arlie.arlieBody.getFitHeight();
+                groundY = newValue.doubleValue() * 0.7;
             }
         });
-
+        
+//        Skin change maybe?
+//        arlie.arlieBody.getOnMouseClicked();
+        
+        
         
 		arlie.ConditionProperty().addListener(new ChangeListener<>() {
 
@@ -71,11 +81,15 @@ public class ArlieController extends BaseViewController {
 			
 			@Override
 			public void changed(ObservableValue<? extends Object> arg0, Object arg1, Object arg2) {
+				
 				if(arg1 != arg2) {
+					
 					loadArlieImage();
+					
 				}
 				
 			}
+			
 		});
 		
     }
@@ -83,18 +97,36 @@ public class ArlieController extends BaseViewController {
 
     @Override
     public void update() {
-        if (System.currentTimeMillis() - lastUpdateTime >= ARLIE_RUNNING_ANIMATION_FREQUENCY_MILIS) {
-            // Reset the timer
+        if (System.currentTimeMillis() - lastUpdateTime >= ARLIE_RUNNING_ANIMATION_FREQUENCY_MILLIS) {
+        	
+
             lastUpdateTime = System.currentTimeMillis();
 
-            // Execute the if and else cases
+
             if (arlie.getConditionProperty() == ArlieConditions.RUNNING && arlieBody.getRotate() == 0) {
+            	
                 arlieBody.setRotate(ARLIE_RUNNING_ANIMATION_INTENSITY);
+                
             } else if (arlie.getConditionProperty() == ArlieConditions.RUNNING && arlieBody.getRotate() != 0){
+            	
                 arlieBody.setRotate(0);
+                
+            }
+            
+            if (arlie.getConditionProperty() == ArlieConditions.CROUCHING && arlieBody.getRotate() == 2) {
+            	
+                arlieBody.setRotate(ARLIE_RUNNING_ANIMATION_INTENSITY/1.75);
+                
+            } else if (arlie.getConditionProperty() == ArlieConditions.CROUCHING && arlieBody.getRotate() != 2){
+            	
+                arlieBody.setRotate(2);
+                
             }
         }
+        
     	updateJump();
+    	updateCrouch();
+    	
     }
     
     //DOUBLE FLIP ARLIEEEE WOOOOOOOOOOHOOOOOOOOOO
@@ -120,6 +152,7 @@ public class ArlieController extends BaseViewController {
     //Natural Jump Arlie
     private void updateJump() {
         if (arlie.getConditionProperty() == ArlieConditions.JUMPING) {
+        	
             double newY = arlieBody.getTranslateY() + jumpVelocity;
             arlieBody.setTranslateY(newY);
 
@@ -143,12 +176,28 @@ public class ArlieController extends BaseViewController {
             jumpVelocity += (GRAVITY * gravityModifier);
 
             if (newY >= groundY) {
-                arlie.setConditionProperty(ArlieConditions.RUNNING);
+            	if(crouchPressed) {
+            		arlie.setConditionProperty(ArlieConditions.CROUCHING);
+            	}else {
+            		arlie.setConditionProperty(ArlieConditions.RUNNING);
+            	}
                 arlieBody.setTranslateY(groundY);
-                arlieBody.setRotate(0);
+                arlieBody.setRotate(2);
                 jumpVelocity = 0;
                 doubleJumped = false;
             }
+        }
+        
+    }
+    
+    private void updateCrouch() {
+
+    	if (arlie.getConditionProperty() == ArlieConditions.CROUCHING) {
+    		if(!SMALL_CROUCH)
+        	arlieBody.setTranslateY(groundY + 30);
+    		else {
+    			arlieBody.setTranslateY(groundY + 50);
+    		}
         }
     }
 
@@ -163,31 +212,32 @@ public class ArlieController extends BaseViewController {
 
 
     public void crouch() {
+    	crouchPressed = true;
     	
     	if(arlie.getConditionProperty() == ArlieConditions.RUNNING) {
     		
     		arlie.setConditionProperty(ArlieConditions.CROUCHING);
-
-    		//Shit doesn't work for some reason
+    		arlieBody.setRotate(2);
     		
-    		System.out.println(arlieBody.getTranslateY());
     		
     	} else if(arlie.getConditionProperty() == ArlieConditions.JUMPING) {
+    		
     		gravityModifier = 4;
+    		
     	}
     	
     }
     
 	public void crouchRelease() {
-    	
+    	crouchPressed = false;
+		
+		
     	if(arlie.getConditionProperty() == ArlieConditions.CROUCHING) {
     		
     		arlie.setConditionProperty(ArlieConditions.RUNNING);
-
-    		//Shit doesn't work for some reason
-    		arlieBody.setTranslateY(arlieBody.getTranslateY() - 55);
     		
     	} else if(arlie.getConditionProperty() == ArlieConditions.JUMPING && doubleJumped) {
+    		
     		gravityModifier = 2;
     	}
     }
@@ -215,18 +265,29 @@ public class ArlieController extends BaseViewController {
         System.out.println("SWITCHING IMAGE TO: " + arlie.getConditionProperty());
         switch (arlie.getConditionProperty()) {
             case RUNNING:
-                Image runningImage = new Image(getClass().getResourceAsStream("/assets/arlie-running.png"));
+                Image runningImage = new Image(getClass().getResourceAsStream("/assets/images/arlie-running.png"));
                 arlieBody.setImage(runningImage); 
+                
                 break;
             case CROUCHING:
-                Image crouchingImage = new Image(getClass().getResourceAsStream("/assets/arlie-crouched.png"));
+            	Image crouchingImage;
+            	
+            	if(SMALL_CROUCH) {
+            		crouchingImage = new Image(getClass().getResourceAsStream("/assets/images/arlie-crouched-smaller.png"));
+            	}
+                
+            	else {
+            		crouchingImage = new Image(getClass().getResourceAsStream("/assets/images/arlie-crouched.png"));
+            	}
+            	
                 arlieBody.setImage(crouchingImage);
+                arlieBody.setTranslateY(arlieBody.getTranslateY());
                 break;
             case JUMPING:
 
                 break;
             case CONFUSED:
-                Image confusedImage = new Image(getClass().getResourceAsStream("/assets/arlie-confused.png"));
+                Image confusedImage = new Image(getClass().getResourceAsStream("/assets/images/arlie-confused.png"));
                 arlieBody.setImage(confusedImage);
                 break;
         }
