@@ -83,7 +83,6 @@ public class App extends Application {
 			currentScene.setRoot(nextView);
 			currentView.set(viewName);
 		}
-		System.out.println(nextView);
 		System.out.println(currentView);
 	}
 	

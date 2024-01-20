@@ -13,17 +13,17 @@ import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import presentation.InGameView;
 
 public class ArlieController extends BaseViewController {
 
-	private static final double GRAVITY = 2.0; //Set Rotation Maybe later noch?
-	private static final double JUMP_INITIAL_VELOCITY = -30.0;
-	private static final double GROUND_LEVEL = 335.0;
+	private static final double GRAVITY = 1.0; 
+	private static final double JUMP_INITIAL_VELOCITY = -25.0;
 	//private double groundY;
 	private double jumpVelocity;
+	private double gravityModifier;
+	private double groundY;
 	private Timeline timeline;
     ImageView arlieBody;
     Arlie arlie;
@@ -37,12 +37,14 @@ public class ArlieController extends BaseViewController {
             this.root = root;
             arlie = root.arlie;
             arlieBody = root.arlie.arlieBody;
-            //groundY = scene.getHeight() * 0.7 - arlie.arlieBody.getFitHeight();
+            
             
             root.setFocusTraversable(true);
             root.requestFocus();
             this.scene = scene;
+            
         }
+       
     }
 
 
@@ -50,6 +52,17 @@ public class ArlieController extends BaseViewController {
 	@Override
     public void initialize() {
 		
+		groundY = this.scene.getHeight() * 0.7 - arlie.arlieBody.getFitHeight();
+		
+        scene.heightProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                // Recalculate groundY when scene height changes
+                groundY = newValue.doubleValue() * 0.7 - arlie.arlieBody.getFitHeight();
+            }
+        });
+        
+		System.out.println(groundY);
         scene.setOnKeyPressed(event -> {
             handleKeyPress(event.getCode());
         });
@@ -60,6 +73,7 @@ public class ArlieController extends BaseViewController {
 		arlie.ConditionProperty().addListener(new ChangeListener<>() {
 
 
+			
 			@Override
 			public void changed(ObservableValue<? extends Object> arg0, Object arg1, Object arg2) {
 				if(arg1 != arg2) {
@@ -73,11 +87,13 @@ public class ArlieController extends BaseViewController {
         timeline = new Timeline(new KeyFrame(Duration.millis(16), event -> update()));
         timeline.setCycleCount(Animation.INDEFINITE);  
         timeline.play();
-		
+        
+
     }
 
     @Override
     public void update() {
+    	// groundY = this.scene.getHeight() * 0.7 - arlie.arlieBody.getFitHeight();
     	updateJump();
     }
     
@@ -114,12 +130,12 @@ public class ArlieController extends BaseViewController {
             double rotation = arlieBody.getRotate() + rotationSpeed;
             arlieBody.setRotate(rotation);
 
-            jumpVelocity += GRAVITY;
+            jumpVelocity += (GRAVITY*gravityModifier);
 
             // Check if Arlie has touched the ground
-            if (newY >= GROUND_LEVEL) {
+            if (newY >= groundY) {
                 arlie.setConditionProperty(ArlieConditions.RUNNING);
-                arlieBody.setTranslateY(GROUND_LEVEL);  // Ensure Arlie is exactly at the ground level
+                arlieBody.setTranslateY(groundY);  // Ensure Arlie is exactly at the ground level
                 arlieBody.setRotate(0);  // Reset rotation
                 jumpVelocity = 0;  // Reset jump velocity for the next jump
             }
@@ -146,12 +162,12 @@ public class ArlieController extends BaseViewController {
 
     private void handleKeyRelease(KeyCode code) {
         switch (code) {
-//        	case SPACE:
-//        		jumpRelease();
-//            	break;
-//        	case UP:
-//        		jumpRelease();
-//            	break;
+       		case SPACE:
+        		jumpRelease();
+            	break;
+        	case UP:
+        		jumpRelease();
+            	break;
             case DOWN:
                 crouchRelease();
                 break;
@@ -162,7 +178,14 @@ public class ArlieController extends BaseViewController {
         }
     }
     
-    private void crouch() {
+    private void jumpRelease() {
+    	if(gravityModifier == 1)
+		gravityModifier = 2;
+		
+	}
+
+
+	private void crouch() {
     	
     	if(arlie.getConditionProperty() == ArlieConditions.RUNNING) {
     		
@@ -172,6 +195,8 @@ public class ArlieController extends BaseViewController {
     		
     		System.out.println(arlieBody.getTranslateY());
     		
+    	} else if(arlie.getConditionProperty() == ArlieConditions.JUMPING) {
+    		gravityModifier = 4;
     	}
     	
     }
@@ -185,11 +210,13 @@ public class ArlieController extends BaseViewController {
     		//Shit doesn't work for some reason
     		arlieBody.setTranslateY(arlieBody.getTranslateY() - 55);
     		
+    	} else if(arlie.getConditionProperty() == ArlieConditions.JUMPING) {
+    		gravityModifier = 2;
     	}
     }
     
     private void jump() {
-    	
+    	gravityModifier = 1;
     	if(arlie.getConditionProperty() == ArlieConditions.RUNNING) {
     		arlie.setConditionProperty(ArlieConditions.JUMPING);
     		jumpVelocity = JUMP_INITIAL_VELOCITY;
