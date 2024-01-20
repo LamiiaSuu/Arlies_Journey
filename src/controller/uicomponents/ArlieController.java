@@ -1,40 +1,43 @@
 package controller.uicomponents;
 
+import application.App;
 import business.game.elements.Arlie;
 import business.game.elements.Arlie.ArlieConditions;
 import controller.BaseViewController;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.util.Duration;
+
 import presentation.InGameView;
+
 
 public class ArlieController extends BaseViewController {
 
 	private static final double GRAVITY = 1.0; 
 	private static final double JUMP_INITIAL_VELOCITY = -25.0;
-	//private double groundY;
+	private static final double ARLIE_RUNNING_ANIMATION_INTENSITY = 7;
+	private static final double ARLIE_RUNNING_ANIMATION_FREQUENCY_MILIS = 200;
 	private double jumpVelocity;
 	private double gravityModifier;
 	private double groundY;
-	private Timeline timeline;
+	private boolean doubleJumpable;
+	private boolean doubleJumped;
+	private long lastUpdateTime = System.currentTimeMillis();
+
     ImageView arlieBody;
     Arlie arlie;
     InGameView root;
     Scene scene;
+    App app;
     
    
 
-    public ArlieController(InGameView root, Scene scene) {
+    public ArlieController(App app, InGameView root, Scene scene) {
         if (root != null) {
             this.root = root;
+            this.app = app;
             arlie = root.arlie;
             arlieBody = root.arlie.arlieBody;
             
@@ -51,24 +54,16 @@ public class ArlieController extends BaseViewController {
 	@SuppressWarnings("unchecked")
 	@Override
     public void initialize() {
-		
 		groundY = this.scene.getHeight() * 0.7 - arlie.arlieBody.getFitHeight();
 		
         scene.heightProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                // Recalculate groundY when scene height changes
+
                 groundY = newValue.doubleValue() * 0.7 - arlie.arlieBody.getFitHeight();
             }
         });
-        
-		System.out.println(groundY);
-        scene.setOnKeyPressed(event -> {
-            handleKeyPress(event.getCode());
-        });
-        scene.setOnKeyReleased(event -> {
-            handleKeyRelease(event.getCode());
-        });
+
         
 		arlie.ConditionProperty().addListener(new ChangeListener<>() {
 
@@ -83,17 +78,22 @@ public class ArlieController extends BaseViewController {
 			}
 		});
 		
-		
-        timeline = new Timeline(new KeyFrame(Duration.millis(16), event -> update()));
-        timeline.setCycleCount(Animation.INDEFINITE);  
-        timeline.play();
-        
-
     }
+	
 
     @Override
     public void update() {
-    	// groundY = this.scene.getHeight() * 0.7 - arlie.arlieBody.getFitHeight();
+        if (System.currentTimeMillis() - lastUpdateTime >= ARLIE_RUNNING_ANIMATION_FREQUENCY_MILIS) {
+            // Reset the timer
+            lastUpdateTime = System.currentTimeMillis();
+
+            // Execute the if and else cases
+            if (arlie.getConditionProperty() == ArlieConditions.RUNNING && arlieBody.getRotate() == 0) {
+                arlieBody.setRotate(ARLIE_RUNNING_ANIMATION_INTENSITY);
+            } else if (arlie.getConditionProperty() == ArlieConditions.RUNNING && arlieBody.getRotate() != 0){
+                arlieBody.setRotate(0);
+            }
+        }
     	updateJump();
     }
     
@@ -103,18 +103,16 @@ public class ArlieController extends BaseViewController {
 //            double newY = arlieBody.getTranslateY() + jumpVelocity;
 //            arlieBody.setTranslateY(newY);
 //
-//            // Calculate rotation based on jumpVelocity for a smooth rotation effect
 //            double rotation = -(jumpVelocity / JUMP_INITIAL_VELOCITY) * 360;
 //            arlieBody.setRotate(rotation);
 //
 //            jumpVelocity += GRAVITY;
 //
-//            // Check if Arlie has touched the ground
 //            if (newY >= GROUND_LEVEL) {
 //                arlie.setConditionProperty(ArlieConditions.RUNNING);
-//                arlieBody.setTranslateY(GROUND_LEVEL);  // Ensure Arlie is exactly at the ground level
-//                arlieBody.setRotate(0);  // Reset rotation
-//                jumpVelocity = 0;  // Reset jump velocity for the next jump
+//                arlieBody.setTranslateY(GROUND_LEVEL); 
+//                arlieBody.setRotate(0);  
+//                jumpVelocity = 0;  
 //            }
 //        }
 //    }
@@ -125,67 +123,46 @@ public class ArlieController extends BaseViewController {
             double newY = arlieBody.getTranslateY() + jumpVelocity;
             arlieBody.setTranslateY(newY);
 
-            // Calculate rotation based on an easing function
             double rotationSpeed = (1 - Math.exp(jumpVelocity / JUMP_INITIAL_VELOCITY)) * 2;
             double rotation = arlieBody.getRotate() + rotationSpeed;
+
+            if (doubleJumped) {
+        		gravityModifier = 1;
+            	
+//                double totalRotation = 250.0; 
+//                double rotationPerTick = totalRotation / (JUMP_INITIAL_VELOCITY / (GRAVITY));
+//                rotation -= rotationPerTick;
+                
+              //Instead of this one could use jumpVelocity to calculate how many ticks until Arlie reaches the ground. The ticks could be equally, or through a Math.abs(Math.exp) to get a smooth roll with Arlie always landing on his "feet"
+            	rotationSpeed = ((Math.cos(jumpVelocity / JUMP_INITIAL_VELOCITY)) * 12);
+            	rotation = arlieBody.getRotate() + rotationSpeed;
+            }
+
             arlieBody.setRotate(rotation);
 
-            jumpVelocity += (GRAVITY*gravityModifier);
+            jumpVelocity += (GRAVITY * gravityModifier);
 
-            // Check if Arlie has touched the ground
             if (newY >= groundY) {
                 arlie.setConditionProperty(ArlieConditions.RUNNING);
-                arlieBody.setTranslateY(groundY);  // Ensure Arlie is exactly at the ground level
-                arlieBody.setRotate(0);  // Reset rotation
-                jumpVelocity = 0;  // Reset jump velocity for the next jump
+                arlieBody.setTranslateY(groundY);
+                arlieBody.setRotate(0);
+                jumpVelocity = 0;
+                doubleJumped = false;
             }
         }
     }
 
-    private void handleKeyPress(KeyCode code) {
-        switch (code) {
-            case SPACE:
-            	jump();
-                break;
-            case UP:
-            	jump();
-                break;
-            case DOWN:
-            	crouch();
-                break;
-            case CONTROL:
-            	crouch();
-                break;
-            
-        }
-    }
 
-    private void handleKeyRelease(KeyCode code) {
-        switch (code) {
-       		case SPACE:
-        		jumpRelease();
-            	break;
-        	case UP:
-        		jumpRelease();
-            	break;
-            case DOWN:
-                crouchRelease();
-                break;
-            case CONTROL:
-                crouchRelease();
-                break;
-           
-        }
-    }
+
     
-    private void jumpRelease() {
-    	if(gravityModifier == 1)
+    public void jumpRelease() {
+    	if(gravityModifier == 1 && !doubleJumped)
 		gravityModifier = 2;
-		
+    	doubleJumpable = true;
 	}
 
 
-	private void crouch() {
+    public void crouch() {
     	
     	if(arlie.getConditionProperty() == ArlieConditions.RUNNING) {
     		
@@ -201,7 +178,7 @@ public class ArlieController extends BaseViewController {
     	
     }
     
-    private void crouchRelease() {
+	public void crouchRelease() {
     	
     	if(arlie.getConditionProperty() == ArlieConditions.CROUCHING) {
     		
@@ -210,29 +187,29 @@ public class ArlieController extends BaseViewController {
     		//Shit doesn't work for some reason
     		arlieBody.setTranslateY(arlieBody.getTranslateY() - 55);
     		
-    	} else if(arlie.getConditionProperty() == ArlieConditions.JUMPING) {
+    	} else if(arlie.getConditionProperty() == ArlieConditions.JUMPING && doubleJumped) {
     		gravityModifier = 2;
     	}
     }
     
-    private void jump() {
+    public void jump() {
     	gravityModifier = 1;
     	if(arlie.getConditionProperty() == ArlieConditions.RUNNING) {
+    		doubleJumpable = false;
     		arlie.setConditionProperty(ArlieConditions.JUMPING);
     		jumpVelocity = JUMP_INITIAL_VELOCITY;
+    	
+    	//Double Jump!
+    	}else if (arlie.getConditionProperty() == ArlieConditions.JUMPING && doubleJumpable && !doubleJumped) {
+    		jumpVelocity = 0.5*JUMP_INITIAL_VELOCITY;
+    		doubleJumpable = false;
+    		doubleJumped = true;
+
     	}
     	
     	
     }
-    
-//    private void jumpRelease() {
-//    	
-//    	if(arlie.getConditionProperty() == ArlieConditions.JUMPING) {
-//    		arlie.setConditionProperty(ArlieConditions.RUNNING);
-//    		arlieBody.setTranslateY(arlieBody.getTranslateY() + 75);
-//    	}
-//    	
-//    }
+
     
     private void loadArlieImage() {
         System.out.println("SWITCHING IMAGE TO: " + arlie.getConditionProperty());

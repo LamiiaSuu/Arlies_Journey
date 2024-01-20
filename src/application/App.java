@@ -55,13 +55,13 @@ public class App extends Application {
         this.primaryStage = primaryStage;
 
         Pane root = new Pane();
-      
+        currentView = new SimpleObjectProperty<PrimaryViewNames>();
 
         Scene scene = new Scene(root, 630, 480);
         initialize(scene);
         primaryStage.setTitle("Arlie's Journey");
         primaryStage.setScene(scene);
-        currentView = new SimpleObjectProperty<PrimaryViewNames>();
+        
         switchView(PrimaryViewNames.MAIN_MENU_VIEW);
         
 
@@ -85,6 +85,7 @@ public class App extends Application {
 		}
 		System.out.println(currentView);
 	}
+	
 	
 	public SimpleObjectProperty<PrimaryViewNames> currentViewProperty(){
 		return currentView;
