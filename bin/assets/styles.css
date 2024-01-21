@@ -1,4 +1,4 @@
-#new-journey-button, #music-button, #settings-button {
+#new-journey-button, #music-button, #settings-button, #volume-button, #volume-button-mute, #volume-button-low, #volume-button-medium, #volume-button-high{
     -fx-background-color: transparent;
     -fx-background-repeat: no-repeat no-repeat;
     -fx-background-position: center;
@@ -11,22 +11,104 @@
     
 }
 
+.menu-icon {
+
+    -fx-min-width: 245px;
+    -fx-min-height: 245px;
+    
+}
+
 #new-journey-button {
     -fx-background-image: url("/assets/icons/continue-button.png");
 }
 
 #new-journey-button:hover {
-    -fx-background-image: url("/assets/icons/continue-button-hover.png");
+
 }
 
 #music-button {
     -fx-background-image: url("/assets/icons/placeholder-button.png");
+    -fx-transition-duration: 0.2s;
+}
+
+#music-button:hover {
+    -fx-rotate: -2deg;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
 }
 
 #settings-button {
     -fx-background-image: url("/assets/icons/placeholder-button.png");
 }
 
+#settings-button:hover {
+    -fx-rotate: 2deg;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+#volume-button-mute{
+
+    -fx-background-image: url("/assets/icons/volume-mute.png");
+
+}
+
+#volume-button-mute:hover {
+
+    -fx-background-image: url("/assets/icons/volume-mute.png");
+    -fx-rotate: -2deg;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+
+}
+
+#volume-button-low{
+
+    -fx-background-image: url("/assets/icons/volume-low.png");
+
+}
+
+#volume-button-low:hover {
+
+    -fx-background-image: url("/assets/icons/volume-low.png");
+    -fx-rotate: -2deg;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+
+}
+
+#volume-button-medium{
+
+    -fx-background-image: url("/assets/icons/volume-medium.png");
+
+
+}
+
+#volume-button-medium:hover {
+
+    -fx-background-image: url("/assets/icons/volume-medium.png");
+    -fx-rotate: -2deg;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+
+}
+
+#volume-button-high{
+
+    -fx-background-image: url("/assets/icons/volume-high.png");
+
+}
+
+#volume-button-high:hover {
+
+    -fx-background-image: url("/assets/icons/volume-high.png");
+    -fx-rotate: -2deg;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+
+}
+
 #main-menu-panel {
-    
+    -fx-background-image: url("/assets/images/arlies-journey.png");
+    -fx-background-size: 100% 100%;
 }
