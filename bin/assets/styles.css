@@ -19,7 +19,7 @@
 }
 
 #new-journey-button {
-    -fx-background-image: url("/assets/icons/continue-button.png");
+    -fx-background-image: url("/assets/icons/new-journey-button.png");
 }
 
 #new-journey-button:hover {
@@ -27,7 +27,7 @@
 }
 
 #music-button {
-    -fx-background-image: url("/assets/icons/placeholder-button.png");
+    -fx-background-image: url("/assets/icons/music-button.png");
     -fx-transition-duration: 0.2s;
 }
 
@@ -38,7 +38,7 @@
 }
 
 #settings-button {
-    -fx-background-image: url("/assets/icons/placeholder-button.png");
+    -fx-background-image: url("/assets/icons/settings-button.png");
 }
 
 #settings-button:hover {
