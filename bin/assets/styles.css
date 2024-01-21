@@ -1,21 +1,22 @@
-#new-journey-button, #music-button, #settings-button, #volume-button, #volume-button-mute, #volume-button-low, #volume-button-medium, #volume-button-high{
+#new-journey-button, #music-button, #settings-button, #volume-button, #volume-button-mute, #volume-button-low, #volume-button-medium, #volume-button-high, #title-label {
     -fx-background-color: transparent;
     -fx-background-repeat: no-repeat no-repeat;
     -fx-background-position: center;
 }
 
 .menu-button {
-
     -fx-min-width: 367px;
     -fx-min-height: 121px;
-    
 }
 
 .menu-icon {
-
     -fx-min-width: 245px;
     -fx-min-height: 245px;
-    
+}
+
+#title-label {
+    -fx-background-image: url("/assets/images/title-normal.png");
+    -fx-background-size: 100% 100%;
 }
 
 #new-journey-button {

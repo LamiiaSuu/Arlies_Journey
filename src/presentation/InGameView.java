@@ -3,7 +3,7 @@ package presentation;
 import business.game.elements.Arlie;
 import javafx.scene.layout.Pane;
 
-public class InGameView extends Pane {
+public class InGameView extends BaseView {
 
     public Arlie arlie;
 

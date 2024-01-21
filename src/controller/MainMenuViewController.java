@@ -37,8 +37,6 @@ public class MainMenuViewController extends BaseViewController {
     @Override
     public void initialize() {
     	
-    	
-        
         newJourneyButton.setOnMouseEntered(event -> jumpAnimation(newJourneyButton));
         newJourneyButton.setOnMouseExited(event -> stopAnimation(newJourneyButton));
 

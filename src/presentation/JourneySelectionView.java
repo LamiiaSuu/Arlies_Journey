@@ -20,8 +20,8 @@ public class JourneySelectionView extends BaseView {
 		currentSongView = new CurrentSongView();
 
 		// Ad UI Components to Nodes
-		top.getChildren().addAll(backButton);
-		bottom.getChildren().addAll(currentSongView, volumeView);
+//		top.getChildren().addAll(backButton);
+//		bottom.getChildren().addAll(currentSongView, volumeView);
 	}
 
 }
