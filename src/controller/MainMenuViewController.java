@@ -5,6 +5,8 @@ import controller.uicomponents.VolumeViewController;
 import javafx.animation.RotateTransition;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import presentation.MainMenuView;
@@ -18,12 +20,14 @@ public class MainMenuViewController extends BaseViewController {
     VolumeViewController volumeViewController;
     private Button newJourneyButton;
     private Button volumeButton;
+    private ImageView arliesJourneyImageView;
     
     private RotateTransition rotateAnimation;
     private ScaleTransition jumpAnimation;
 
     public MainMenuViewController(App app, Scene scene) {
         root = new MainMenuView();
+        arliesJourneyImageView = root.titleView.title;
         newJourneyButton = root.newJourneyButton;
         volumeButton = root.volumeView.volumeButton;
         this.app = app;
@@ -43,6 +47,14 @@ public class MainMenuViewController extends BaseViewController {
         //It actually lags without stopping the animation xD
         newJourneyButton.setOnAction(event -> stopAnimation(newJourneyButton));
         newJourneyButton.setOnAction(event -> app.switchView(PrimaryViewNames.IN_GAME_VIEW));
+        
+        arliesJourneyImageView.setOnMouseClicked(event -> {
+        	
+        	arliesJourneyImageView.setId("title-label-clicked");
+        	arliesJourneyImageView.setImage(new Image(getClass().getResourceAsStream("/assets/images/title-special.png")));
+        	
+        });
+        
         volumeButton.setOnAction(event -> cycleVolume());
 
         

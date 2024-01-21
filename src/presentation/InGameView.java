@@ -20,7 +20,7 @@ public class InGameView extends BaseView {
         super.layoutChildren();
 
         arlie.arlieBody.setTranslateX(getWidth() * 0.25 - arlie.arlieBody.getFitWidth());
-        arlie.arlieBody.setTranslateY(getHeight() * 0.7 - arlie.arlieBody.getFitHeight());
+        arlie.arlieBody.setTranslateY(getHeight() * 0.6 - arlie.arlieBody.getFitHeight());
         
     }
 }

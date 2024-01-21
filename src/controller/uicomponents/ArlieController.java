@@ -58,7 +58,7 @@ public class ArlieController extends BaseViewController {
 	@Override
     public void initialize() {
 		
-		groundY = this.scene.getHeight() * 0.7 - arlie.arlieBody.getFitHeight();
+		groundY = this.scene.getHeight() * 0.6 - arlie.arlieBody.getFitHeight();
 		
 		
 		
@@ -66,7 +66,7 @@ public class ArlieController extends BaseViewController {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
-                groundY = newValue.doubleValue() * 0.7;
+                groundY = newValue.doubleValue() * 0.6;
             }
         });
         
