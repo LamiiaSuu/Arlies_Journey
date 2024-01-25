@@ -8,6 +8,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.image.Image;
 
 import presentation.InGameView;
@@ -30,18 +31,18 @@ public class ArlieController extends BaseViewController {
 
     ImageView arlieBody;
     Arlie arlie;
-    InGameView root;
+    Pane root;
     Scene scene;
     App app;
     
    
 
-    public ArlieController(App app, InGameView root, Scene scene) {
+    public ArlieController(App app, Pane root, Arlie arlie, Scene scene) {
         if (root != null) {
             this.root = root;
             this.app = app;
-            this.arlie = this.root.arlie;
-            this.arlieBody = this.root.arlie.arlieBody;
+            this.arlie = arlie;
+            this.arlieBody = arlie.arlieBody;
             
             
             root.setFocusTraversable(true);
@@ -57,17 +58,7 @@ public class ArlieController extends BaseViewController {
 	@Override
     public void initialize() {
 		
-		groundY = this.scene.getHeight() * 0.6 - arlie.arlieBody.getFitHeight();
 		
-		
-		
-        scene.heightProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-
-                groundY = newValue.doubleValue() * 0.6;
-            }
-        });
         
 //        Skin change maybe?
 //        arlie.arlieBody.getOnMouseClicked();
@@ -234,6 +225,11 @@ public class ArlieController extends BaseViewController {
     	if(arlie.getConditionProperty() == ArlieConditions.CROUCHING) {
     		
     		arlie.setConditionProperty(ArlieConditions.RUNNING);
+    		if(!SMALL_CROUCH)
+            	arlieBody.setTranslateY(groundY);
+        		else {
+        			arlieBody.setTranslateY(groundY);
+        		}
     		
     	} else if(arlie.getConditionProperty() == ArlieConditions.JUMPING && doubleJumped) {
     		
@@ -291,5 +287,10 @@ public class ArlieController extends BaseViewController {
                 break;
         }
     }
+    
+    public void setGround(double groundY) {
+    	this.groundY = groundY;
+    }
+    
 
 }

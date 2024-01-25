@@ -2,9 +2,11 @@ package controller;
 
 import application.App;
 import business.game.elements.ArlieController;
+import controller.uicomponents.ObstacleGenerator;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
@@ -18,19 +20,22 @@ public class InGameViewController extends BaseViewController {
 	
 	private boolean gamePaused = false;
 	private Timeline timeline;
+	private double groundY;
 	InGameView root;
 	ArlieController arlieController;
+	ObstacleGenerator obstacleGen;
 	App app;
 	Scene scene;
 	
 	
 	public InGameViewController(App app, Scene scene) {
 		
-		root = new InGameView();
+		root = new InGameView(scene);
 		this.app = app;
 		this.scene = scene;
 		
-		arlieController = new ArlieController(app, root, scene);
+		arlieController = new ArlieController(app, root.getArliePane(), root.arlie, scene);
+		obstacleGen = new ObstacleGenerator(root.getObstaclePane(), scene);
 		
 		
 		initialize();
@@ -39,6 +44,10 @@ public class InGameViewController extends BaseViewController {
 
 	@Override
 	public void initialize() {
+
+		groundY = scene.getHeight() * 0.6;
+		
+		setGround();
 		
 		arlieController.initialize();
 		
@@ -72,6 +81,15 @@ public class InGameViewController extends BaseViewController {
                 handleKeyRelease(event.getCode());
             });
         
+            
+            scene.heightProperty().addListener(new ChangeListener<Number>() {
+                @Override
+                public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+
+                    groundY = newValue.doubleValue() * 0.6;
+                    setGround();
+                }
+            });
         
 	}
 	
@@ -144,7 +162,12 @@ public class InGameViewController extends BaseViewController {
 	@Override
 	public void update() {
 		arlieController.update();
-		
+		obstacleGen.update();
+	}
+	
+	public void setGround() {
+		arlieController.setGround(groundY);
+		obstacleGen.setGround(groundY);
 	}
 	
     public Pane getRoot() {
