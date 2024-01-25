@@ -17,13 +17,11 @@ public class Arlie {
     public Arlie() {
         conditionProperty = new SimpleObjectProperty<ArlieConditions>(ArlieConditions.RUNNING);
 
-
             Image arlieImage = new Image(getClass().getResourceAsStream("/assets/images/arlie-running.png"));
 
             arlieBody = new ImageView(arlieImage);
             arlieBody.setPreserveRatio(true);
             arlieBody.setFitWidth(125);  
-
 
     }
     
