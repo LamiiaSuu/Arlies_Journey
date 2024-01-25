@@ -9,7 +9,7 @@ public class InGameView extends BaseView {
 
     public InGameView() {
         arlie = new Arlie();
-
+ 
         getChildren().add(arlie.arlieBody);
 
         layoutChildren();

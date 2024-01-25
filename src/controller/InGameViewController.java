@@ -1,7 +1,7 @@
 package controller;
 
 import application.App;
-import controller.uicomponents.ArlieController;
+import business.game.elements.ArlieController;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;

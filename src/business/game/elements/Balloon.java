@@ -1,5 +1,16 @@
 package business.game.elements;
 
-public class Balloon {
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
+public class Balloon extends ImageView {
+
+    public Balloon(int balloonType, double fitWidth) {
+        
+    	
+        Image balloonImage = new Image("/assets/obstacles/balloon"+Integer.toString(balloonType)+".png");
+        this.setImage(balloonImage);
+        this.setPreserveRatio(true);
+        this.setFitWidth(fitWidth);  
+    }
 }

@@ -1,7 +1,6 @@
-package controller.uicomponents;
+package business.game.elements;
 
 import application.App;
-import business.game.elements.Arlie;
 import business.game.elements.Arlie.ArlieConditions;
 import controller.BaseViewController;
 import javafx.application.Platform;
@@ -23,7 +22,7 @@ public class ArlieController extends BaseViewController {
 	private static final boolean SMALL_CROUCH = false;
 	private double jumpVelocity;
 	private double gravityModifier;
-	private double groundY;
+	public double groundY;
 	private boolean crouchPressed;
 	private boolean doubleJumpable;
 	private boolean doubleJumped;
