@@ -14,6 +14,7 @@
     -fx-min-height: 245px;
 }
 
+
 #title-label {
     -fx-background-image: url("/assets/images/title-normal.png");
     -fx-background-size: 100% 100%;
@@ -118,3 +119,22 @@
     -fx-background-image: url("/assets/images/arlies-journey.png");
     -fx-background-size: 100% 100%;
 }
+
+#in-game-view {
+    -fx-background-image: url("/assets/images/mountains-1.png");
+    -fx-background-size: 100% 85%;
+    -fx-background-repeat: repeat-x;
+}
+
+#in-game-view {
+    -fx-background-image: url("/assets/images/backgroundColor.png");
+    -fx-background-size: 100% 85%;
+    -fx-background-repeat: repeat-x;
+}
+
+#background-pane {
+    -fx-background-image: url("/assets/images/background.png");
+    -fx-background-size: 100% 100%;
+    -fx-background-repeat: repeat-x;
+}
+

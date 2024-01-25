@@ -6,7 +6,6 @@ import controller.uicomponents.ObstacleGenerator;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
@@ -36,7 +35,6 @@ public class InGameViewController extends BaseViewController {
 		
 		arlieController = new ArlieController(app, root.getArliePane(), root.arlie, scene);
 		obstacleGen = new ObstacleGenerator(root.getObstaclePane(), scene);
-		
 		
 		initialize();
 		
