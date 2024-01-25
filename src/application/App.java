@@ -57,7 +57,7 @@ public class App extends Application {
         Pane root = new Pane();
         currentView = new SimpleObjectProperty<PrimaryViewNames>();
 
-        Scene scene = new Scene(root, 630, 480);
+        Scene scene = new Scene(root, 1280, 720);
         scene.getStylesheets().add(getClass().getResource("/assets/styles.CSS").toExternalForm());
         initialize(scene);
         primaryStage.setTitle("Arlie's Journey");
