@@ -23,6 +23,8 @@ public class InGameView extends BaseView {
         backgroundPane = new Pane();
         backgroundColorPane = new Pane();
         
+        backgroundPane.setScaleY(0.75);
+        
         Image backgroundColorImage = new Image(getClass().getResourceAsStream("/assets/images/background.png"));
         backgroundColor = new ImageView(backgroundColorImage);
         backgroundColorPane.getChildren().add(backgroundColor);

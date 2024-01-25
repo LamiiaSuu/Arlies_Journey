@@ -2,6 +2,7 @@ package controller;
 
 import application.App;
 import business.game.elements.ArlieController;
+import business.game.elements.BackgroundScroll;
 import controller.uicomponents.ObstacleGenerator;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -23,6 +24,7 @@ public class InGameViewController extends BaseViewController {
 	InGameView root;
 	ArlieController arlieController;
 	ObstacleGenerator obstacleGen;
+	BackgroundScroll backgroundScroll;
 	App app;
 	Scene scene;
 	
@@ -35,6 +37,7 @@ public class InGameViewController extends BaseViewController {
 		
 		arlieController = new ArlieController(app, root.getArliePane(), root.arlie, scene);
 		obstacleGen = new ObstacleGenerator(root.getObstaclePane(), scene);
+		backgroundScroll = new BackgroundScroll(root.getBackgroundPane());
 		
 		initialize();
 		
@@ -145,6 +148,8 @@ public class InGameViewController extends BaseViewController {
     private void pauseGame() {
         if (!gamePaused) {
             timeline.pause();
+            backgroundScroll.stopTimer();
+            obstacleGen.stopTimer();
             gamePaused = true;
         }
     }
@@ -153,6 +158,8 @@ public class InGameViewController extends BaseViewController {
     private void resumeGame() {
         if (gamePaused) {
             timeline.play();
+            obstacleGen.startTimer();
+            backgroundScroll.startTimer();
             gamePaused = false;
         }
     }

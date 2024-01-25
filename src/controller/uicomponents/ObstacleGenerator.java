@@ -14,6 +14,7 @@ public class ObstacleGenerator {
     private double groundY;
     Random random;
     Scene scene;
+    private AnimationTimer animTimer;
 	
 	private Pane gamePane;
     
@@ -61,7 +62,7 @@ public class ObstacleGenerator {
         gamePane.getChildren().add(obstacle);
 
 
-        new AnimationTimer() {
+        animTimer =  new AnimationTimer() {
             @Override
             public void handle(long now) {
                 double speed = 5.0; 
@@ -73,7 +74,8 @@ public class ObstacleGenerator {
                     stop(); 
                 }
             }
-        }.start();
+        };
+        animTimer.start();
     }
     
     private void generateBalloon() {
@@ -92,7 +94,7 @@ public class ObstacleGenerator {
         gamePane.getChildren().add(obstacle);
 
 
-        new AnimationTimer() {
+        animTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 double speed = 5.0; 
@@ -104,6 +106,17 @@ public class ObstacleGenerator {
                     stop(); 
                 }
             }
-        }.start();
+        };
+        animTimer.start();
+    }
+    
+    public void stopTimer() {
+    	if(animTimer != null)
+    	animTimer.stop();
+    }
+    
+    public void startTimer() {
+    	if(animTimer != null)
+    	animTimer.start();
     }
 }
