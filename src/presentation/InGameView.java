@@ -9,11 +9,15 @@ import javafx.scene.layout.Pane;
 public class InGameView extends BaseView {
 
     public Arlie arlie;
+    
     public Pane arliePane;
     public Pane obstaclePane;
     public Pane backgroundPane;
     public Pane backgroundColorPane;
+    public Pane groundPane;
+    
     public ImageView backgroundColor;
+    public ImageView ground;
 
     public InGameView(Scene scene) {
         arlie = new Arlie();
@@ -22,8 +26,17 @@ public class InGameView extends BaseView {
         obstaclePane = new Pane();
         backgroundPane = new Pane();
         backgroundColorPane = new Pane();
+        groundPane = new Pane();
         
         backgroundPane.setScaleY(0.75);
+        
+        Image groundImage = new Image(getClass().getResourceAsStream("/assets/images/ground-dirt.png"));
+        ground = new ImageView(groundImage);
+        ground.setY(-100);
+        ground.setX(0);
+        ground.setFitHeight(820);
+        ground.setFitWidth(1280);
+        groundPane.getChildren().add(ground);
         
         Image backgroundColorImage = new Image(getClass().getResourceAsStream("/assets/images/background.png"));
         backgroundColor = new ImageView(backgroundColorImage);
@@ -31,7 +44,7 @@ public class InGameView extends BaseView {
         
         arliePane.getChildren().add(arlie.arlieBody);
  
-        getChildren().addAll(backgroundColorPane, backgroundPane, obstaclePane, arliePane);
+        getChildren().addAll(backgroundColorPane, backgroundPane, groundPane, obstaclePane, arliePane);
 
         setManaged(false);
         
