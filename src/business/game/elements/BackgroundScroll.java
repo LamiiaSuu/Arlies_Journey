@@ -8,7 +8,7 @@ import javafx.scene.layout.Pane;
 public class BackgroundScroll {
     private static final int IMAGE_WIDTH = 1920;
     
-    private ImageView[] imageViews = new ImageView[4];
+    private ImageView[] imageViews = new ImageView[2];
     private double x = 0;
     private Pane root;
     private AnimationTimer timer;
@@ -20,11 +20,9 @@ public class BackgroundScroll {
 
     public void start() {
 
-        Image[] images = new Image[4];
-        images[0] = new Image(getClass().getResourceAsStream("/assets/images/mountains-1.png"));
-        images[1] = new Image(getClass().getResourceAsStream("/assets/images/mountains-1-variant.png"));
-        images[2] = new Image(getClass().getResourceAsStream("/assets/images/mountains-2.png"));
-        images[3] = new Image(getClass().getResourceAsStream("/assets/images/mountains-2-variant.png"));
+        Image[] images = new Image[2];
+        images[0] = new Image(getClass().getResourceAsStream("/assets/images/mountains-foreground-1.png"));
+        images[1] = new Image(getClass().getResourceAsStream("/assets/images/mountain-background-1.png"));
         
 
         for (int i = 0; i < imageViews.length; i++) {

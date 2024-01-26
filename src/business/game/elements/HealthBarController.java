@@ -36,11 +36,11 @@ public class HealthBarController {
 		
         for(int i = 0; i < hearts.length; i++) {
         	if(i<hitPoints) {
-            	hearts[i].setImage(new Image(getClass().getResourceAsStream("/assets/images/heart-full.png"))); 
+            	hearts[i].setImage(new Image(getClass().getResourceAsStream("/assets/images/heart-red.png"))); 
         	}
 
         	else {
-        		hearts[i].setImage(new Image(getClass().getResourceAsStream("/assets/images/heart-empty.png")));
+        		hearts[i].setImage(new Image(getClass().getResourceAsStream("/assets/images/heart-white.png")));
         	}
         }
 		

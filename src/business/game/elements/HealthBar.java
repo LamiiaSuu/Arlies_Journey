@@ -18,7 +18,7 @@ public class HealthBar extends HBox{
     	
     		this.maxHealth = maxHealth;
     	
-            Image healthImage = new Image(getClass().getResourceAsStream("/assets/images/heart-full.png"));
+            Image healthImage = new Image(getClass().getResourceAsStream("/assets/images/heart-red.png"));
 
             for(int i = 0; i < hearts.length; i++) {
             	hearts[i] = new ImageView(healthImage);
