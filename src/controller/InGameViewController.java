@@ -3,6 +3,7 @@ package controller;
 import application.App;
 import business.game.elements.ArlieController;
 import business.game.elements.BackgroundScroll;
+import business.game.elements.HealthBarController;
 import controller.uicomponents.ObstacleGenerator;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -18,11 +19,17 @@ import presentation.PrimaryViewNames;
 
 public class InGameViewController extends BaseViewController {
 	
+    private static final Duration COLLISION_INTERVAL = Duration.seconds(2);
+	private static final int MAX_HEALTH = 3;
+	
 	private boolean gamePaused = false;
+	private boolean gameOver = false;
 	private Timeline timeline;
 	private double groundY;
+    private long lastCollisionTime = 0;
 	InGameView root;
 	ArlieController arlieController;
+	HealthBarController healthBarController;
 	ObstacleGenerator obstacleGen;
 	BackgroundScroll backgroundScroll;
 	App app;
@@ -31,13 +38,15 @@ public class InGameViewController extends BaseViewController {
 	
 	public InGameViewController(App app, Scene scene) {
 		
-		root = new InGameView(scene);
+		root = new InGameView(scene, MAX_HEALTH);
 		this.app = app;
 		this.scene = scene;
 		
 		arlieController = new ArlieController(app, root.getArliePane(), root.arlie, scene);
-		obstacleGen = new ObstacleGenerator(root.getObstaclePane(), scene);
+		obstacleGen = new ObstacleGenerator(root.getObstaclePane(), scene, arlieController, this);
 		backgroundScroll = new BackgroundScroll(root.getBackgroundPane());
+		healthBarController = new HealthBarController(root.getHealthBar());
+		
 		
 		initialize();
 		
@@ -49,6 +58,8 @@ public class InGameViewController extends BaseViewController {
 		groundY = scene.getHeight() * 0.6;
 		
 		setGround();
+		
+		healthBarController.initialize(MAX_HEALTH);
 		
 		arlieController.initialize();
 		
@@ -72,13 +83,13 @@ public class InGameViewController extends BaseViewController {
         
         
         	scene.setOnKeyPressed(event -> {
-        		if(!gamePaused)
+        		if(!gamePaused && !gameOver)
                 handleKeyPress(event.getCode());
             });
         	
         	
             scene.setOnKeyReleased(event -> {
-            	if(!gamePaused)
+            	if(!gamePaused && !gameOver)
                 handleKeyRelease(event.getCode());
             });
         
@@ -91,6 +102,33 @@ public class InGameViewController extends BaseViewController {
                     setGround();
                 }
             });
+            
+            healthBarController.getHealthProperty().addListener(new ChangeListener<Number>() {
+
+				@Override
+				public void changed(ObservableValue<? extends Number> arg0, Number oldValue, Number newValue) {
+
+					if(oldValue != newValue) {
+						healthBarController.setHitPoints((int)newValue);
+						if((int) newValue == 0)
+							gameOver();
+					}
+					
+					
+				}
+            });
+            
+            arlieController.getConfusedLandedProperty().addListener(new ChangeListener<Boolean>() {
+
+                @Override
+                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                    if (newValue == true) {
+                    	pauseGame();
+                    	arlieController.confusedCircling();
+                    }
+                }
+            });
+
         
 	}
 	
@@ -156,7 +194,7 @@ public class InGameViewController extends BaseViewController {
 
     // Resume the game
     private void resumeGame() {
-        if (gamePaused) {
+        if (gamePaused && !gameOver) {
             timeline.play();
             obstacleGen.startTimer();
             backgroundScroll.startTimer();
@@ -168,6 +206,26 @@ public class InGameViewController extends BaseViewController {
 	public void update() {
 		arlieController.update();
 		obstacleGen.update();
+	}
+	
+	public void gameOver() {
+		
+		gameOver = true;
+		arlieController.gameOver();
+		
+	}
+	
+	public void arlieCollided() {
+		
+		long currentTime = System.currentTimeMillis();
+		
+        if (currentTime - lastCollisionTime >= COLLISION_INTERVAL.toMillis()) {
+        	
+            healthBarController.damage();
+            
+            lastCollisionTime = currentTime;
+        }
+        
 	}
 	
 	public void setGround() {

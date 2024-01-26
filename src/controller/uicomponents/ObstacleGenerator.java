@@ -1,122 +1,126 @@
 package controller.uicomponents;
 
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.animation.AnimationTimer;
+import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-import business.game.elements.*;
+import business.game.elements.ArlieController;
+import business.game.elements.Balloon;
+import business.game.elements.Tree;
+import controller.InGameViewController;
 
 public class ObstacleGenerator {
 
     private int timer;
-    public int interval;
+    private int interval;
     private double groundY;
-    Random random;
-    Scene scene;
-    private AnimationTimer animTimer;
-	
-	private Pane gamePane;
-    
+    private Random random;
+    private Scene scene;
+    private Pane gamePane;
+    private ArlieController arlieController;
+    private InGameViewController inGameViewController;
+    private List<AnimationTimer> timers;
 
-    public ObstacleGenerator(Pane gamePane, Scene scene) {
+    public ObstacleGenerator(Pane gamePane, Scene scene, ArlieController arlieController, InGameViewController inGameViewController) {
+        this.inGameViewController = inGameViewController;
         this.gamePane = gamePane;
         this.scene = scene;
-        timer = 0;
-        interval = 75;
-        random = new Random();
+        this.arlieController = arlieController;
+        this.timer = 0;
+        this.interval = 60;
+        this.random = new Random();
+        this.timers = new ArrayList<>();
     }
-    
+
     public void setGround(double groundY) {
-    	this.groundY = groundY;
+        this.groundY = groundY;
     }
 
     public void update() {
-    	if(timer == interval) {
-    		timer = 0;
-    		if(random.nextInt(2)==1) {
-    			generateBalloon();
-    		}else {
-    			generateTree();
-    		}
-    		
-    	}else {
-    		timer++;
-    	}
-    	
+        if (timer == interval) {
+            timer = 0;
+            if (random.nextInt(2) == 1) {
+                generateBalloon();
+            } else {
+                generateTree();
+            }
+        } else {
+            timer++;
+        }
     }
 
     private void generateTree() {
-        int treeType = random.nextInt(3) + 1; 
-        double fitHeight = random.nextInt(150) + 200; 
+        int treeType = random.nextInt(3) + 1;
+        double fitHeight = random.nextInt(150) + 200;
 
         Tree obstacle = new Tree(treeType, fitHeight);
 
-
-
         obstacle.setTranslateX(scene.getWidth());
-        obstacle.setTranslateY(groundY-obstacle.getFitHeight()+150);
-
-
+        obstacle.setTranslateY(groundY - obstacle.getFitHeight() + 150);
 
         gamePane.getChildren().add(obstacle);
 
-
-        animTimer =  new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                double speed = 5.0; 
-                obstacle.setTranslateX(obstacle.getTranslateX() - speed);
-
-                if (obstacle.getTranslateX() + obstacle.getBoundsInLocal().getWidth() < 0) {
-
-                    gamePane.getChildren().remove(obstacle);
-                    stop(); 
-                }
-            }
-        };
+        AnimationTimer animTimer = createAnimationTimer(obstacle);
         animTimer.start();
+        timers.add(animTimer);
     }
-    
+
     private void generateBalloon() {
-        int balloonType = random.nextInt(3) + 1; 
-        double fitHeight = random.nextInt(200) + 100; 
+        int balloonType = random.nextInt(3) + 1;
+        double fitHeight = random.nextInt(200) + 100;
 
         Balloon obstacle = new Balloon(balloonType, fitHeight);
 
-
-
         obstacle.setTranslateX(scene.getWidth());
-        obstacle.setTranslateY(groundY - (obstacle.getFitHeight()*0.8) - random.nextInt(100));
-
-
+        obstacle.setTranslateY(groundY - (obstacle.getFitHeight() * 0.8) - random.nextInt(100));
 
         gamePane.getChildren().add(obstacle);
 
+        AnimationTimer animTimer = createAnimationTimer(obstacle);
+        animTimer.start();
+        timers.add(animTimer);
+    }
 
-        animTimer = new AnimationTimer() {
+    private AnimationTimer createAnimationTimer(ImageView obstacle) {
+        return new AnimationTimer() {
             @Override
             public void handle(long now) {
-                double speed = 5.0; 
+                double speed = 5.0;
                 obstacle.setTranslateX(obstacle.getTranslateX() - speed);
 
                 if (obstacle.getTranslateX() + obstacle.getBoundsInLocal().getWidth() < 0) {
-
                     gamePane.getChildren().remove(obstacle);
-                    stop(); 
+                    stop();
+                    timers.remove(this);
+                } else {
+                    checkCollision(obstacle);
                 }
             }
         };
-        animTimer.start();
     }
-    
+
+    private void checkCollision(ImageView obstacle) {
+        if (CollisionChecker.checkCollision(arlieController.getArlieBody(), obstacle)) {
+            inGameViewController.arlieCollided();
+            System.out.println("Arlie Collided!");
+        }
+    }
+
     public void stopTimer() {
-    	if(animTimer != null)
-    	animTimer.stop();
+        for (AnimationTimer timer : timers) {
+            timer.stop();
+        }
     }
-    
+
+
     public void startTimer() {
-    	if(animTimer != null)
-    	animTimer.start();
+        // Restart all timers
+        for (AnimationTimer timer : timers) {
+            timer.start();
+        }
     }
 }

@@ -1,32 +1,41 @@
 package presentation;
 
 import business.game.elements.Arlie;
+import business.game.elements.HealthBar;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 public class InGameView extends BaseView {
-
+	
+	
     public Arlie arlie;
+    public HealthBar healthBar;
     
     public Pane arliePane;
     public Pane obstaclePane;
     public Pane backgroundPane;
     public Pane backgroundColorPane;
     public Pane groundPane;
+    public Pane healthPane;
+    
     
     public ImageView backgroundColor;
     public ImageView ground;
 
-    public InGameView(Scene scene) {
+    public InGameView(Scene scene, int maxHealth) {
         arlie = new Arlie();
+        healthBar = new HealthBar(maxHealth);
         
         arliePane = new Pane();
         obstaclePane = new Pane();
+        healthPane = new Pane();
         backgroundPane = new Pane();
         backgroundColorPane = new Pane();
         groundPane = new Pane();
+        
+        healthPane.getChildren().add(healthBar);
         
         backgroundPane.setScaleY(0.75);
         
@@ -44,7 +53,7 @@ public class InGameView extends BaseView {
         
         arliePane.getChildren().add(arlie.arlieBody);
  
-        getChildren().addAll(backgroundColorPane, backgroundPane, groundPane, obstaclePane, arliePane);
+        getChildren().addAll(backgroundColorPane, backgroundPane, groundPane, obstaclePane, arliePane, healthPane);
 
         setManaged(false);
         
@@ -66,6 +75,10 @@ public class InGameView extends BaseView {
 
     public Pane getBackgroundPane() {
     	return backgroundPane;
+    }
+    
+    public HealthBar getHealthBar() {
+    	return healthBar;
     }
 
 }

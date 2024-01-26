@@ -3,15 +3,17 @@ package business.game.elements;
 import application.App;
 import business.game.elements.Arlie.ArlieConditions;
 import controller.BaseViewController;
-import javafx.application.Platform;
+import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 import javafx.scene.image.Image;
-
-import presentation.InGameView;
 
 
 public class ArlieController extends BaseViewController {
@@ -28,6 +30,10 @@ public class ArlieController extends BaseViewController {
 	private boolean doubleJumpable;
 	private boolean doubleJumped;
 	private long lastUpdateTime = System.currentTimeMillis();
+	
+    private SimpleBooleanProperty confusedLandedProperty;
+    
+    private RotateTransition rotateAnimation;
 
     ImageView arlieBody;
     Arlie arlie;
@@ -58,7 +64,7 @@ public class ArlieController extends BaseViewController {
 	@Override
     public void initialize() {
 		
-		
+		confusedLandedProperty = new SimpleBooleanProperty(false);
         
 //        Skin change maybe?
 //        arlie.arlieBody.getOnMouseClicked();
@@ -119,6 +125,12 @@ public class ArlieController extends BaseViewController {
     	
     }
     
+    public void gameOver() {
+        arlie.setConditionProperty(ArlieConditions.CONFUSED);
+        jump();
+    }
+
+    
     //DOUBLE FLIP ARLIEEEE WOOOOOOOOOOHOOOOOOOOOO
 //    private void updateJump() {
 //        if (arlie.getConditionProperty() == ArlieConditions.JUMPING) {
@@ -141,7 +153,7 @@ public class ArlieController extends BaseViewController {
     
     //Natural Jump Arlie
     private void updateJump() {
-        if (arlie.getConditionProperty() == ArlieConditions.JUMPING) {
+        if (arlie.getConditionProperty() == ArlieConditions.JUMPING || arlie.getConditionProperty() == ArlieConditions.CONFUSED ) {
         	
             double newY = arlieBody.getTranslateY() + jumpVelocity;
             arlieBody.setTranslateY(newY);
@@ -166,15 +178,24 @@ public class ArlieController extends BaseViewController {
             jumpVelocity += (GRAVITY * gravityModifier);
 
             if (newY >= groundY) {
-            	if(crouchPressed) {
-            		arlie.setConditionProperty(ArlieConditions.CROUCHING);
+            	if(arlie.getConditionProperty() != ArlieConditions.CONFUSED) {
+            		if(crouchPressed) {
+                		arlie.setConditionProperty(ArlieConditions.CROUCHING);
+                	}else {
+                		arlie.setConditionProperty(ArlieConditions.RUNNING);
+                	}
             	}else {
-            		arlie.setConditionProperty(ArlieConditions.RUNNING);
+            		confusedLandedProperty.set(true);
             	}
+            	
+            	
+            	
                 arlieBody.setTranslateY(groundY);
                 arlieBody.setRotate(2);
                 jumpVelocity = 0;
                 doubleJumped = false;
+                
+                
             }
         }
         
@@ -245,7 +266,7 @@ public class ArlieController extends BaseViewController {
     		jumpVelocity = JUMP_INITIAL_VELOCITY;
     	
     	//Double Jump!
-    	}else if (arlie.getConditionProperty() == ArlieConditions.JUMPING && doubleJumpable && !doubleJumped) {
+    	}else if (arlie.getConditionProperty() == ArlieConditions.JUMPING && doubleJumpable && !doubleJumped || arlie.getConditionProperty() == ArlieConditions.CONFUSED) {
     		jumpVelocity = 0.5*JUMP_INITIAL_VELOCITY;
     		doubleJumpable = false;
     		doubleJumped = true;
@@ -288,9 +309,32 @@ public class ArlieController extends BaseViewController {
         }
     }
     
+    public void confusedCircling() {
+        	
+
+            rotateAnimation = new RotateTransition(Duration.seconds(1.0), arlieBody);
+            rotateAnimation.setFromAngle(-3); 
+            rotateAnimation.setToAngle(6);   
+            rotateAnimation.setCycleCount(100); 
+
+            rotateAnimation.setAutoReverse(true);
+
+            rotateAnimation.play();
+        
+    }
+    
     public void setGround(double groundY) {
     	this.groundY = groundY;
     }
+
+
+	public ImageView getArlieBody() {
+		return arlieBody;
+	}
     
+    public SimpleBooleanProperty getConfusedLandedProperty() {
+    	return confusedLandedProperty;
+    	
+    }
 
 }
