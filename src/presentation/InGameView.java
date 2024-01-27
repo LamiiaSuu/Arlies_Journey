@@ -66,7 +66,6 @@ public class InGameView extends BaseView {
     }
 
 
-    
     public Pane getArliePane() {
     	return arliePane;
     }
