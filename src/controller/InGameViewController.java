@@ -152,6 +152,8 @@ public class InGameViewController extends BaseViewController {
             case S:
             	arlieController.crouch();
                 break;
+                
+            // change to menu pop up
             case ESCAPE:
             	app.switchView(PrimaryViewNames.MAIN_MENU_VIEW);
             	break;

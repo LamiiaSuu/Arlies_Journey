@@ -11,6 +11,8 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import presentation.MainMenuView;
 import presentation.PrimaryViewNames;
+import presentation.uicomponents.CurrentSongView;
+import presentation.uicomponents.VolumeView;
 import presentation.uicomponents.VolumeView.VolumeConditions;
 import javafx.animation.ScaleTransition;
 
@@ -20,6 +22,8 @@ public class MainMenuViewController extends BaseViewController {
     VolumeViewController volumeViewController;
     private Button newJourneyButton;
     private Button volumeButton;
+    private Button musicButton;
+    private Button settingsButton;
     private ImageView arliesJourneyImageView;
     
     private RotateTransition rotateAnimation;
@@ -47,6 +51,20 @@ public class MainMenuViewController extends BaseViewController {
         //It actually lags without stopping the animation xD
         newJourneyButton.setOnAction(event -> stopAnimation(newJourneyButton));
         newJourneyButton.setOnAction(event -> app.switchView(PrimaryViewNames.IN_GAME_VIEW));
+        
+//      musicButton.setOnMouseEntered(event -> jumpAnimation(musicButton));
+//      musicButton.setOnMouseExited(event -> stopAnimation(musicButton));
+//
+//      //It actually lags without stopping the animation xD
+//      musicButton.setOnAction(event -> stopAnimation(musicButton));
+//      musicButton.setOnAction(event -> app.switchView(PrimaryViewNames.MUSIC_VIEW));
+        
+//        settingsButton.setOnMouseEntered(event -> jumpAnimation(settingsButton));
+//        settingsButton.setOnMouseExited(event -> stopAnimation(settingsButton));
+//
+//        //It actually lags without stopping the animation xD
+//        settingsButton.setOnAction(event -> stopAnimation(settingsButton));
+//        settingsButton.setOnAction(event -> app.switchView(PrimaryViewNames.SETTINGS_VIEW));
         
         arliesJourneyImageView.setOnMouseClicked(event -> {
         	
