@@ -64,28 +64,28 @@ public class ObstacleGenerator {
 
         gamePane.getChildren().add(obstacle);
 
-        AnimationTimer animTimer = createAnimationTimer(obstacle);
+        AnimationTimer animTimer = createAnimationTimer(obstacle, "tree");
         animTimer.start();
         timers.add(animTimer);
     }
 
     private void generateBalloon() {
-        int balloonType = random.nextInt(3) + 1;
-        double fitHeight = random.nextInt(200) + 100;
+        int balloonType = random.nextInt(6) + 1;
+        double fitHeight = random.nextInt(200) + 75;
 
         Balloon obstacle = new Balloon(balloonType, fitHeight);
 
         obstacle.setTranslateX(scene.getWidth());
-        obstacle.setTranslateY(groundY - (obstacle.getFitHeight() * 0.8) - random.nextInt(100));
+        obstacle.setTranslateY(groundY - (obstacle.getFitHeight() * 0.5) - random.nextInt(150));
 
         gamePane.getChildren().add(obstacle);
 
-        AnimationTimer animTimer = createAnimationTimer(obstacle);
+        AnimationTimer animTimer = createAnimationTimer(obstacle, "balloon");
         animTimer.start();
         timers.add(animTimer);
     }
 
-    private AnimationTimer createAnimationTimer(ImageView obstacle) {
+    private AnimationTimer createAnimationTimer(ImageView obstacle, String obstacleType) {
         return new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -97,18 +97,19 @@ public class ObstacleGenerator {
                     stop();
                     timers.remove(this);
                 } else {
-                    checkCollision(obstacle);
+                    checkCollision(obstacle, obstacleType);
                 }
             }
         };
     }
 
-    private void checkCollision(ImageView obstacle) {
-        if (CollisionChecker.checkCollision(arlieController.getArlieBody(), obstacle)) {
+    private void checkCollision(ImageView obstacle, String obstacleType) {
+        if (CollisionChecker.checkCollision(arlieController.getArlieBody(), obstacle, obstacleType)) {
             inGameViewController.arlieCollided();
             System.out.println("Arlie Collided!");
         }
     }
+    
 
     public void stopTimer() {
         for (AnimationTimer timer : timers) {
