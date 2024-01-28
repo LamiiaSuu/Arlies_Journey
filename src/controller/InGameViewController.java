@@ -3,6 +3,7 @@ package controller;
 import application.App;
 import business.game.elements.ArlieController;
 import business.game.elements.BackgroundScroll;
+import business.game.elements.FloorScroller;
 import business.game.elements.HealthBarController;
 import business.music.MP3Player;
 import controller.uicomponents.ObstacleGenerator;
@@ -35,6 +36,7 @@ public class InGameViewController extends BaseViewController {
 	HealthBarController healthBarController;
 	ObstacleGenerator obstacleGen;
 	BackgroundScroll backgroundScroll;
+	FloorScroller floorScroller;
 	App app;
 	Scene scene;
 	
@@ -46,6 +48,7 @@ public class InGameViewController extends BaseViewController {
 		this.scene = scene;
 		this.player = player;
 		
+		floorScroller = new FloorScroller(root.getGroundPane());
 		arlieController = new ArlieController(app, root.getArliePane(), root.arlie, scene, player);
 		obstacleGen = new ObstacleGenerator(root.getObstaclePane(), scene, arlieController, this);
 		backgroundScroll = new BackgroundScroll(root.getBackgroundPane());
@@ -194,6 +197,7 @@ public class InGameViewController extends BaseViewController {
             timeline.pause();
             backgroundScroll.stopTimer();
             obstacleGen.stopTimer();
+            floorScroller.stopTimer();
             gamePaused = true;
             if(initializationPaused) {
             	player.pause();
@@ -210,6 +214,7 @@ public class InGameViewController extends BaseViewController {
             timeline.play();
             obstacleGen.startTimer();
             backgroundScroll.startTimer();
+            floorScroller.startTimer();
             gamePaused = false;
             player.pause();
         }

@@ -1,6 +1,7 @@
 package presentation;
 
 import business.game.elements.Arlie;
+import business.game.elements.FloorScroller;
 import business.game.elements.HealthBar;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -12,6 +13,7 @@ public class InGameView extends BaseView {
 	
     public Arlie arlie;
     public HealthBar healthBar;
+    
     
     public Pane arliePane;
     public Pane obstaclePane;
@@ -39,15 +41,15 @@ public class InGameView extends BaseView {
         
         backgroundPane.setScaleY(0.75);
         
-        Image groundImage = new Image(getClass().getResourceAsStream("/assets/images/ground-dirt-mirrored.png"));
-        ground = new ImageView(groundImage);
-        ground.setPreserveRatio(true);
-        ground.setFitWidth(1920);
-        ground.setScaleX(0.66);
-        ground.setScaleY(0.66);
-        ground.setY(435); // Müssen so komisch pixel genau gesetzt werden bc the image is not 1920x1080
-        ground.setX(-326);
-        groundPane.getChildren().add(ground);
+//        Image groundImage = new Image(getClass().getResourceAsStream("/assets/images/ground-dirt-mirrored.png"));
+//        ground = new ImageView(groundImage);
+//        ground.setPreserveRatio(true);
+//        ground.setFitWidth(1920);
+//        ground.setScaleX(0.66);
+//        ground.setScaleY(0.66);
+//        ground.setY(435); // Müssen so komisch pixel genau gesetzt werden bc the image is not 1920x1080
+//        ground.setX(-326);
+//        groundPane.getChildren().add(ground);
         
         Image backgroundColorImage = new Image(getClass().getResourceAsStream("/assets/images/sky-blue.png"));
         backgroundColor = new ImageView(backgroundColorImage);
@@ -81,5 +83,10 @@ public class InGameView extends BaseView {
     public HealthBar getHealthBar() {
     	return healthBar;
     }
+    
+    public Pane getGroundPane() {
+    	return groundPane;
+    }
+
 
 }
