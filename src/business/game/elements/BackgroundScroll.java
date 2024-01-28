@@ -34,16 +34,30 @@ public class BackgroundScroll {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+<<<<<<< Updated upstream
                 x -= 0.5; // Adjust scrolling speed here
                 if (x <= -IMAGE_WIDTH * (imageViews.length - 1)) { // Check if the last image has reached the end
                     x = 0; // Reset the x position to restart scrolling
                 }
+=======
+                x -= 3; // Adjust the scrolling speed as needed
+>>>>>>> Stashed changes
 
+                // Move images smoothly without resetting
                 for (int i = 0; i < imageViews.length; i++) {
-                    imageViews[i].setX(x + IMAGE_WIDTH * i);
+                    double newX = x + IMAGE_WIDTH * i;
+                    // Check if the image has scrolled off the screen multiple times
+                    while (newX < -IMAGE_WIDTH) {
+                        // Adjust the position to ensure seamless looping
+                        newX += IMAGE_WIDTH * imageViews.length;
+                    }
+                    imageViews[i].setX(newX);
                 }
             }
+
+
         };
         timer.start();
+        
     }
 }

@@ -2,6 +2,12 @@ package controller;
 
 import application.App;
 import business.game.elements.ArlieController;
+<<<<<<< Updated upstream
+=======
+import business.game.elements.BackgroundScroll;
+//import business.game.elements.FloorScroller;
+import business.game.elements.HealthBarController;
+>>>>>>> Stashed changes
 import controller.uicomponents.ObstacleGenerator;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -17,6 +23,43 @@ import presentation.PrimaryViewNames;
 import business.game.elements.BackgroundScroll; // Import BackgroundScroll
 
 public class InGameViewController extends BaseViewController {
+<<<<<<< Updated upstream
+=======
+	
+    private static final Duration COLLISION_INTERVAL = Duration.seconds(2);
+	private static final int MAX_HEALTH = 7;
+	
+	private boolean gamePaused = false;
+	private boolean gameOver = false;
+	private Timeline timeline;
+	private double groundY;
+    private long lastCollisionTime = 0;
+	InGameView root;
+	ArlieController arlieController;
+	HealthBarController healthBarController;
+	ObstacleGenerator obstacleGen;
+	BackgroundScroll backgroundScroll;
+//	FloorScroller floorScroller;
+	App app;
+	Scene scene;
+	
+	
+	public InGameViewController(App app, Scene scene) {
+		
+		root = new InGameView(scene, MAX_HEALTH);
+		this.app = app;
+		this.scene = scene;
+		
+		arlieController = new ArlieController(app, root.getArliePane(), root.arlie, scene);
+		obstacleGen = new ObstacleGenerator(root.getObstaclePane(), scene, arlieController, this);
+		backgroundScroll = new BackgroundScroll(root.getBackgroundPane());
+		healthBarController = new HealthBarController(root.getHealthBar());
+//		floorScroller = new FloorScroller(root.getGroundPane());
+		
+		initialize();
+		
+	}
+>>>>>>> Stashed changes
 
     private boolean gamePaused = false;
     private Timeline timeline;
