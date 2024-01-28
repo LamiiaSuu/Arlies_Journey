@@ -23,7 +23,7 @@ public class Track {
     private byte[] image;
 
     public Track(String path) {
-        this.path = "src/music/"+path;
+        this.path = "src/assets/songs/"+path;
         extractMetadata();
     }
 

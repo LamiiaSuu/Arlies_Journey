@@ -2,6 +2,7 @@ package business.game.elements;
 
 import application.App;
 import business.game.elements.Arlie.ArlieConditions;
+import business.music.MP3Player;
 import controller.BaseViewController;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
@@ -31,6 +32,8 @@ public class ArlieController extends BaseViewController {
 	private boolean doubleJumped;
 	private long lastUpdateTime = System.currentTimeMillis();
 	
+	MP3Player player;
+	
     private SimpleBooleanProperty confusedLandedProperty;
     
     private RotateTransition rotateAnimation;
@@ -41,14 +44,16 @@ public class ArlieController extends BaseViewController {
     Scene scene;
     App app;
     
+    
    
 
-    public ArlieController(App app, Pane root, Arlie arlie, Scene scene) {
+    public ArlieController(App app, Pane root, Arlie arlie, Scene scene, MP3Player player) {
         if (root != null) {
             this.root = root;
             this.app = app;
             this.arlie = arlie;
             this.arlieBody = arlie.arlieBody;
+            this.player = player;
             
             
             root.setFocusTraversable(true);
@@ -191,6 +196,7 @@ public class ArlieController extends BaseViewController {
             	
             	
                 arlieBody.setTranslateY(groundY);
+//                player.playLandSound();
                 arlieBody.setRotate(2);
                 jumpVelocity = 0;
                 doubleJumped = false;
@@ -263,6 +269,7 @@ public class ArlieController extends BaseViewController {
     	if(arlie.getConditionProperty() == ArlieConditions.RUNNING) {
     		doubleJumpable = false;
     		arlie.setConditionProperty(ArlieConditions.JUMPING);
+    		player.playJumpSound();
     		jumpVelocity = JUMP_INITIAL_VELOCITY;
     	
     	//Double Jump!

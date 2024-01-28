@@ -24,6 +24,7 @@ public class App extends Application {
 	Pane inGameView;
 	Pane journeySelectionView;
 	Pane mainMenuView;
+	MP3Player player;
 	
 	public static void main(String[] args) {
 		launch();
@@ -32,7 +33,10 @@ public class App extends Application {
 	public void initialize(Scene scene){
 		primaryViews = new HashMap<>();
 		
-		InGameViewController inGameViewController = new InGameViewController(this, scene);
+		player = new MP3Player();
+		player.start();
+		
+		InGameViewController inGameViewController = new InGameViewController(this, scene, player);
 		inGameView = inGameViewController.getRoot();
 		primaryViews.put(PrimaryViewNames.IN_GAME_VIEW, inGameView);
 
@@ -40,7 +44,7 @@ public class App extends Application {
 		journeySelectionView = journeySelectionViewController.getRoot();
 		primaryViews.put(PrimaryViewNames.JOURNEY_SELECTION_VIEW, journeySelectionView);
 		
-		MainMenuViewController mainMenuViewController = new MainMenuViewController(this, scene);
+		MainMenuViewController mainMenuViewController = new MainMenuViewController(this, scene, player);
 		mainMenuView = mainMenuViewController.getRoot();
 		primaryViews.put(PrimaryViewNames.MAIN_MENU_VIEW, mainMenuView);
 	}
@@ -72,7 +76,7 @@ public class App extends Application {
         primaryStage.setResizable(false);
         primaryStage.show();
         primaryStage.setOnCloseRequest(event -> {
-           
+        	player.stop();
             primaryStage.close();
         });
     }

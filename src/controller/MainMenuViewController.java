@@ -1,6 +1,7 @@
 package controller;
 
 import application.App;
+import business.music.MP3Player;
 import controller.uicomponents.VolumeViewController;
 import javafx.animation.RotateTransition;
 import javafx.scene.Scene;
@@ -25,16 +26,18 @@ public class MainMenuViewController extends BaseViewController {
     private Button musicButton;
     private Button settingsButton;
     private ImageView arliesJourneyImageView;
+    private MP3Player player;
     
     private RotateTransition rotateAnimation;
     private ScaleTransition jumpAnimation;
 
-    public MainMenuViewController(App app, Scene scene) {
+    public MainMenuViewController(App app, Scene scene, MP3Player player) {
         root = new MainMenuView();
         arliesJourneyImageView = root.titleView.title;
         newJourneyButton = root.newJourneyButton;
         volumeButton = root.volumeView.volumeButton;
         this.app = app;
+        this.player = player;
 
 //        Am not using it atm... code is all in here
 //        volumeViewController = new VolumeViewController();
@@ -122,21 +125,25 @@ public class MainMenuViewController extends BaseViewController {
     	case MUTED:
     		root.volumeView.setVolumeConditionProperty(VolumeConditions.LOW);
     		volumeButton.setId("volume-button-low");
+    		player.setVolumeLow();
     		break;
     		
     	case LOW:
     		root.volumeView.setVolumeConditionProperty(VolumeConditions.MEDIUM);
     		volumeButton.setId("volume-button-medium");
+    		player.setVolumeMedium();
     		break;
     		
     	case MEDIUM:
     		root.volumeView.setVolumeConditionProperty(VolumeConditions.HIGH);
     		volumeButton.setId("volume-button-high");
+    		player.setVolumeHigh();
     		break;
     		
     	case HIGH:
     		root.volumeView.setVolumeConditionProperty(VolumeConditions.MUTED);
     		volumeButton.setId("volume-button-mute");
+    		player.setVolumeMuted();
     		break;
     		
     	}

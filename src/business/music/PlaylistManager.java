@@ -9,7 +9,9 @@ import java.util.List;
 public class PlaylistManager {
 	
 	public Playlist getPlaylist(String name) {
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("src/music/"+ name + ".m3u"))) {
+		System.out.println("/assets/playlists/"+ name + ".m3u");
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("src/assets/playlists/"+ name + ".m3u"))) {
+        	
             Playlist playlist = new Playlist(name);
             String readLine = bufferedReader.readLine();
             while (readLine != null) {

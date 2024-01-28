@@ -18,10 +18,10 @@ public class VolumeView extends VBox{
 	
 	public VolumeView() {
 		
-		volumeConditionProperty = new SimpleObjectProperty<VolumeConditions>(VolumeConditions.MEDIUM);
+		volumeConditionProperty = new SimpleObjectProperty<VolumeConditions>(VolumeConditions.LOW);
 		volumeButton = new Button();
 		volumeButton.getStyleClass().add("menu-icon");
-		volumeButton.setId("volume-button-medium");
+		volumeButton.setId("volume-button-low");
 		
 		setAlignment(Pos.BOTTOM_RIGHT);
 	

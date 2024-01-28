@@ -4,6 +4,7 @@ import application.App;
 import business.game.elements.ArlieController;
 import business.game.elements.BackgroundScroll;
 import business.game.elements.HealthBarController;
+import business.music.MP3Player;
 import controller.uicomponents.ObstacleGenerator;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -24,9 +25,11 @@ public class InGameViewController extends BaseViewController {
 	
 	private boolean gamePaused = false;
 	private boolean gameOver = false;
+	private boolean initializationPaused = false;
 	private Timeline timeline;
 	private double groundY;
     private long lastCollisionTime = 0;
+    MP3Player player;
 	InGameView root;
 	ArlieController arlieController;
 	HealthBarController healthBarController;
@@ -36,13 +39,14 @@ public class InGameViewController extends BaseViewController {
 	Scene scene;
 	
 	
-	public InGameViewController(App app, Scene scene) {
+	public InGameViewController(App app, Scene scene, MP3Player player) {
 		
 		root = new InGameView(scene, MAX_HEALTH);
 		this.app = app;
 		this.scene = scene;
+		this.player = player;
 		
-		arlieController = new ArlieController(app, root.getArliePane(), root.arlie, scene);
+		arlieController = new ArlieController(app, root.getArliePane(), root.arlie, scene, player);
 		obstacleGen = new ObstacleGenerator(root.getObstaclePane(), scene, arlieController, this);
 		backgroundScroll = new BackgroundScroll(root.getBackgroundPane());
 		healthBarController = new HealthBarController(root.getHealthBar());
@@ -191,6 +195,12 @@ public class InGameViewController extends BaseViewController {
             backgroundScroll.stopTimer();
             obstacleGen.stopTimer();
             gamePaused = true;
+            if(initializationPaused) {
+            	player.pause();
+            }
+            else {
+            	initializationPaused = true;
+            }
         }
     }
 
@@ -201,6 +211,7 @@ public class InGameViewController extends BaseViewController {
             obstacleGen.startTimer();
             backgroundScroll.startTimer();
             gamePaused = false;
+            player.pause();
         }
     }
 
@@ -214,6 +225,7 @@ public class InGameViewController extends BaseViewController {
 		
 		gameOver = true;
 		arlieController.gameOver();
+		player.playDeathSound();
 		
 	}
 	
@@ -226,6 +238,8 @@ public class InGameViewController extends BaseViewController {
             healthBarController.damage();
             
             lastCollisionTime = currentTime;
+            
+            player.playCollidedSound();
         }
         
 	}

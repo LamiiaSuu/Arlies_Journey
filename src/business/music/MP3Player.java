@@ -17,9 +17,15 @@ import java.util.List;
 
 
 public class MP3Player {
-    private static final String STANDARD_PLAYLIST = "playlist1";
-    private static final float STANDARD_VOLUME = 0.25f;
-
+    private static final String STANDARD_PLAYLIST = "journey";
+    private static final String JUMP_SOUND_PATH = "/assets/sounds/jump-sound.mp3";
+    private static final String DEATH_SOUND_PATH = "/assets/sounds/oof.mp3";
+    private static final String COLLIDED_SOUND_PATH = "/assets/sounds/collided-sound.mp3";
+    private static final float STANDARD_VOLUME = 0.125f;
+    private static final float LOW_VOLUME = 0.125f;
+    private static final float MEDIUM_VOLUME = 0.25f;
+    private static final float HIGH_VOLUME = 0.5f;
+    
     private SimpleMinim minim;
     private SimpleAudioPlayer audioPlayer;
     private Playlist playlist;
@@ -30,7 +36,7 @@ public class MP3Player {
     
     private SimpleBooleanProperty paused;
     private SimpleBooleanProperty shuffle;
-    public SimpleFloatProperty volume;
+    public SimpleDoubleProperty volume;
     private SimpleObjectProperty<Track> currentlyPlayingTrack;
 
     
@@ -40,75 +46,115 @@ public class MP3Player {
     	shuffle = new SimpleBooleanProperty(false);
     	currentlyPlayingTrack = new SimpleObjectProperty<Track>();
     	
-    	
         playlist = new PlaylistManager().getPlaylist(STANDARD_PLAYLIST);
         minim = new SimpleMinim(true);
         audioPlayer = minim.loadMP3File(playlist.getTrack(trackNumber).getPath());
-        volume = new SimpleFloatProperty();
+        volume = new SimpleDoubleProperty();
         
         volume(STANDARD_VOLUME);
-        endOfTrackChecker = new Timeline(
-                new KeyFrame(Duration.seconds(1), event -> checkEndOfTrack())
-        );
-        endOfTrackChecker.setCycleCount(Animation.INDEFINITE);
-        endOfTrackChecker.play();
+//        endOfTrackChecker = new Timeline(
+//                new KeyFrame(Duration.seconds(1), event -> checkEndOfTrack())
+//        );
+//        endOfTrackChecker.setCycleCount(Animation.INDEFINITE);
+//        endOfTrackChecker.play();
     }
-    
-    private void checkEndOfTrack() {
-        // Check if the audio has reached the end
-        if (audioPlayer != null) {
-            if(!audioPlayer.isPlaying() && !paused.get()) {
-            	next();
-            }
-        }
-    }   
-    
-    public void toggleShuffle() {
-        if (shuffle.get()) {
-            // Shuffling is currently enabled
-            // Find the original order index of the currently playing song
-            int originalOrderIndex = findOriginalOrderIndex();
-            
-            // Update trackNumber to the original order index
-            trackNumber = (originalOrderIndex != -1) ? originalOrderIndex : 0;
-            
-            shuffle.set(false);
-        } else {
-            // Shuffling is currently disabled
-            shuffleTracks();
-            trackNumber = 0;
-            shuffle.set(true);
-        }
-    }
-    
-    private int findOriginalOrderIndex() {
-        Track currentTrack = getCurrentTrack();
-        if (currentTrack != null) {
-            for (int i = 0; i < playlist.getTrackCount(); i++) {
-                if (currentTrack.getPath().equals(playlist.getTrack(i).getPath())) {
-                    return i;
-                }
-            }
-        }
-        return -1; // Track not found in the original order
-    }
-    
-    private void shuffleTracks() {
-        shuffledTracks = new ArrayList<>();
-        shuffledTracks.add(trackNumber);
 
-        Random random = new Random();
-        int randomTrack;
-        while (shuffledTracks.size() < playlist.getTrackCount()) {
-            do {
-                randomTrack = random.nextInt(playlist.getTrackCount());
-            } while (shuffledTracks.contains(randomTrack));
-
-            shuffledTracks.add(randomTrack);
-        }
-
-        shuffledTracksArray = shuffledTracks.toArray();
+    
+    public void playDeathSound() {
+    	SimpleAudioPlayer player;
+    	
+    	player = minim.loadMP3File(getClass().getResource(DEATH_SOUND_PATH).getPath());
+    	player.play();
+        volumeSFX(player, volume.get()*3);
     }
+    
+    public void playJumpSound() {
+    	SimpleAudioPlayer player;
+    	
+    	player = minim.loadMP3File(getClass().getResource(JUMP_SOUND_PATH).getPath());
+    	player.play();
+        volumeSFX(player, volume.get()*2);
+    }
+    
+//    public void playLandSound() {
+//        audioPlayer = minim.loadMP3File(getClass().getResource(LAND_SOUND_PATH).getPath());
+//        audioPlayer.play();
+//        volume(volume.get());
+//    }
+    
+    public void playCollidedSound() {
+    	SimpleAudioPlayer player;
+    	player = minim.loadMP3File(getClass().getResource(COLLIDED_SOUND_PATH).getPath());
+    	player.play();
+        volumeSFX(player, volume.get()*2);
+    }
+
+    
+    
+    public void play(String playlistName) {
+        playlist = new PlaylistManager().getPlaylist(playlistName);
+        trackNumber = 0;
+        playCurrentTrack();
+    }
+    
+    
+    
+    
+//  private void checkEndOfTrack() {
+//      // Check if the audio has reached the end
+//      if (audioPlayer != null) {
+//          if(!audioPlayer.isPlaying() && !paused.get()) {
+//          	next();
+//          }
+//      }
+//  }   
+  
+//  public void toggleShuffle() {
+//      if (shuffle.get()) {
+//          // Shuffling is currently enabled
+//          // Find the original order index of the currently playing song
+//          int originalOrderIndex = findOriginalOrderIndex();
+//          
+//          // Update trackNumber to the original order index
+//          trackNumber = (originalOrderIndex != -1) ? originalOrderIndex : 0;
+//          
+//          shuffle.set(false);
+//      } else {
+//          // Shuffling is currently disabled
+//          shuffleTracks();
+//          trackNumber = 0;
+//          shuffle.set(true);
+//      }
+//  }
+//    
+//    private int findOriginalOrderIndex() {
+//        Track currentTrack = getCurrentTrack();
+//        if (currentTrack != null) {
+//            for (int i = 0; i < playlist.getTrackCount(); i++) {
+//                if (currentTrack.getPath().equals(playlist.getTrack(i).getPath())) {
+//                    return i;
+//                }
+//            }
+//        }
+//        return -1; // Track not found in the original order
+//    }
+    
+//    private void shuffleTracks() {
+//        shuffledTracks = new ArrayList<>();
+//        shuffledTracks.add(trackNumber);
+//
+//        Random random = new Random();
+//        int randomTrack;
+//        while (shuffledTracks.size() < playlist.getTrackCount()) {
+//            do {
+//                randomTrack = random.nextInt(playlist.getTrackCount());
+//            } while (shuffledTracks.contains(randomTrack));
+//
+//            shuffledTracks.add(randomTrack);
+//        }
+//
+//        shuffledTracksArray = shuffledTracks.toArray();
+//    }
     
 //    private void checkEndOfTrack() {
 //        // Check if the audio has reached the end
@@ -125,54 +171,50 @@ public class MP3Player {
 //        }
 //    }   
     
-    public boolean isShuffleActive() {
-    	
-    	return shuffle.get();
-    }
+//    public boolean isShuffleActive() {
+//    	
+//    	return shuffle.get();
+//    }
 
-    public void next() {
-    	if(!shuffle.get()) {
-    		if (trackNumber < playlist.getTrackCount() - 1) {
-                trackNumber++;
-                playCurrentTrack();
-            }
-            else {
-            	trackNumber = 0;
-            	playCurrentTrack();
-            }
-    	}
-    	else {
-    		if (trackNumber < playlist.getTrackCount() - 1) {
-                trackNumber++;
-                playShuffledTrack();
-            }
-            else {
-            	trackNumber = 0;
-            	playShuffledTrack();
-            }
-    	}
-    }
+//    public void next() {
+//    	if(!shuffle.get()) {
+//    		if (trackNumber < playlist.getTrackCount() - 1) {
+//                trackNumber++;
+//                playCurrentTrack();
+//            }
+//            else {
+//            	trackNumber = 0;
+//            	playCurrentTrack();
+//            }
+//    	}
+//    	else {
+//    		if (trackNumber < playlist.getTrackCount() - 1) {
+//                trackNumber++;
+//                playShuffledTrack();
+//            }
+//            else {
+//            	trackNumber = 0;
+//            	playShuffledTrack();
+//            }
+//    	}
+//    }
 
-    public void prev() {
-        if (audioPlayer.position() >= 3000) {
-            playCurrentTrack();
-        } else if (trackNumber == 0) {
-            trackNumber = (playlist.getTrackCount()-1);
-            playCurrentTrack();
-        }
-        	
-        	else {
-        
-            trackNumber--;
-            playCurrentTrack();
-        }
-    }
+//    public void prev() {
+//        if (audioPlayer.position() >= 3000) {
+//            playCurrentTrack();
+//        } else if (trackNumber == 0) {
+//            trackNumber = (playlist.getTrackCount()-1);
+//            playCurrentTrack();
+//        }
+//        	
+//        	else {
+//        
+//            trackNumber--;
+//            playCurrentTrack();
+//        }
+//    }
 
-    public void play(String playlistName) {
-        playlist = new PlaylistManager().getPlaylist(playlistName);
-        trackNumber = 0;
-        playCurrentTrack();
-    }
+
 
     private void playCurrentTrack() {
         audioPlayer.pause();
@@ -183,14 +225,14 @@ public class MP3Player {
         volume(volume.get());
     }
     
-    private void playShuffledTrack() {
-        audioPlayer.pause();
-        audioPlayer = minim.loadMP3File(playlist.getTrack((int) shuffledTracksArray[trackNumber]).getPath());
-        currentlyPlayingTrack.set(playlist.getTrack((int) shuffledTracksArray[trackNumber]));
-        
-        audioPlayer.play();
-        volume(volume.get());
-    }
+//    private void playShuffledTrack() {
+//        audioPlayer.pause();
+//        audioPlayer = minim.loadMP3File(playlist.getTrack((int) shuffledTracksArray[trackNumber]).getPath());
+//        currentlyPlayingTrack.set(playlist.getTrack((int) shuffledTracksArray[trackNumber]));
+//        
+//        audioPlayer.play();
+//        volume(volume.get());
+//    }
 
     public void stop() {
         if (audioPlayer != null) {
@@ -211,12 +253,51 @@ public class MP3Player {
         }
     }
 
-    public void volume(float newVolume) {
+    public void volume(double newVolume) {
         // Convert the volume to decibels
         float decibels = (float) (Math.log10(newVolume) * 20);
         volume.set(newVolume);
         // Set the gain in decibels
         audioPlayer.setGain(decibels);
+    }
+    
+    public void setVolumeMuted() {
+        // Convert the volume to decibels
+        float decibels = (float) (Math.log10(0) * 20);
+        volume.set(0);
+        // Set the gain in decibels
+        audioPlayer.setGain(decibels);
+    }
+    
+    public void setVolumeLow() {
+        // Convert the volume to decibels
+        float decibels = (float) (Math.log10(LOW_VOLUME) * 20);
+        volume.set(LOW_VOLUME);
+        // Set the gain in decibels
+        audioPlayer.setGain(decibels);
+    }
+    
+    public void setVolumeMedium() {
+        // Convert the volume to decibels
+        float decibels = (float) (Math.log10(MEDIUM_VOLUME) * 20);
+        volume.set(MEDIUM_VOLUME);
+        // Set the gain in decibels
+        audioPlayer.setGain(decibels);
+    }
+    
+    public void setVolumeHigh() {
+        // Convert the volume to decibels
+        float decibels = (float) (Math.log10(HIGH_VOLUME) * 20);
+        volume.set(HIGH_VOLUME);
+        // Set the gain in decibels
+        audioPlayer.setGain(decibels);
+    }
+    
+    public void volumeSFX(SimpleAudioPlayer player, double newVolume) {
+        // Convert the volume to decibels
+        float decibels = (float) (Math.log10(newVolume) * 20);
+        // Set the gain in decibels
+        player.setGain(decibels);
     }
     
     public double getCurrentPosition() {
@@ -260,7 +341,7 @@ public class MP3Player {
     public SimpleBooleanProperty shuffleProperty() {
     	return shuffle;
     }
-    public SimpleFloatProperty volumeProperty(){
+    public SimpleDoubleProperty volumeProperty(){
     	return volume;
     }
 

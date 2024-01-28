@@ -39,12 +39,14 @@ public class BackgroundScroll {
             @Override
             public void handle(long now) {
                 x -= 0.5;
-                if (x <= -IMAGE_WIDTH * (imageViews.length - 1)) { 
-                    x = 0; 
-                }
-
                 for (int i = 0; i < imageViews.length; i++) {
-                    imageViews[i].setX(x + IMAGE_WIDTH * i);
+                    double newX = x + IMAGE_WIDTH * i;
+
+                    while (newX < -IMAGE_WIDTH) {
+
+                        newX += IMAGE_WIDTH * imageViews.length;
+                    }
+                    imageViews[i].setX(newX);
                 }
             }
         };
