@@ -4,6 +4,8 @@ import business.game.elements.Arlie;
 import business.game.elements.FloorScroller;
 import business.game.elements.HealthBar;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -21,7 +23,10 @@ public class InGameView extends BaseView {
     public Pane backgroundColorPane;
     public Pane groundPane;
     public Pane healthPane;
+    public Pane hitBoxPane;
     
+    public Canvas canvas;
+    public GraphicsContext gc;
     
     public ImageView backgroundColor;
     public ImageView ground;
@@ -36,6 +41,12 @@ public class InGameView extends BaseView {
         backgroundPane = new Pane();
         backgroundColorPane = new Pane();
         groundPane = new Pane();
+        hitBoxPane = new Pane();
+        
+        canvas = new Canvas(1280, 720);
+        gc = canvas.getGraphicsContext2D();
+        
+        hitBoxPane.getChildren().add(canvas);
         
         healthPane.getChildren().add(healthBar);
         
@@ -57,7 +68,7 @@ public class InGameView extends BaseView {
         
         arliePane.getChildren().add(arlie.arlieBody);
  
-        getChildren().addAll(backgroundColorPane, backgroundPane, groundPane, obstaclePane, arliePane, healthPane);
+        getChildren().addAll(backgroundColorPane, backgroundPane, groundPane, obstaclePane, arliePane, hitBoxPane, healthPane);
 
         setManaged(false);
         
@@ -86,6 +97,10 @@ public class InGameView extends BaseView {
     
     public Pane getGroundPane() {
     	return groundPane;
+    }
+    
+    public GraphicsContext getHitBoxGraphicsContext() {
+    	return gc;
     }
 
 

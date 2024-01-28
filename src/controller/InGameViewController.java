@@ -6,6 +6,7 @@ import business.game.elements.BackgroundScroll;
 import business.game.elements.FloorScroller;
 import business.game.elements.HealthBarController;
 import business.music.MP3Player;
+import controller.uicomponents.CollisionChecker;
 import controller.uicomponents.ObstacleGenerator;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -13,6 +14,7 @@ import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
@@ -37,6 +39,7 @@ public class InGameViewController extends BaseViewController {
 	ObstacleGenerator obstacleGen;
 	BackgroundScroll backgroundScroll;
 	FloorScroller floorScroller;
+	GraphicsContext hitBoxGC;
 	App app;
 	Scene scene;
 	
@@ -47,10 +50,11 @@ public class InGameViewController extends BaseViewController {
 		this.app = app;
 		this.scene = scene;
 		this.player = player;
+		this.hitBoxGC = root.getHitBoxGraphicsContext();
 		
 		floorScroller = new FloorScroller(root.getGroundPane());
 		arlieController = new ArlieController(app, root.getArliePane(), root.arlie, scene, player);
-		obstacleGen = new ObstacleGenerator(root.getObstaclePane(), scene, arlieController, this);
+		obstacleGen = new ObstacleGenerator(root.getObstaclePane(), root.getHitBoxGraphicsContext(), scene, arlieController, this);
 		backgroundScroll = new BackgroundScroll(root.getBackgroundPane());
 		healthBarController = new HealthBarController(root.getHealthBar());
 		
@@ -159,6 +163,9 @@ public class InGameViewController extends BaseViewController {
             case S:
             	arlieController.crouch();
                 break;
+            case H:
+            	toggleHitBoxView();
+            	break;
                 
             // change to menu pop up
             case ESCAPE:
@@ -219,11 +226,16 @@ public class InGameViewController extends BaseViewController {
             player.pause();
         }
     }
+    
+    public void toggleHitBoxView() {
+    	obstacleGen.toggleHitBoxVisibility();
+    }
 
 	@Override
 	public void update() {
 		arlieController.update();
 		obstacleGen.update();
+		CollisionChecker.clearCanvas(hitBoxGC);
 	}
 	
 	public void gameOver() {

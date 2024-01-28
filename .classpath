@@ -16,7 +16,7 @@
 	<classpathentry kind="lib" path="libraries/ProgUtil_StaticScanner.jar"/>
 	<classpathentry kind="lib" path="libraries/tritonus_aos.jar"/>
 	<classpathentry kind="lib" path="libraries/tritonus_share.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX21">
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>

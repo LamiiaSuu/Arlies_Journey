@@ -2,6 +2,7 @@ package controller.uicomponents;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import java.util.ArrayList;
@@ -17,15 +18,18 @@ public class ObstacleGenerator {
 
     private int timer;
     private int interval;
+    private int hitBoxCounter;
     private double groundY;
+    private boolean hitBoxVisible;
     private Random random;
     private Scene scene;
     private Pane gamePane;
+    private GraphicsContext hitBoxGC;
     private ArlieController arlieController;
     private InGameViewController inGameViewController;
     private List<AnimationTimer> timers;
 
-    public ObstacleGenerator(Pane gamePane, Scene scene, ArlieController arlieController, InGameViewController inGameViewController) {
+    public ObstacleGenerator(Pane gamePane, GraphicsContext gc, Scene scene, ArlieController arlieController, InGameViewController inGameViewController) {
         this.inGameViewController = inGameViewController;
         this.gamePane = gamePane;
         this.scene = scene;
@@ -34,6 +38,8 @@ public class ObstacleGenerator {
         this.interval = 60;
         this.random = new Random();
         this.timers = new ArrayList<>();
+        this.hitBoxGC = gc;
+        this.hitBoxCounter = 0;
     }
 
     public void setGround(double groundY) {
@@ -104,10 +110,23 @@ public class ObstacleGenerator {
     }
 
     private void checkCollision(ImageView obstacle, String obstacleType) {
-        if (CollisionChecker.checkCollision(arlieController.getArlieBody(), obstacle, obstacleType)) {
+    	
+    	
+        if (CollisionChecker.checkCollision(arlieController.getArlieBody(), obstacle, obstacleType, hitBoxGC, hitBoxVisible)) {
             inGameViewController.arlieCollided();
             System.out.println("Arlie Collided!");
         }
+//        
+//        if(hitBoxVisible) {
+//            if(hitBoxCounter > timers.size()+1) {
+//            	CollisionChecker.clearCanvas(hitBoxGC);
+//            	hitBoxCounter = 0;
+//            	
+//            	
+//            }else {
+//            	hitBoxCounter++;
+//            }
+//        }
     }
     
 
@@ -123,5 +142,14 @@ public class ObstacleGenerator {
         for (AnimationTimer timer : timers) {
             timer.start();
         }
+    }
+    
+    public void toggleHitBoxVisibility() {
+    	if(hitBoxVisible) {
+    		hitBoxVisible = false;    
+    		CollisionChecker.clearCanvas(hitBoxGC);
+    	}else {
+    		hitBoxVisible = true;
+    	}
     }
 }
