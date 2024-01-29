@@ -8,6 +8,7 @@ import controller.InGameViewController;
 import controller.JourneySelectionViewController;
 import controller.MainMenuViewController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.stage.Stage;
 import presentation.InGameView;
@@ -57,27 +58,30 @@ public class App extends Application {
 		
 		
         this.primaryStage = primaryStage;
-
+        
+        primaryStage.setMinHeight(720);
+        primaryStage.setMinWidth(1280);
+        primaryStage.setMaxHeight(720);
+        primaryStage.setMaxWidth(1280);
+        
+        
         Pane root = new Pane();
         currentView = new SimpleObjectProperty<PrimaryViewNames>();
 
         Scene scene = new Scene(root,  1280, 720);
         scene.getStylesheets().add(getClass().getResource("/assets/styles.CSS").toExternalForm());
         initialize(scene);
+
         primaryStage.setTitle("Arlie's Journey");
         primaryStage.setScene(scene);
         
         switchView(PrimaryViewNames.MAIN_MENU_VIEW);
         
-        primaryStage.setMinHeight(720);
-        primaryStage.setMinWidth(1280);
-        primaryStage.setMaxHeight(720);
-        primaryStage.setMaxWidth(1280);
         primaryStage.setResizable(false);
         primaryStage.show();
         primaryStage.setOnCloseRequest(event -> {
         	player.stop();
-            primaryStage.close();
+        	primaryStage.close();
         });
     }
 
@@ -94,6 +98,15 @@ public class App extends Application {
 	
 	public SimpleObjectProperty<PrimaryViewNames> currentViewProperty(){
 		return currentView;
+	}
+	
+	public double getWidth() {
+		return primaryStage.getMaxWidth();
+	}
+	
+	public double getHeight() {
+		
+		return primaryStage.getMaxHeight();
 	}
 	
 	 

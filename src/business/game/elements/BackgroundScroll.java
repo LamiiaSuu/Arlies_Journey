@@ -25,13 +25,12 @@ public class BackgroundScroll {
     	
         Image[] imagesBackground = new Image[2];
         imagesBackground[0] = new Image(getClass().getResourceAsStream("/assets/images/mountain-background-1.png"));
-        imagesBackground[1] = new Image(getClass().getResourceAsStream("/assets/images/mountain-background-1.png"));
+        imagesBackground[1] = new Image(getClass().getResourceAsStream("/assets/images/mountain-background-2.png"));
 
         Image[] imagesForeground = new Image[2];
         imagesForeground[0] = new Image(getClass().getResourceAsStream("/assets/images/mountains-foreground-1.png"));
-        imagesForeground[1] = new Image(getClass().getResourceAsStream("/assets/images/mountains-foreground-1.png"));
+        imagesForeground[1] = new Image(getClass().getResourceAsStream("/assets/images/mountains-foreground-2.png"));
         
-   
         for (int i = 0; i < imageViewsBackground.length; i++) {
         	imageViewsBackground[i] = new ImageView(imagesBackground[i]);
         	imageViewsBackground[i].setX(IMAGE_WIDTH * i);
@@ -47,9 +46,11 @@ public class BackgroundScroll {
             if(i >= 2) {
             	imageViewsForeground[i].setY(imageViewsForeground[i].getY()+72);
             }
+            
             root.getChildren().add(imageViewsForeground[i]);
         }
         
+        imageViewsForeground[1].setTranslateY(imageViewsForeground[1].getTranslateY()-450);
        
 
 

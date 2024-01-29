@@ -1,21 +1,23 @@
 package presentation;
 
+import application.App;
 import business.game.elements.Arlie;
 import business.game.elements.FloorScroller;
-import business.game.elements.HealthBar;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import presentation.uicomponents.HealthBar;
+import presentation.uicomponents.ScoreBar;
 
 public class InGameView extends BaseView {
 	
 	
     public Arlie arlie;
     public HealthBar healthBar;
-    
+    public ScoreBar scoreBar;
     
     public Pane arliePane;
     public Pane obstaclePane;
@@ -24,6 +26,7 @@ public class InGameView extends BaseView {
     public Pane groundPane;
     public Pane healthPane;
     public Pane hitBoxPane;
+    public Pane scorePane;
     
     public Canvas canvas;
     public GraphicsContext gc;
@@ -31,9 +34,10 @@ public class InGameView extends BaseView {
     public ImageView backgroundColor;
     public ImageView ground;
 
-    public InGameView(Scene scene, int maxHealth) {
+    public InGameView(App app, Scene scene, int maxHealth) {
         arlie = new Arlie();
         healthBar = new HealthBar(maxHealth);
+        scoreBar = new ScoreBar(app.getWidth(), app.getHeight());
         
         arliePane = new Pane();
         obstaclePane = new Pane();
@@ -42,15 +46,14 @@ public class InGameView extends BaseView {
         backgroundColorPane = new Pane();
         groundPane = new Pane();
         hitBoxPane = new Pane();
+        scorePane = new Pane();
         
         canvas = new Canvas(1280, 720);
         gc = canvas.getGraphicsContext2D();
-        
-        hitBoxPane.getChildren().add(canvas);
-        
-        healthPane.getChildren().add(healthBar);
-        
+
         backgroundPane.setScaleY(0.75);
+        
+
         
 //        Image groundImage = new Image(getClass().getResourceAsStream("/assets/images/ground-dirt-mirrored.png"));
 //        ground = new ImageView(groundImage);
@@ -64,11 +67,14 @@ public class InGameView extends BaseView {
         
         Image backgroundColorImage = new Image(getClass().getResourceAsStream("/assets/images/sky-blue.png"));
         backgroundColor = new ImageView(backgroundColorImage);
-        backgroundColorPane.getChildren().add(backgroundColor);
         
+        backgroundColorPane.getChildren().add(backgroundColor);
         arliePane.getChildren().add(arlie.arlieBody);
+        scorePane.getChildren().add(scoreBar);
+        hitBoxPane.getChildren().add(canvas);
+        healthPane.getChildren().add(healthBar);
  
-        getChildren().addAll(backgroundColorPane, backgroundPane, groundPane, obstaclePane, arliePane, hitBoxPane, healthPane);
+        getChildren().addAll(backgroundColorPane, backgroundPane, groundPane, obstaclePane, arliePane, hitBoxPane, healthPane, scorePane);
 
         setManaged(false);
         
@@ -93,6 +99,10 @@ public class InGameView extends BaseView {
     
     public HealthBar getHealthBar() {
     	return healthBar;
+    }
+    
+    public ScoreBar getScoreBar() {
+    	return scoreBar;
     }
     
     public Pane getGroundPane() {

@@ -5,7 +5,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-public class CollisionChecker {
+public class HitBoxManager {
 
     private static final double hitboxRadiusFactor = 0.75;
     
@@ -33,7 +33,61 @@ public class CollisionChecker {
             
 
             return circlesIntersect(centerX1, centerY1, radius1, centerX2, centerY2, radius2);
-        } else {
+        }
+        
+        else if (obstacleType.equalsIgnoreCase("fruit-tree")) {
+            double radius2 = image2.getBoundsInParent().getHeight() * (hitboxRadiusFactor * 0.75) / 2.0;
+            double centerX2 = image2.getBoundsInParent().getMinX() + image2.getBoundsInParent().getWidth() / 2.0;
+            double centerY2 = image2.getBoundsInParent().getMinY() + image2.getBoundsInParent().getHeight() / 2.0;
+            
+            if(hitBoxVisible) {
+            	drawCircleObstacles(centerX2, centerY2, radius2, gc, obstacleType);
+            }
+            
+
+            return circlesIntersect(centerX1, centerY1, radius1, centerX2, centerY2, radius2);
+        }
+        
+        else if (obstacleType.equalsIgnoreCase("bush")) {
+            double radius2 = image2.getBoundsInParent().getHeight() * (hitboxRadiusFactor * 0.75) / 2.0;
+            double centerX2 = image2.getBoundsInParent().getMinX() + image2.getBoundsInParent().getWidth() / 2.0;
+            double centerY2 = image2.getBoundsInParent().getMinY() + image2.getBoundsInParent().getHeight() / 2.0;
+            
+            if(hitBoxVisible) {
+            	drawCircleObstacles(centerX2, centerY2, radius2, gc, obstacleType);
+            }
+            
+
+            return circlesIntersect(centerX1, centerY1, radius1, centerX2, centerY2, radius2);
+        }
+        
+        else if (obstacleType.equalsIgnoreCase("flower-bush")) {
+            double radius2 = image2.getBoundsInParent().getHeight() * (hitboxRadiusFactor * 0.75) / 2.0;
+            double centerX2 = image2.getBoundsInParent().getMinX() + image2.getBoundsInParent().getWidth() / 2.0;
+            double centerY2 = image2.getBoundsInParent().getMinY() + image2.getBoundsInParent().getHeight() / 2.0;
+            
+            if(hitBoxVisible) {
+            	drawCircleObstacles(centerX2, centerY2, radius2, gc, obstacleType);
+            }
+            
+
+            return circlesIntersect(centerX1, centerY1, radius1, centerX2, centerY2, radius2);
+        }
+        
+        else if (obstacleType.equalsIgnoreCase("zeppelin")) {
+            double radius2 = image2.getBoundsInParent().getHeight() * (hitboxRadiusFactor * 0.75) / 2.0;
+            double centerX2 = image2.getBoundsInParent().getMinX() + image2.getBoundsInParent().getWidth() / 2.0;
+            double centerY2 = image2.getBoundsInParent().getMinY() + image2.getBoundsInParent().getHeight() / 2.0;
+            
+            if(hitBoxVisible) {
+            	drawCircleObstacles(centerX2, centerY2, radius2, gc, obstacleType);
+            }
+            
+
+            return circlesIntersect(centerX1, centerY1, radius1, centerX2, centerY2, radius2);
+        }
+        
+        else {
             double radius2 = image2.getBoundsInParent().getHeight() * (hitboxRadiusFactor * 0.75) / 2.0;
             double centerX2 = image2.getBoundsInParent().getMinX() + image2.getBoundsInParent().getWidth() / 2.0;
             double centerY2 = image2.getBoundsInParent().getMinY() + image2.getBoundsInParent().getHeight() / 2.0;

@@ -1,4 +1,4 @@
-package business.game.elements;
+package presentation.uicomponents;
 
 import business.game.elements.Arlie.ArlieConditions;
 import javafx.beans.property.SimpleObjectProperty;
@@ -8,7 +8,7 @@ import javafx.scene.layout.HBox;
 
 public class HealthBar extends HBox{
 	
-	ImageView[] hearts;
+	public ImageView[] hearts;
 
 	
 	int maxHealth;

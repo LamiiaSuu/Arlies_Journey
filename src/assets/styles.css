@@ -138,3 +138,11 @@
     -fx-background-repeat: repeat-x;
 }
 
+#score-board{
+    -fx-text-fill: rgb(128, 27, 141);
+    -fx-text-alignment: right;
+    -fx-font-family: "Arial";
+    -fx-stroke: black;
+    -fx-stroke-width: 2;
+}
+

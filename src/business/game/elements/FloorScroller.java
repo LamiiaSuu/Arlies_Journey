@@ -4,14 +4,15 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import java.util.Random;
 
 public class FloorScroller {
     private static final int IMAGE_WIDTH = 1920;
     
-    private ImageView[] imageViewFloor = new ImageView[2];
+    private ImageView[] imageViewFloor = new ImageView[50];
     
     
-    
+    private Random random;
     private double y = 0;
     private Pane root;
     private AnimationTimer timer;
@@ -23,11 +24,28 @@ public class FloorScroller {
 
     public void start() {
     	
-        Image[] imagesFloor = new Image[2];
-        imagesFloor[0] = new Image(getClass().getResourceAsStream("/assets/images/ground-dirt-mirrored.png"));
-        imagesFloor[1] = new Image(getClass().getResourceAsStream("/assets/images/ground-dirt-mirrored.png"));
+    	random = new Random();
+    	int seed = 0;
+    	
+        Image[] imagesFloor = new Image[imageViewFloor.length];
+        Image dirt = new Image(getClass().getResourceAsStream("/assets/images/ground-dirt-mirrored-fixed.png"));
+        Image dirtTelephone = new Image(getClass().getResourceAsStream("/assets/images/ground-dirt-mirrored-2-fixed.png"));
+        Image dirtNeighbour = new Image(getClass().getResourceAsStream("/assets/images/ground-dirt-mirrored-3-fixed.png"));
         
-        
+        for(int x = 0; x < imagesFloor.length; x++) {
+        	seed = random.nextInt(100)+1;
+        	if(seed > 98) {
+        		imagesFloor[x] = dirtNeighbour;
+        		System.out.println("Totoro!");
+        	}else if(seed > 90) {
+        		imagesFloor[x] = dirtTelephone;
+        		System.out.println("Telephone Booth");
+        	}else {
+        		imagesFloor[x] = dirt;
+        		System.out.println("Dirt.");
+        	}
+        	
+        }
 
         
    
@@ -38,12 +56,12 @@ public class FloorScroller {
         	imageViewFloor[i].setX(IMAGE_WIDTH * i);
         	
         	
-//        	imageViewFloor[i].setPreserveRatio(true);
-//        	imageViewFloor[i].setFitWidth(1920);
+        	imageViewFloor[i].setPreserveRatio(true);
+        	imageViewFloor[i].setFitWidth(1920);
 //        	imageViewFloor[i].setScaleX(0.66);
 //        	imageViewFloor[i].setScaleY(0.66);
-        	imageViewFloor[i].setY(475); // Müssen so komisch pixel genau gesetzt werden bc the image is not 1920x1080
-//        	imageViewFloor[i].setX(-326);
+        	imageViewFloor[i].setY(-1080*0.33); // Müssen so komisch pixel genau gesetzt werden bc the image is not 1920x1080
+//        	imageViewFloor[i].setTranslateX(0);
         	
         	
 //            if(i >= 2) {

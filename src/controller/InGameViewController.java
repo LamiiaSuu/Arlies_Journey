@@ -6,8 +6,9 @@ import business.game.elements.BackgroundScroll;
 import business.game.elements.FloorScroller;
 import business.game.elements.HealthBarController;
 import business.music.MP3Player;
-import controller.uicomponents.CollisionChecker;
+import controller.uicomponents.HitBoxManager;
 import controller.uicomponents.ObstacleGenerator;
+import controller.uicomponents.ScoreBoardController;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -36,6 +37,7 @@ public class InGameViewController extends BaseViewController {
 	InGameView root;
 	ArlieController arlieController;
 	HealthBarController healthBarController;
+	ScoreBoardController scoreBoardController;
 	ObstacleGenerator obstacleGen;
 	BackgroundScroll backgroundScroll;
 	FloorScroller floorScroller;
@@ -44,9 +46,10 @@ public class InGameViewController extends BaseViewController {
 	Scene scene;
 	
 	
+	
 	public InGameViewController(App app, Scene scene, MP3Player player) {
 		
-		root = new InGameView(scene, MAX_HEALTH);
+		root = new InGameView(app, scene, MAX_HEALTH);
 		this.app = app;
 		this.scene = scene;
 		this.player = player;
@@ -57,6 +60,7 @@ public class InGameViewController extends BaseViewController {
 		obstacleGen = new ObstacleGenerator(root.getObstaclePane(), root.getHitBoxGraphicsContext(), scene, arlieController, this);
 		backgroundScroll = new BackgroundScroll(root.getBackgroundPane());
 		healthBarController = new HealthBarController(root.getHealthBar());
+		scoreBoardController = new ScoreBoardController(root.getScoreBar());
 		
 		
 		initialize();
@@ -234,8 +238,13 @@ public class InGameViewController extends BaseViewController {
 	@Override
 	public void update() {
 		arlieController.update();
-		obstacleGen.update();
-		CollisionChecker.clearCanvas(hitBoxGC);
+		obstacleGen.update(this);
+		scoreBoardController.update();
+		HitBoxManager.clearCanvas(hitBoxGC);
+	}
+	
+	public void generatedObstacle() {
+		scoreBoardController.scoreUp(1);
 	}
 	
 	public void gameOver() {
