@@ -232,6 +232,18 @@ public class ObstacleGenerator {
     		hitBoxVisible = true;
     	}
     }
+    
+    public void reset() {
+    	while (!timers.isEmpty()) {
+    		timers.get(0).stop();
+    		timers.remove(timers.get(0));
+    	}
+    	
+    	
+    	while (!gamePane.getChildren().isEmpty()) {
+    		gamePane.getChildren().removeAll(gamePane.getChildren().get(0));
+    	}
+    }
 }
 
 // TIMELINE VERSION - STILL KINDA WHACKY AND WONKY. MARIO BENUTZ DAS FÜRS BALANCING UND HITBOXES, DAS HAT SCHON THE RIGHT SPEED AN SICH

@@ -333,6 +333,15 @@ public class ArlieController extends BaseViewController {
     public void setGround(double groundY) {
     	this.groundY = groundY;
     }
+    
+    public void reset() {
+    	if(rotateAnimation != null) {
+    	rotateAnimation.stop();
+    	rotateAnimation = null;
+    	}
+    	arlieBody.setRotate(0);
+    	arlie.setConditionProperty(ArlieConditions.RUNNING);
+    }
 
 
 	public ImageView getArlieBody() {

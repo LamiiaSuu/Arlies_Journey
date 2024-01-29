@@ -252,6 +252,13 @@ public class MP3Player {
             audioPlayer.play();
         }
     }
+    
+    public void resume() {
+
+        	paused.set(false);
+            audioPlayer.play();
+        
+    }
 
     public void volume(double newVolume) {
         // Convert the volume to decibels

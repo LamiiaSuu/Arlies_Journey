@@ -16,6 +16,7 @@ public class FloorScroller {
     private double y = 0;
     private Pane root;
     private AnimationTimer timer;
+    private Image[] imagesFloor;
 
     public FloorScroller(Pane root) {
         this.root = root;
@@ -24,61 +25,9 @@ public class FloorScroller {
 
     public void start() {
     	
-    	random = new Random();
-    	int seed = 0;
+    	generateNewSeed();
     	
-        Image[] imagesFloor = new Image[imageViewFloor.length];
-        Image dirt = new Image(getClass().getResourceAsStream("/assets/images/ground-dirt-mirrored-fixed.png"));
-        Image dirtTelephone = new Image(getClass().getResourceAsStream("/assets/images/ground-dirt-mirrored-2-fixed.png"));
-        Image dirtNeighbour = new Image(getClass().getResourceAsStream("/assets/images/ground-dirt-mirrored-3-fixed.png"));
-        
-        for(int x = 0; x < imagesFloor.length; x++) {
-        	seed = random.nextInt(100)+1;
-        	if(seed > 98) {
-        		imagesFloor[x] = dirtNeighbour;
-        		System.out.println("Totoro!");
-        	}else if(seed > 90) {
-        		imagesFloor[x] = dirtTelephone;
-        		System.out.println("Telephone Booth");
-        	}else {
-        		imagesFloor[x] = dirt;
-        		System.out.println("Dirt.");
-        	}
-        	
-        }
-
-        
-   
-       
-
-        for (int i = 0; i < imageViewFloor.length; i++) {
-        	imageViewFloor[i] = new ImageView(imagesFloor[i]);
-        	imageViewFloor[i].setX(IMAGE_WIDTH * i);
-        	
-        	
-        	imageViewFloor[i].setPreserveRatio(true);
-        	imageViewFloor[i].setFitWidth(1920);
-//        	imageViewFloor[i].setScaleX(0.66);
-//        	imageViewFloor[i].setScaleY(0.66);
-        	imageViewFloor[i].setY(-1080*0.33); // Müssen so komisch pixel genau gesetzt werden bc the image is not 1920x1080
-//        	imageViewFloor[i].setTranslateX(0);
-        	
-        	
-//            if(i >= 2) {
-//            	imageViewFloor[i].setY(imageViewFloor[i].getY()+72);
-//            }
-            root.getChildren().add(imageViewFloor[i]);
-            
-            
-        }
-        
-        
-        
-        
-       
-
-
-        timer = new AnimationTimer() {
+    	timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
             	 y -= 5;
@@ -98,6 +47,7 @@ public class FloorScroller {
             }
         };
         timer.start();
+
     }
     
     public void stopTimer() {
@@ -108,4 +58,65 @@ public class FloorScroller {
     	timer.start();
     }
     
+    public void reset() {
+    	
+    	timer.stop();
+
+        root.getChildren().removeAll(imageViewFloor);
+    	
+    	generateNewSeed();
+    	
+    	y = 0;
+    	
+    	timer.start();
+    }
+    
+    public void generateNewSeed() {
+    	
+    	imagesFloor = null;
+    	
+    	
+    	random = new Random();
+    	int seed = 0;
+    	
+        imagesFloor = new Image[imageViewFloor.length];
+        Image dirt = new Image(getClass().getResourceAsStream("/assets/images/ground-dirt-mirrored-fixed.png"));
+        Image dirtTelephone = new Image(getClass().getResourceAsStream("/assets/images/ground-dirt-mirrored-2-fixed.png"));
+        Image dirtNeighbour = new Image(getClass().getResourceAsStream("/assets/images/ground-dirt-mirrored-3-fixed.png"));
+        
+        for(int x = 0; x < imagesFloor.length; x++) {
+        	seed = random.nextInt(100)+1;
+        	if(seed > 98) {
+        		imagesFloor[x] = dirtNeighbour;
+        		System.out.println("Totoro!");
+        	}else if(seed > 90) {
+        		imagesFloor[x] = dirtTelephone;
+        		System.out.println("Telephone Booth");
+        	}else {
+        		imagesFloor[x] = dirt;
+        		System.out.println("Dirt.");
+        	}
+        	
+        }
+        
+
+        
+        
+        
+
+        for (int i = 0; i < imageViewFloor.length; i++) {
+        	imageViewFloor[i] = new ImageView(imagesFloor[i]);
+        	imageViewFloor[i].setX(IMAGE_WIDTH * i);
+        	
+        	
+        	imageViewFloor[i].setPreserveRatio(true);
+        	imageViewFloor[i].setFitWidth(1920);
+        	imageViewFloor[i].setY(-1080*0.33); // Müssen so komisch pixel genau gesetzt werden bc the image is not 1920x1080
+            root.getChildren().add(imageViewFloor[i]);
+            
+            
+        }
+        
+        
+    }
 }

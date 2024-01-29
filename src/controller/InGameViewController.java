@@ -98,7 +98,7 @@ public class InGameViewController extends BaseViewController {
         
         
         	scene.setOnKeyPressed(event -> {
-        		if(!gamePaused && !gameOver)
+        		
                 handleKeyPress(event.getCode());
             });
         	
@@ -149,26 +149,38 @@ public class InGameViewController extends BaseViewController {
 	
     private void handleKeyPress(KeyCode code) {
         switch (code) {
+        
             case SPACE:
+            	if(!gamePaused && !gameOver) 
             	arlieController.jump();
                 break;
             case UP:
+            	if(!gamePaused && !gameOver) 
             	arlieController.jump();
                 break;
             case W:
+            	if(!gamePaused && !gameOver) 
             	arlieController.jump();
                 break;
             case DOWN:
+            	if(!gamePaused && !gameOver) 
             	arlieController.crouch();
                 break;
             case CONTROL:
+            	if(!gamePaused && !gameOver) 
             	arlieController.crouch();
                 break;
             case S:
+            	if(!gamePaused && !gameOver) 
             	arlieController.crouch();
                 break;
             case H:
+            	if(!gamePaused && !gameOver) 
             	toggleHitBoxView();
+            	break;
+        
+            case O:
+            	resetGame();
             	break;
                 
             // change to menu pop up
@@ -183,21 +195,27 @@ public class InGameViewController extends BaseViewController {
     private void handleKeyRelease(KeyCode code) {
         switch (code) {
        		case SPACE:
+       			if(!gamePaused && !gameOver) 
        			arlieController.jumpRelease();
             	break;
         	case UP:
+        		if(!gamePaused && !gameOver) 
         		arlieController.jumpRelease();
             	break;
         	case W:
+        		if(!gamePaused && !gameOver) 
         		arlieController.jumpRelease();
             	break;
             case DOWN:
+            	if(!gamePaused && !gameOver) 
             	arlieController.crouchRelease();
                 break;
             case CONTROL:
+            	if(!gamePaused && !gameOver) 
             	arlieController.crouchRelease();
                 break;
             case S:
+            	if(!gamePaused && !gameOver) 
             	arlieController.crouchRelease();
                 break;
         }
@@ -229,6 +247,20 @@ public class InGameViewController extends BaseViewController {
             gamePaused = false;
             player.pause();
         }
+    }
+    
+    public void resetGame() {
+        obstacleGen.reset();
+        backgroundScroll.reset();
+        floorScroller.reset();
+        healthBarController.setHitPoints(MAX_HEALTH);
+        player.seek(0);
+        player.resume();
+        scoreBoardController.setScore(0);
+        arlieController.reset();
+        timeline.play();
+        gamePaused = false;
+        gameOver = false;
     }
     
     public void toggleHitBoxView() {
