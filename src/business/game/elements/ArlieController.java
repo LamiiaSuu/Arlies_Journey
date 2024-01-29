@@ -341,6 +341,9 @@ public class ArlieController extends BaseViewController {
     	}
     	arlieBody.setRotate(0);
     	arlie.setConditionProperty(ArlieConditions.RUNNING);
+    	confusedLandedProperty.set(false);
+    	crouchPressed = false;
+    	doubleJumped = false;
     }
 
 

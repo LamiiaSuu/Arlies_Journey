@@ -12,8 +12,10 @@ public class HealthBarController {
 	ImageView[] hearts;
 	
     private SimpleIntegerProperty hitPointsProperty;
+    
 	
 	public HealthBarController(HealthBar healthBar) {
+
 		
 		this.hearts = healthBar.hearts;
 		
@@ -29,6 +31,36 @@ public class HealthBarController {
 		if (hitPointsProperty.get() < 3)
 		this.hitPointsProperty.set(hitPointsProperty.get()+1);
 
+	}
+	
+	public void toggleGodMode(boolean godMode) {
+		if(godMode) {
+			godMode = true;
+			
+	        for(int i = 0; i < hearts.length; i++) {
+	        	if(i<hitPointsProperty.get()) {
+	            	hearts[i].setImage(new Image(getClass().getResourceAsStream("/assets/images/heart-purple.png"))); 
+	        	}
+
+	        	else {
+	        		hearts[i].setImage(new Image(getClass().getResourceAsStream("/assets/images/heart-white.png")));
+	        	}
+	        }
+			
+		}
+		else {
+			godMode = false;
+			
+	        for(int i = 0; i < hearts.length; i++) {
+	        	if(i<hitPointsProperty.get()) {
+	            	hearts[i].setImage(new Image(getClass().getResourceAsStream("/assets/images/heart-red.png"))); 
+	        	}
+
+	        	else {
+	        		hearts[i].setImage(new Image(getClass().getResourceAsStream("/assets/images/heart-white.png")));
+	        	}
+	        }
+		}
 	}
 	
 	public void setHitPoints(int hitPoints) {

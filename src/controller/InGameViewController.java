@@ -29,6 +29,7 @@ public class InGameViewController extends BaseViewController {
 	
 	private boolean gamePaused = false;
 	private boolean gameOver = false;
+	private boolean godMode = false;
 	private boolean initializationPaused = false;
 	private Timeline timeline;
 	private double groundY;
@@ -182,6 +183,10 @@ public class InGameViewController extends BaseViewController {
             case O:
             	resetGame();
             	break;
+            	
+            case G:
+            	toggleGodMode();
+            	break;
                 
             // change to menu pop up
             case ESCAPE:
@@ -189,6 +194,17 @@ public class InGameViewController extends BaseViewController {
             	break;
             
         }
+    }
+    
+    public void toggleGodMode() {
+    	if(godMode) {
+    		godMode = false;
+    	}else {
+    		godMode = true;
+    	}
+    	
+    	healthBarController.toggleGodMode(godMode);
+    	
     }
     
 
@@ -261,6 +277,7 @@ public class InGameViewController extends BaseViewController {
         timeline.play();
         gamePaused = false;
         gameOver = false;
+    	godMode = false;
     }
     
     public void toggleHitBoxView() {
@@ -269,10 +286,12 @@ public class InGameViewController extends BaseViewController {
 
 	@Override
 	public void update() {
-		arlieController.update();
-		obstacleGen.update(this);
-		scoreBoardController.update();
-		HitBoxManager.clearCanvas(hitBoxGC);
+			arlieController.update();
+			obstacleGen.update(this);
+			scoreBoardController.update();
+			HitBoxManager.clearCanvas(hitBoxGC);
+		
+
 	}
 	
 	public void generatedObstacle() {
@@ -293,6 +312,7 @@ public class InGameViewController extends BaseViewController {
 		
         if (currentTime - lastCollisionTime >= COLLISION_INTERVAL.toMillis()) {
         	
+        	if(!godMode)
             healthBarController.damage();
             
             lastCollisionTime = currentTime;
