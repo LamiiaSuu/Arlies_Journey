@@ -17,7 +17,7 @@ public class MainMenuView extends BaseView {
     public Button newJourneyButton;
     public Button musicButton;
     public Button settingsButton;
-    public VolumeView volumeView;
+//    public VolumeView volumeView;
     public CurrentSongView currentSongView;
     public TitleView titleView;
 
@@ -30,7 +30,7 @@ public class MainMenuView extends BaseView {
         newJourneyButton = new Button();
         musicButton = new Button();
         settingsButton = new Button();
-        volumeView = new VolumeView();
+//        volumeView = new VolumeView();
         currentSongView = new CurrentSongView();
         titleView = new TitleView();
         
@@ -51,9 +51,9 @@ public class MainMenuView extends BaseView {
         mainButtonsLayout.setAlignment(Pos.CENTER);
        
         // set the volume view
-        volumeView.setScaleX(0.4);
-        volumeView.setScaleY(0.4);
-        setHalignment(volumeView, HPos.RIGHT);
+//        volumeView.setScaleX(0.4);
+//        volumeView.setScaleY(0.4);
+//        setHalignment(volumeView, HPos.RIGHT);
         
         // set the title view
         titleView.setScaleX(0.5);
@@ -63,7 +63,7 @@ public class MainMenuView extends BaseView {
         // add all to gridPane
         add(titleView, 0, 0, 3, 1);
         add(mainButtonsLayout, 1, 1);
-        add(volumeView, 2, 2);
+//        add(volumeView, 2, 2);
 
         mainButtonsLayout.getChildren().addAll(newJourneyButton, musicButton, settingsButton);
 

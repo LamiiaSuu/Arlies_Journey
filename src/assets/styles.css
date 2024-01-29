@@ -1,4 +1,4 @@
-#new-journey-button, #music-button, #settings-button, #volume-button, #volume-button-mute, #volume-button-low, #volume-button-medium, #volume-button-high, #title-label {
+#new-journey-button, #song-scroll-pane, #music-button, #empty-button, #settings-button, #volume-button, #volume-button-mute, #volume-button-low, #volume-button-medium, #volume-button-high, #title-label, #back-button {
     -fx-background-color: transparent;
     -fx-background-repeat: no-repeat no-repeat;
     -fx-background-position: center;
@@ -12,6 +12,15 @@
 .menu-icon {
     -fx-min-width: 245px;
     -fx-min-height: 245px;
+}
+
+#song-scroll-pane {
+
+
+}
+
+.scroll-pane > .viewport{
+    -fx-background-color: transparent;
 }
 
 
@@ -38,6 +47,22 @@
     -fx-transition-duration: 0.2s;
 }
 
+#empty-button {
+    -fx-background-image: url("/assets/icons/empty-button.png");
+    -fx-transition-duration: 0.2s;
+    -fx-text-fill: rgb(0, 0, 0);
+    -fx-text-alignment: center;
+    -fx-font-family: "Arial";
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+}
+
+#empty-button:hover {
+    -fx-rotate: -2deg;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
 #music-button:hover {
     -fx-rotate: -2deg;
     -fx-scale-x: 1.1;
@@ -47,6 +72,15 @@
 #settings-button {
     -fx-background-image: url("/assets/icons/settings-button.png");
 }
+
+#music-button {
+    -fx-background-image: url("/assets/icons/music-button.png");
+}
+
+#back-button {
+    -fx-background-image: url("/assets/icons/back-button.png");
+}
+
 
 #settings-button:hover {
     -fx-rotate: 2deg;

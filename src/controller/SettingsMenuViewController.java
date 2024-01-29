@@ -12,32 +12,38 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import presentation.MainMenuView;
 import presentation.PrimaryViewNames;
+import presentation.SettingsMenuView;
 import presentation.uicomponents.CurrentSongView;
+import presentation.uicomponents.TitleView;
 import presentation.uicomponents.VolumeView;
 import presentation.uicomponents.VolumeView.VolumeConditions;
 import javafx.animation.ScaleTransition;
 
-public class MainMenuViewController extends BaseViewController {
+public class SettingsMenuViewController extends BaseViewController {
     private App app;
-    MainMenuView root;
+    SettingsMenuView root;
     VolumeViewController volumeViewController;
-    private Button newJourneyButton;
-//    private Button volumeButton;
-    private Button musicButton;
-    private Button settingsButton;
+    public Button placeHolder;
+    public Button placeHolder1;
+    public Button placeHolder2;
+    public Button backButton;
+    public Button volumeButton;
+    public VolumeView volumeView;
+    public CurrentSongView currentSongView;
     private ImageView arliesJourneyImageView;
     private MP3Player player;
     
     private RotateTransition rotateAnimation;
     private ScaleTransition jumpAnimation;
 
-    public MainMenuViewController(App app, Scene scene, MP3Player player) {
-        root = new MainMenuView();
+    public SettingsMenuViewController(App app, Scene scene, MP3Player player) {
+        root = new SettingsMenuView();
         arliesJourneyImageView = root.titleView.title;
-        musicButton = root.musicButton;
-        newJourneyButton = root.newJourneyButton;
-        settingsButton = root.settingsButton;
-//        volumeButton = root.volumeView.volumeButton;
+        backButton = root.backButton;
+        placeHolder = root.placeHolder;
+        placeHolder1 = root.placeHolder1;
+        placeHolder2 = root.placeHolder2;
+        volumeButton = root.volumeView.volumeButton;
         this.app = app;
         this.player = player;
 
@@ -50,16 +56,15 @@ public class MainMenuViewController extends BaseViewController {
     @Override
     public void initialize() {
     	
-        newJourneyButton.setOnMouseEntered(event -> jumpAnimation(newJourneyButton));
-        newJourneyButton.setOnMouseExited(event -> stopAnimation(newJourneyButton));
+    	backButton.setOnMouseEntered(event -> {
+    		jumpAnimation(backButton);
+//    		rotateAnimation(backButton);
+    	});
+    	backButton.setOnMouseExited(event -> stopBackAnimation(backButton));
 
         //It actually lags without stopping the animation xD
-        newJourneyButton.setOnAction(event -> stopAnimation(newJourneyButton));
-        newJourneyButton.setOnAction(event -> app.switchView(PrimaryViewNames.IN_GAME_VIEW));
-        
-        settingsButton.setOnAction(event -> app.switchView(PrimaryViewNames.SETTINGS_VIEW));
-        
-        musicButton.setOnAction(event -> app.switchView(PrimaryViewNames.MUSIC_VIEW));
+    	backButton.setOnAction(event -> stopBackAnimation(backButton));
+        backButton.setOnAction(event -> app.switchView(PrimaryViewNames.MAIN_MENU_VIEW));
         
 //      musicButton.setOnMouseEntered(event -> jumpAnimation(musicButton));
 //      musicButton.setOnMouseExited(event -> stopAnimation(musicButton));
@@ -75,14 +80,8 @@ public class MainMenuViewController extends BaseViewController {
 //        settingsButton.setOnAction(event -> stopAnimation(settingsButton));
 //        settingsButton.setOnAction(event -> app.switchView(PrimaryViewNames.SETTINGS_VIEW));
         
-        arliesJourneyImageView.setOnMouseClicked(event -> {
-        	
-        	arliesJourneyImageView.setId("title-label-clicked");
-        	arliesJourneyImageView.setImage(new Image(getClass().getResourceAsStream("/assets/images/title-special.png")));
-        	
-        });
         
-//        volumeButton.setOnAction(event -> cycleVolume());
+        volumeButton.setOnAction(event -> cycleVolume());
 
         
         
@@ -93,10 +92,10 @@ public class MainMenuViewController extends BaseViewController {
     	
 
         jumpAnimation = new ScaleTransition(Duration.seconds(0.1), button);
-        jumpAnimation.setFromX(1.0);
-        jumpAnimation.setFromY(1.0);
-        jumpAnimation.setToX(1.1);
-        jumpAnimation.setToY(1.1);
+        jumpAnimation.setFromX(0.6);
+        jumpAnimation.setFromY(0.6);
+        jumpAnimation.setToX(0.7);
+        jumpAnimation.setToY(0.7);
 
 
         jumpAnimation.setCycleCount(1);
@@ -106,6 +105,10 @@ public class MainMenuViewController extends BaseViewController {
 
 
         jumpAnimation.play();
+    }
+	
+	public void rotateAnimation(Button button) {
+    	
 
         rotateAnimation = new RotateTransition(Duration.seconds(0.5), button);
         rotateAnimation.setFromAngle(-2); 
@@ -121,39 +124,46 @@ public class MainMenuViewController extends BaseViewController {
     	button.setScaleX(1);
     	button.setScaleY(1);
     	button.setRotate(0);
-    	rotateAnimation.stop();
+//    	rotateAnimation.stop();
     }
     
-//    private void cycleVolume() {
-//
-//    	switch(root.volumeView.getVolumeConditionProperty()){
-//    		
-//    	case MUTED:
-//    		root.volumeView.setVolumeConditionProperty(VolumeConditions.LOW);
-//    		volumeButton.setId("volume-button-low");
-//    		player.setVolumeLow();
-//    		break;
-//    		
-//    	case LOW:
-//    		root.volumeView.setVolumeConditionProperty(VolumeConditions.MEDIUM);
-//    		volumeButton.setId("volume-button-medium");
-//    		player.setVolumeMedium();
-//    		break;
-//    		
-//    	case MEDIUM:
-//    		root.volumeView.setVolumeConditionProperty(VolumeConditions.HIGH);
-//    		volumeButton.setId("volume-button-high");
-//    		player.setVolumeHigh();
-//    		break;
-//    		
-//    	case HIGH:
-//    		root.volumeView.setVolumeConditionProperty(VolumeConditions.MUTED);
-//    		volumeButton.setId("volume-button-mute");
-//    		player.setVolumeMuted();
-//    		break;
-//    		
-//    	}
-//	}
+    public void stopBackAnimation(Button button) {
+    	button.setScaleX(0.6);
+    	button.setScaleY(0.6);
+    	button.setRotate(0);
+//    	rotateAnimation.stop();
+    }
+    
+    private void cycleVolume() {
+
+    	switch(root.volumeView.getVolumeConditionProperty()){
+    		
+    	case MUTED:
+    		root.volumeView.setVolumeConditionProperty(VolumeConditions.LOW);
+    		volumeButton.setId("volume-button-low");
+    		player.setVolumeLow();
+    		break;
+    		
+    	case LOW:
+    		root.volumeView.setVolumeConditionProperty(VolumeConditions.MEDIUM);
+    		volumeButton.setId("volume-button-medium");
+    		player.setVolumeMedium();
+    		break;
+    		
+    	case MEDIUM:
+    		root.volumeView.setVolumeConditionProperty(VolumeConditions.HIGH);
+    		volumeButton.setId("volume-button-high");
+    		player.setVolumeHigh();
+    		break;
+    		
+    	case HIGH:
+    		root.volumeView.setVolumeConditionProperty(VolumeConditions.MUTED);
+    		volumeButton.setId("volume-button-mute");
+    		player.setVolumeMuted();
+    		break;
+    		
+    	}
+	}
 
     @Override
     public void update() {

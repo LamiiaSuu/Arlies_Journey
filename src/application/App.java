@@ -7,12 +7,15 @@ import business.music.MP3Player;
 import controller.InGameViewController;
 import controller.JourneySelectionViewController;
 import controller.MainMenuViewController;
+import controller.SettingsMenuViewController;
+import controller.MusicMenuViewController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.stage.Stage;
 import presentation.InGameView;
 import presentation.PrimaryViewNames;
+import presentation.SettingsMenuView;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
@@ -25,6 +28,8 @@ public class App extends Application {
 	Pane inGameView;
 	Pane journeySelectionView;
 	Pane mainMenuView;
+	Pane musicMenuView;
+	Pane settingsMenuView;
 	MP3Player player;
 	
 	public static void main(String[] args) {
@@ -48,6 +53,14 @@ public class App extends Application {
 		MainMenuViewController mainMenuViewController = new MainMenuViewController(this, scene, player);
 		mainMenuView = mainMenuViewController.getRoot();
 		primaryViews.put(PrimaryViewNames.MAIN_MENU_VIEW, mainMenuView);
+		
+		SettingsMenuViewController settingsMenuViewController = new SettingsMenuViewController(this, scene, player);
+		settingsMenuView = settingsMenuViewController.getRoot();
+		primaryViews.put(PrimaryViewNames.SETTINGS_VIEW, settingsMenuView);
+		
+		MusicMenuViewController musicMenuViewController = new MusicMenuViewController(this, scene, player);
+		musicMenuView = musicMenuViewController.getRoot();
+		primaryViews.put(PrimaryViewNames.MUSIC_VIEW, musicMenuView);
 	}
 	
 	
@@ -88,6 +101,7 @@ public class App extends Application {
 	public void switchView(PrimaryViewNames viewName) {
 		Scene currentScene = primaryStage.getScene();
 		Pane nextView = primaryViews.get(viewName);
+		System.out.println(nextView);
 		if (nextView != null) {
 			currentScene.setRoot(nextView);
 			currentView.set(viewName);
