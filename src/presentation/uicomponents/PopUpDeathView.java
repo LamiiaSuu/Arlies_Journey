@@ -6,9 +6,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.PopupWindow;
 import presentation.BaseView;
 
-public class PopUpDeathView extends BaseView {
+public class PopUpDeathView extends PopupWindow {
 
     public Pane backgroundColorPane;
     public ImageView backgroundColor;
@@ -52,7 +53,7 @@ public class PopUpDeathView extends BaseView {
         
         mainButtonsLayout.getChildren().addAll(continueButton, menuButton, settingsButton);
         
-        this.getChildren().addAll(backgroundColorPane, mainButtonsLayout);
+        //this.getChildren().addAll(backgroundColorPane, mainButtonsLayout);
 		
 	}
 }

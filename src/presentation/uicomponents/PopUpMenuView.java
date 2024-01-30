@@ -2,13 +2,16 @@ package presentation.uicomponents;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.PopupControl;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Popup;
+import javafx.stage.PopupWindow;
 import presentation.BaseView;
 
-public class PopUpMenuView extends BaseView {
+public class PopUpMenuView extends PopupControl {
 
     public Pane backgroundColorPane;
     public ImageView backgroundColor;
@@ -18,6 +21,9 @@ public class PopUpMenuView extends BaseView {
     public Button settingsButton;
 	
 	public PopUpMenuView() {
+		
+		setId("pop-up-menu-panel");
+		Popup menuPopUp = new Popup();
 		
 		// create containers for the ui-components
         VBox mainButtonsLayout = new VBox();
@@ -45,15 +51,10 @@ public class PopUpMenuView extends BaseView {
         mainButtonsLayout.setScaleY(0.8);
         mainButtonsLayout.setAlignment(Pos.CENTER);
         
-        
-        Image backgroundColorImage = new Image(getClass().getResourceAsStream("/assets/images/pop-up-menu.png"));
-        backgroundColor = new ImageView(backgroundColorImage);
-        backgroundColorPane.getChildren().add(backgroundColor);
-        
         mainButtonsLayout.getChildren().addAll(continueButton, menuButton, settingsButton);
         
-        this.getChildren().addAll(backgroundColorPane, mainButtonsLayout);
-		
+        menuPopUp.getContent().add(mainButtonsLayout);
+        
 	}
 
 }
