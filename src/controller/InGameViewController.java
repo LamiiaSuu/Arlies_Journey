@@ -351,6 +351,10 @@ public class InGameViewController extends BaseViewController {
 		obstacleGen.update(this);
 		scoreBoardController.update();
 		HitBoxManager.clearCanvas(hitBoxGC);
+		
+		if (player.isBeat()) {
+			System.out.println("beat");
+		}
 
 	}
 

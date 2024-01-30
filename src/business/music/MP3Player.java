@@ -12,6 +12,13 @@ import javafx.util.Duration;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import java.util.Random;
+
+import ddf.minim.analysis.BeatDetect;
+import ddf.minim.AudioBuffer;
+import ddf.minim.AudioPlayer;
+import ddf.minim.Minim;
+import ddf.minim.analysis.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,13 +33,15 @@ public class MP3Player {
     private static final float MEDIUM_VOLUME = 0.25f;
     private static final float HIGH_VOLUME = 0.5f;
     
-    private SimpleMinim minim;
-    private SimpleAudioPlayer audioPlayer;
+    private Minim minim;
+    private AudioPlayer audioPlayer;
     private Playlist playlist;
     private Timeline endOfTrackChecker;
     private List<Integer> shuffledTracks;
     private Object[] shuffledTracksArray;
     private int trackNumber = 0;
+    
+    private BeatDetect beatDetect;
     
     private SimpleBooleanProperty paused;
     private SimpleBooleanProperty shuffle;
@@ -48,8 +57,11 @@ public class MP3Player {
     	
         playlist = new PlaylistManager().getPlaylist(STANDARD_PLAYLIST);
         minim = new SimpleMinim(true);
-        audioPlayer = minim.loadMP3File(playlist.getTrack(trackNumber).getPath());
+        audioPlayer = minim.loadFile(playlist.getTrack(trackNumber).getPath(),1024);
         volume = new SimpleDoubleProperty();
+        
+        beatDetect = new BeatDetect(1024, 44100.0f);
+        beatDetect.setSensitivity(300);
         
         volume(STANDARD_VOLUME);
 //        endOfTrackChecker = new Timeline(
@@ -57,21 +69,44 @@ public class MP3Player {
 //        );
 //        endOfTrackChecker.setCycleCount(Animation.INDEFINITE);
 //        endOfTrackChecker.play();
+        
+        analyze();
+    }
+    
+    public void analyze() {
+        if (audioPlayer != null) {
+            // Get the mixed audio data from the audio player
+            AudioBuffer mix = audioPlayer.mix;
+            
+            System.out.println(mix.toArray());
+            
+            // Convert the mixed audio data to a float array
+            float[] mixedAudio = mix.toArray();
+            
+            System.out.println(mixedAudio.toString());
+
+            // Pass the mixed audio data to BeatDetect for analysis
+            beatDetect.detect(audioPlayer.mix);
+        }
+    }
+    
+    public boolean isBeat() {
+        return beatDetect.isKick();
     }
 
     
     public void playDeathSound() {
-    	SimpleAudioPlayer player;
+    	AudioPlayer player;
     	
-    	player = minim.loadMP3File(getClass().getResource(DEATH_SOUND_PATH).getPath());
+    	player = minim.loadFile(getClass().getResource(DEATH_SOUND_PATH).getPath());
     	player.play();
         volumeSFX(player, volume.get()*3);
     }
     
     public void playJumpSound() {
-    	SimpleAudioPlayer player;
+    	AudioPlayer player;
     	
-    	player = minim.loadMP3File(getClass().getResource(JUMP_SOUND_PATH).getPath());
+    	player = minim.loadFile(getClass().getResource(JUMP_SOUND_PATH).getPath());
     	player.play();
         volumeSFX(player, volume.get()*2);
     }
@@ -83,8 +118,8 @@ public class MP3Player {
 //    }
     
     public void playCollidedSound() {
-    	SimpleAudioPlayer player;
-    	player = minim.loadMP3File(getClass().getResource(COLLIDED_SOUND_PATH).getPath());
+    	AudioPlayer player;
+    	player = minim.loadFile(getClass().getResource(COLLIDED_SOUND_PATH).getPath());
     	player.play();
         volumeSFX(player, volume.get()*2);
     }
@@ -95,6 +130,7 @@ public class MP3Player {
         playlist = new PlaylistManager().getPlaylist(playlistName);
         trackNumber = 0;
         playCurrentTrack();
+        
     }
     
     
@@ -218,7 +254,7 @@ public class MP3Player {
 
     private void playCurrentTrack() {
         audioPlayer.pause();
-        audioPlayer = minim.loadMP3File(playlist.getTrack(trackNumber).getPath());
+        audioPlayer = minim.loadFile(playlist.getTrack(trackNumber).getPath());
         currentlyPlayingTrack.set(playlist.getTrack(trackNumber));
         
         audioPlayer.play();
@@ -300,7 +336,7 @@ public class MP3Player {
         audioPlayer.setGain(decibels);
     }
     
-    public void volumeSFX(SimpleAudioPlayer player, double newVolume) {
+    public void volumeSFX(AudioPlayer player, double newVolume) {
         // Convert the volume to decibels
         float decibels = (float) (Math.log10(newVolume) * 20);
         // Set the gain in decibels
@@ -341,6 +377,8 @@ public class MP3Player {
             }
         }
     }
+    
+   
     
     public SimpleBooleanProperty pausedProperty() {
     	return paused;
