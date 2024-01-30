@@ -194,7 +194,6 @@ public class ObstacleGenerator {
     	
         if (HitBoxManager.checkCollision(arlieController.getArlieBody(), obstacle, obstacleType, hitBoxGC, hitBoxVisible)) {
             inGameViewController.arlieCollided();
-            System.out.println("Arlie Collided!");
         }
 //        
 //        if(hitBoxVisible) {

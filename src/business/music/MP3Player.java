@@ -20,6 +20,7 @@ import ddf.minim.Minim;
 import ddf.minim.analysis.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -57,11 +58,11 @@ public class MP3Player {
     	
         playlist = new PlaylistManager().getPlaylist(STANDARD_PLAYLIST);
         minim = new SimpleMinim(true);
-        audioPlayer = minim.loadFile(playlist.getTrack(trackNumber).getPath(),1024);
+        audioPlayer = minim.loadFile(playlist.getTrack(trackNumber).getPath());
         volume = new SimpleDoubleProperty();
-        
-        beatDetect = new BeatDetect(1024, 44100.0f);
-        beatDetect.setSensitivity(300);
+        beatDetect = new BeatDetect(1024, 41000.0f);
+        beatDetect.setSensitivity(850);
+
         
         volume(STANDARD_VOLUME);
 //        endOfTrackChecker = new Timeline(
@@ -70,28 +71,26 @@ public class MP3Player {
 //        endOfTrackChecker.setCycleCount(Animation.INDEFINITE);
 //        endOfTrackChecker.play();
         
-        analyze();
     }
     
     public void analyze() {
-        if (audioPlayer != null) {
+
             // Get the mixed audio data from the audio player
             AudioBuffer mix = audioPlayer.mix;
             
-            System.out.println(mix.toArray());
             
             // Convert the mixed audio data to a float array
             float[] mixedAudio = mix.toArray();
             
-            System.out.println(mixedAudio.toString());
+
 
             // Pass the mixed audio data to BeatDetect for analysis
-            beatDetect.detect(audioPlayer.mix);
-        }
+            beatDetect.detect(mixedAudio);
+            
     }
     
     public boolean isBeat() {
-        return beatDetect.isKick();
+        return beatDetect.isOnset(1);
     }
 
     
@@ -271,12 +270,13 @@ public class MP3Player {
 //    }
 
     public void stop() {
-        if (audioPlayer != null) {
-            audioPlayer = null;
-        }
         if (minim != null) {
             minim.stop();
         }
+        if (audioPlayer != null) {
+            audioPlayer = null;
+        }
+
     }
 
     public void pause() {

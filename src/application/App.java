@@ -94,6 +94,8 @@ public class App extends Application {
         primaryStage.setResizable(false);
         primaryStage.show();
         primaryStage.setOnCloseRequest(event -> {
+        	
+        	inGameViewController.pauseGame();
         	player.stop();
         	primaryStage.close();
         });

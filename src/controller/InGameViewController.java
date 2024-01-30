@@ -297,7 +297,7 @@ public class InGameViewController extends BaseViewController {
 		}
 	}
 
-	private void pauseGame() {
+	public void pauseGame() {
 		if (!gamePaused) {
 			obstacleGen.stopTimer();
 			timeline.pause();
@@ -351,7 +351,7 @@ public class InGameViewController extends BaseViewController {
 		obstacleGen.update(this);
 		scoreBoardController.update();
 		HitBoxManager.clearCanvas(hitBoxGC);
-		
+		player.analyze();
 		if (player.isBeat()) {
 			System.out.println("beat");
 		}

@@ -285,7 +285,6 @@ public class ArlieController extends BaseViewController {
 
     
     private void loadArlieImage() {
-        System.out.println("SWITCHING IMAGE TO: " + arlie.getConditionProperty());
         switch (arlie.getConditionProperty()) {
             case RUNNING:
                 Image runningImage = new Image(getClass().getResourceAsStream("/assets/images/arlie-running.png"));
