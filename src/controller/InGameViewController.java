@@ -44,6 +44,7 @@ public class InGameViewController extends BaseViewController {
 	ScoreBoardController scoreBoardController;
 	PopUpMenuViewController popUpMenuController;
 	PopUpDeathViewController popUpDeathController;
+	MainMenuViewController mainMenuViewController;
 	ObstacleGenerator obstacleGen;
 	BackgroundScroll backgroundScroll;
 	FloorScroller floorScroller;
@@ -51,13 +52,14 @@ public class InGameViewController extends BaseViewController {
 	App app;
 	Scene scene;
 
-	public InGameViewController(App app, Scene scene, MP3Player player) {
+	public InGameViewController(App app, Scene scene, MP3Player player, MainMenuViewController mainMenuViewController) {
 
 		root = new InGameView(app, scene, MAX_HEALTH);
 		this.app = app;
 		this.scene = scene;
 		this.player = player;
 		this.hitBoxGC = root.getHitBoxGraphicsContext();
+		this.mainMenuViewController = mainMenuViewController;
 
 		floorScroller = new FloorScroller(root.getGroundPane());
 		arlieController = new ArlieController(app, root.getArliePane(), root.arlie, scene, player);
@@ -103,12 +105,12 @@ public class InGameViewController extends BaseViewController {
 		timeline.play();
 
 		scene.setOnKeyPressed(event -> {
-
+			if(app.currentViewProperty().get().equals(PrimaryViewNames.IN_GAME_VIEW))
 			handleKeyPress(event.getCode());
 		});
 
 		scene.setOnKeyReleased(event -> {
-			if (!gamePaused && !gameOver)
+			if (app.currentViewProperty().get().equals(PrimaryViewNames.IN_GAME_VIEW) && !gamePaused && !gameOver)
 				handleKeyRelease(event.getCode());
 		});
 
@@ -142,9 +144,21 @@ public class InGameViewController extends BaseViewController {
 				if (newValue == true) {
 					pauseGame();
 					arlieController.confusedCircling();
+					mainMenuViewController.hideContinue();
+					popUpDeathController.getPopupRoot().show(app.getStage());
 				}
 			}
 		});
+		
+		popUpDeathController.getPopupRoot().setOnHidden(event -> {
+			if(app.currentViewProperty().get().equals(PrimaryViewNames.IN_GAME_VIEW))
+		    app.switchView(PrimaryViewNames.MAIN_MENU_VIEW);
+		});	
+		
+		popUpMenuController.getPopupRoot().setOnHidden(event -> {
+			if(app.currentViewProperty().get().equals(PrimaryViewNames.IN_GAME_VIEW))
+		    resumeGame();
+		});	
 
 		popUpDeathController.getButton("newJourney").setOnAction(event -> {
 			if (gameOver) {
@@ -157,7 +171,6 @@ public class InGameViewController extends BaseViewController {
 			if (gameOver) {
 				app.switchView(PrimaryViewNames.MAIN_MENU_VIEW);
 				popUpDeathController.getPopupRoot().hide();
-				resetGame();
 			}
 		});
 		
@@ -165,7 +178,6 @@ public class InGameViewController extends BaseViewController {
 			if (gameOver) {
 				app.switchView(PrimaryViewNames.SETTINGS_VIEW);
 				popUpDeathController.getPopupRoot().hide();
-				resetGame();
 			}
 		});
 		
@@ -180,7 +192,7 @@ public class InGameViewController extends BaseViewController {
 			if (gamePaused && !gameOver) {
 	        	app.switchView(PrimaryViewNames.MAIN_MENU_VIEW);
 				popUpMenuController.getPopupRoot().hide();
-				resetGame();
+				pauseGame();
 			}
 		});
 		
@@ -188,7 +200,7 @@ public class InGameViewController extends BaseViewController {
 			if (gamePaused && !gameOver) {
 	        	app.switchView(PrimaryViewNames.SETTINGS_VIEW);
 				popUpMenuController.getPopupRoot().hide();
-				resetGame();
+				pauseGame();
 			}
 		});
 
@@ -236,12 +248,9 @@ public class InGameViewController extends BaseViewController {
 
 		case ESCAPE:
 //            	app.switchView(PrimaryViewNames.MAIN_MENU_VIEW);
-			if (!gamePaused && !gameOver) {
+			if ( !gamePaused && !gameOver && !popUpMenuController.getPopupRoot().isShowing()) {
 				pauseGame();
 				popUpMenuController.getPopupRoot().show(this.app.getStage());
-			} else {
-				resumeGame();
-				popUpMenuController.getPopupRoot().hide();
 			}
 			break;
 
@@ -290,13 +299,14 @@ public class InGameViewController extends BaseViewController {
 
 	private void pauseGame() {
 		if (!gamePaused) {
+			obstacleGen.stopTimer();
 			timeline.pause();
 			backgroundScroll.stopTimer();
-			obstacleGen.stopTimer();
 			floorScroller.stopTimer();
 			gamePaused = true;
 			if (initializationPaused) {
 				player.pause();
+				mainMenuViewController.showContinue();
 			} else {
 				initializationPaused = true;
 			}
@@ -328,6 +338,7 @@ public class InGameViewController extends BaseViewController {
 		gamePaused = false;
 		gameOver = false;
 		godMode = false;
+		root.arlie.arlieBody.setTranslateY(groundY);
 	}
 
 	public void toggleHitBoxView() {
@@ -352,8 +363,9 @@ public class InGameViewController extends BaseViewController {
 		gameOver = true;
 		arlieController.gameOver();
 		player.playDeathSound();
+		
+		
 
-		popUpDeathController.getPopupRoot().show(this.app.getStage());
 
 	}
 

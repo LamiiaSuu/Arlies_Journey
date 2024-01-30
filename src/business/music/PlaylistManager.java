@@ -9,7 +9,6 @@ import java.util.List;
 public class PlaylistManager {
 	
 	public Playlist getPlaylist(String name) {
-		System.out.println("/assets/playlists/"+ name + ".m3u");
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("src/assets/playlists/"+ name + ".m3u"))) {
         	
             Playlist playlist = new Playlist(name);

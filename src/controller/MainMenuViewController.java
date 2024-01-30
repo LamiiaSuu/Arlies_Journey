@@ -16,6 +16,7 @@ import presentation.uicomponents.CurrentSongView;
 import presentation.uicomponents.VolumeView;
 import presentation.uicomponents.VolumeView.VolumeConditions;
 import javafx.animation.ScaleTransition;
+import javafx.geometry.Pos;
 
 public class MainMenuViewController extends BaseViewController {
 	private App app;
@@ -24,6 +25,7 @@ public class MainMenuViewController extends BaseViewController {
 	private Button newJourneyButton;
 //    private Button volumeButton;
 	private Button musicButton;
+	private Button continueButton;
 	private Button settingsButton;
 	private ImageView arliesJourneyImageView;
 	private MP3Player player;
@@ -37,6 +39,7 @@ public class MainMenuViewController extends BaseViewController {
 		musicButton = root.musicButton;
 		newJourneyButton = root.newJourneyButton;
 		settingsButton = root.settingsButton;
+		continueButton = root.continueButton;
 //        volumeButton = root.volumeView.volumeButton;
 		this.app = app;
 		this.player = player;
@@ -49,30 +52,59 @@ public class MainMenuViewController extends BaseViewController {
 
 	@Override
 	public void initialize() {
+		
+		continueButton.setOnMouseEntered(event -> jumpAnimation(continueButton));
+		continueButton.setOnMouseExited(event -> stopAnimation(continueButton));
+		
+		continueButton.setOnAction(event -> stopAnimation(continueButton));
+		continueButton.setOnAction(event -> {
+			app.switchView(PrimaryViewNames.IN_GAME_VIEW);
+		});
 
 		newJourneyButton.setOnMouseEntered(event -> jumpAnimation(newJourneyButton));
 		newJourneyButton.setOnMouseExited(event -> stopAnimation(newJourneyButton));
 
 		// It actually lags without stopping the animation xD
-		newJourneyButton.setOnAction(event -> stopAnimation(newJourneyButton));
-		newJourneyButton.setOnAction(event -> app.switchView(PrimaryViewNames.IN_GAME_VIEW));
+		newJourneyButton.setOnAction(event -> {
+			stopAnimation(newJourneyButton);
+		});
+		newJourneyButton.setOnAction(event -> {
+			if(app.getInGameViewController() != null)
+			app.getInGameViewController().resetGame();
+			app.switchView(PrimaryViewNames.IN_GAME_VIEW);
+		});
 
-		settingsButton.setOnAction(event -> app.switchView(PrimaryViewNames.SETTINGS_VIEW));
-
-		musicButton.setOnAction(event -> app.switchView(PrimaryViewNames.MUSIC_VIEW));
-
-		musicButton.setOnMouseEntered(event -> jumpAnimation(musicButton));
-		musicButton.setOnMouseExited(event -> stopAnimation(musicButton));
+		musicButton.setOnMouseEntered(event -> {
+			musicButton.setId("music-button-anim");
+			jumpAnimation(musicButton);
+			
+		});
+		musicButton.setOnMouseExited(event -> {
+			musicButton.setId("music-button");
+			stopAnimation(musicButton);
+		});
 
 		// It actually lags without stopping the animation xD
-		musicButton.setOnAction(event -> stopAnimation(musicButton));
+		musicButton.setOnAction(event -> {
+			musicButton.setId("music-button");
+			stopAnimation(musicButton);
+		});
 		musicButton.setOnAction(event -> app.switchView(PrimaryViewNames.MUSIC_VIEW));
 
-		settingsButton.setOnMouseEntered(event -> jumpAnimation(settingsButton));
-		settingsButton.setOnMouseExited(event -> stopAnimation(settingsButton));
+		settingsButton.setOnMouseEntered(event -> {
+			settingsButton.setId("settings-button-anim");
+			jumpAnimation(settingsButton);
+		});
+		settingsButton.setOnMouseExited(event -> {
+			settingsButton.setId("settings-button");
+			stopAnimation(settingsButton);
+		});
 
 		// It actually lags without stopping the animation xD
-		settingsButton.setOnAction(event -> stopAnimation(settingsButton));
+		settingsButton.setOnAction(event -> {
+			settingsButton.setId("settings-button");
+			stopAnimation(settingsButton);
+		});
 		settingsButton.setOnAction(event -> app.switchView(PrimaryViewNames.SETTINGS_VIEW));
 
 		arliesJourneyImageView.setOnMouseClicked(event -> {
@@ -86,10 +118,26 @@ public class MainMenuViewController extends BaseViewController {
 //        volumeButton.setOnAction(event -> cycleVolume());
 
 	}
+	
+	public void showContinue() {
+		continueButton.setVisible(true);
+//		root.mainButtonsLayout.setAlignment(Pos.BASELINE_CENTER);
+		root.mainButtonsLayout.setScaleX(0.65);
+        root.mainButtonsLayout.setScaleY(0.65);
+        root.mainButtonsLayout.setSpacing(18);
+	}
+	
+	public void hideContinue() {
+		continueButton.setVisible(false);
+//		root.mainButtonsLayout.setAlignment(Pos.BASELINE_CENTER);
+		root.mainButtonsLayout.setScaleX(0.8);
+        root.mainButtonsLayout.setScaleY(0.8);
+        root.mainButtonsLayout.setSpacing(25);
+	}
 
 	public void jumpAnimation(Button button) {
 
-		jumpAnimation = new ScaleTransition(Duration.seconds(0.1), button);
+		jumpAnimation = new ScaleTransition(Duration.seconds(0.05), button);
 		jumpAnimation.setFromX(1.0);
 		jumpAnimation.setFromY(1.0);
 		jumpAnimation.setToX(1.1);
@@ -112,8 +160,8 @@ public class MainMenuViewController extends BaseViewController {
 	}
 
 	public void stopAnimation(Button button) {
-		button.setScaleX(1);
-		button.setScaleY(1);
+		button.setScaleX(1.0);
+		button.setScaleY(1.0);
 		button.setRotate(0);
 		rotateAnimation.stop();
 	}

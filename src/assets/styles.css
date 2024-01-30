@@ -1,4 +1,4 @@
-#new-journey-button, #song-scroll-pane, #music-button, #empty-button, #settings-button, #volume-button, #volume-button-mute, #volume-button-low, #volume-button-medium, #volume-button-high, #title-label, #back-button {
+#new-journey-button, #new-journey-button-anim, #settings-button-anim, #music-button-anim, #menu-button, #continue-button, #song-scroll-pane, #music-button, #empty-button, #settings-button, #volume-button, #volume-button-mute, #volume-button-low, #volume-button-medium, #volume-button-high, #title-label, #back-button {
     -fx-background-color: transparent;
     -fx-background-repeat: no-repeat no-repeat;
     -fx-background-position: center;
@@ -38,13 +38,23 @@
     -fx-background-image: url("/assets/icons/new-journey-button.png");
 }
 
-#new-journey-button:hover {
+#new-journey-button-anim {
+    -fx-background-image: url("/assets/icons/new-journey-button.png");
+}
 
+#new-journey-button:hover {
+    -fx-rotate: -2deg;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
 }
 
 #music-button {
     -fx-background-image: url("/assets/icons/music-button.png");
     -fx-transition-duration: 0.2s;
+}
+
+#music-button-anim {
+    -fx-background-image: url("/assets/icons/music-button.png");
 }
 
 #empty-button {
@@ -70,6 +80,10 @@
 }
 
 #settings-button {
+    -fx-background-image: url("/assets/icons/settings-button.png");
+}
+
+#settings-button-anim {
     -fx-background-image: url("/assets/icons/settings-button.png");
 }
 

@@ -25,6 +25,7 @@ public class App extends Application {
 	private Stage primaryStage;
 	private HashMap<PrimaryViewNames, Pane> primaryViews;
 	private SimpleObjectProperty<PrimaryViewNames> currentView;
+	InGameViewController inGameViewController;
 	Pane inGameView;
 	Pane journeySelectionView;
 	Pane mainMenuView;
@@ -42,17 +43,17 @@ public class App extends Application {
 		player = new MP3Player();
 		player.start();
 		
-		InGameViewController inGameViewController = new InGameViewController(this, scene, player);
+		MainMenuViewController mainMenuViewController = new MainMenuViewController(this, scene, player);
+		mainMenuView = mainMenuViewController.getRoot();
+		primaryViews.put(PrimaryViewNames.MAIN_MENU_VIEW, mainMenuView);
+		
+		inGameViewController = new InGameViewController(this, scene, player, mainMenuViewController);
 		inGameView = inGameViewController.getRoot();
 		primaryViews.put(PrimaryViewNames.IN_GAME_VIEW, inGameView);
 
 		JourneySelectionViewController journeySelectionViewController = new JourneySelectionViewController(this, scene);
 		journeySelectionView = journeySelectionViewController.getRoot();
 		primaryViews.put(PrimaryViewNames.JOURNEY_SELECTION_VIEW, journeySelectionView);
-		
-		MainMenuViewController mainMenuViewController = new MainMenuViewController(this, scene, player);
-		mainMenuView = mainMenuViewController.getRoot();
-		primaryViews.put(PrimaryViewNames.MAIN_MENU_VIEW, mainMenuView);
 		
 		SettingsMenuViewController settingsMenuViewController = new SettingsMenuViewController(this, scene, player);
 		settingsMenuView = settingsMenuViewController.getRoot();
@@ -125,6 +126,10 @@ public class App extends Application {
 	
 	public Stage getStage() {
 		return primaryStage;
+	}
+	
+	public InGameViewController getInGameViewController() {
+		return inGameViewController;
 	}
 	 
 }

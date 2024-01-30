@@ -17,6 +17,8 @@ public class MainMenuView extends BaseView {
     public Button newJourneyButton;
     public Button musicButton;
     public Button settingsButton;
+    public Button continueButton;
+    public VBox mainButtonsLayout;
 //    public VolumeView volumeView;
     public CurrentSongView currentSongView;
     public TitleView titleView;
@@ -24,12 +26,13 @@ public class MainMenuView extends BaseView {
     public MainMenuView() {
     	
     	// create containers for the ui-components
-        VBox mainButtonsLayout = new VBox();
+        mainButtonsLayout = new VBox();
 
         // create ui-components
         newJourneyButton = new Button();
         musicButton = new Button();
         settingsButton = new Button();
+        continueButton = new Button();
 //        volumeView = new VolumeView();
         currentSongView = new CurrentSongView();
         titleView = new TitleView();
@@ -38,12 +41,16 @@ public class MainMenuView extends BaseView {
         newJourneyButton.getStyleClass().add("menu-button");
         musicButton.getStyleClass().add("menu-button");
         settingsButton.getStyleClass().add("menu-button");
+        continueButton.getStyleClass().add("menu-button");
         
         // add Id's
         newJourneyButton.setId("new-journey-button");
         musicButton.setId("music-button");
         settingsButton.setId("settings-button");
-
+        continueButton.setId("continue-button");
+        
+        continueButton.setVisible(false);
+        
         // set the box for the main button layout
         mainButtonsLayout.setSpacing(25);
         mainButtonsLayout.setScaleX(0.8);
@@ -65,7 +72,7 @@ public class MainMenuView extends BaseView {
         add(mainButtonsLayout, 1, 1);
 //        add(volumeView, 2, 2);
 
-        mainButtonsLayout.getChildren().addAll(newJourneyButton, musicButton, settingsButton);
+        mainButtonsLayout.getChildren().addAll(continueButton, newJourneyButton, musicButton, settingsButton);
 
         setId("main-menu-panel");
     }

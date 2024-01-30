@@ -119,6 +119,7 @@ public class MusicMenuViewController extends BaseViewController{
     }
     
     public void playSong(File file) {
+    	//HAS TO RESET GAME!
 
         System.out.println("Playing: " + file.getName());
     }

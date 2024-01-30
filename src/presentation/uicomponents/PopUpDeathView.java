@@ -54,7 +54,8 @@ public class PopUpDeathView extends Popup {
         mainButtonsLayout.setSpacing(25);
         mainButtonsLayout.setScaleX(0.8);
         mainButtonsLayout.setScaleY(0.8);
-        mainButtonsLayout.setAlignment(Pos.BASELINE_CENTER);
+        mainButtonsLayout.setAlignment(Pos.TOP_CENTER);
+        mainButtonsLayout.setTranslateY(mainButtonsLayout.getTranslateY()-50);
         mainButtonsLayout.getChildren().addAll(newJourneyButton, menuButton, settingsButton);
         
         VBox components = new VBox();
