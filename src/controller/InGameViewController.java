@@ -8,6 +8,8 @@ import business.game.elements.HealthBarController;
 import business.music.MP3Player;
 import controller.uicomponents.HitBoxManager;
 import controller.uicomponents.ObstacleGenerator;
+import controller.uicomponents.PopUpDeathViewController;
+import controller.uicomponents.PopUpMenuViewController;
 import controller.uicomponents.ScoreBoardController;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -21,6 +23,7 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import presentation.InGameView;
 import presentation.PrimaryViewNames;
+import presentation.uicomponents.PopUpMenuView;
 
 public class InGameViewController extends BaseViewController {
 	
@@ -39,6 +42,8 @@ public class InGameViewController extends BaseViewController {
 	ArlieController arlieController;
 	HealthBarController healthBarController;
 	ScoreBoardController scoreBoardController;
+    PopUpMenuViewController popUpMenuController;
+    PopUpDeathViewController popUpDeathController;
 	ObstacleGenerator obstacleGen;
 	BackgroundScroll backgroundScroll;
 	FloorScroller floorScroller;
@@ -62,7 +67,8 @@ public class InGameViewController extends BaseViewController {
 		backgroundScroll = new BackgroundScroll(root.getBackgroundPane());
 		healthBarController = new HealthBarController(root.getHealthBar());
 		scoreBoardController = new ScoreBoardController(root.getScoreBar());
-		
+		popUpMenuController = new PopUpMenuViewController(app, scene);
+		popUpDeathController = new PopUpDeathViewController(app, scene);
 		
 		initialize();
 		
@@ -188,9 +194,15 @@ public class InGameViewController extends BaseViewController {
             	toggleGodMode();
             	break;
                 
-            // change to menu pop up
             case ESCAPE:
-            	app.switchView(PrimaryViewNames.MAIN_MENU_VIEW);
+//            	app.switchView(PrimaryViewNames.MAIN_MENU_VIEW);
+            	if(!gamePaused) {
+	            	pauseGame();
+	            	popUpMenuController.getPopupRoot().show(this.app.getStage());
+            	} else {
+            		resumeGame();
+            		popUpMenuController.getPopupRoot().hide();
+            	}
             	break;
             
         }
@@ -303,6 +315,8 @@ public class InGameViewController extends BaseViewController {
 		gameOver = true;
 		arlieController.gameOver();
 		player.playDeathSound();
+		
+		popUpDeathController.getPopupRoot().show(this.app.getStage());
 		
 	}
 	

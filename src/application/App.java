@@ -123,5 +123,8 @@ public class App extends Application {
 		return primaryStage.getMaxHeight();
 	}
 	
+	public Stage getStage() {
+		return primaryStage;
+	}
 	 
 }

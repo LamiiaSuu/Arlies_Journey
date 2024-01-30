@@ -81,6 +81,9 @@
     -fx-background-image: url("/assets/icons/back-button.png");
 }
 
+#continue-button {
+    -fx-background-image: url("/assets/icons/continue-button.png");
+}
 
 #settings-button:hover {
     -fx-rotate: 2deg;
@@ -155,6 +158,11 @@
 }
 
 #pop-up-menu-panel {
+    -fx-background-image: url("/assets/images/pop-up-menu.png");
+    -fx-background-size: 100% 100%;
+}
+
+#pop-up-death-panel {
     -fx-background-image: url("/assets/images/pop-up-menu.png");
     -fx-background-size: 100% 100%;
 }

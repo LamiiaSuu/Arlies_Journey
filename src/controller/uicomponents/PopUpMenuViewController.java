@@ -8,13 +8,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import presentation.uicomponents.PopUpMenuView;
 import presentation.PrimaryViewNames;
 
 public class PopUpMenuViewController extends BaseViewController {
 	
 	private App app;
-	PopUpMenuView root;
+	private PopUpMenuView root;
     private Button continueButton;
     private Button menuButton;
     private Button settingsButton;
@@ -32,7 +33,7 @@ public class PopUpMenuViewController extends BaseViewController {
 	@Override
     public void initialize() {
     	
-        continueButton.setOnAction(event -> app.switchView(PrimaryViewNames.IN_GAME_VIEW));
+        continueButton.setOnAction(event -> root.hide());
         menuButton.setOnAction(event -> app.switchView(PrimaryViewNames.MAIN_MENU_VIEW));
         settingsButton.setOnAction(event -> app.switchView(PrimaryViewNames.SETTINGS_VIEW));
     }
@@ -42,5 +43,8 @@ public class PopUpMenuViewController extends BaseViewController {
 		// TODO Auto-generated method stub
 
 	}
-
+	
+	public PopUpMenuView getPopupRoot() {
+		return root;
+	}
 }

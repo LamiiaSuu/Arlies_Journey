@@ -10,6 +10,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import presentation.uicomponents.HealthBar;
+import presentation.uicomponents.PopUpDeathView;
+import presentation.uicomponents.PopUpMenuView;
 import presentation.uicomponents.ScoreBar;
 
 public class InGameView extends BaseView {
@@ -18,6 +20,8 @@ public class InGameView extends BaseView {
     public Arlie arlie;
     public HealthBar healthBar;
     public ScoreBar scoreBar;
+    public PopUpMenuView popUpMenu;
+    public PopUpDeathView popUpDeath;
     
     public Pane arliePane;
     public Pane obstaclePane;
@@ -38,6 +42,8 @@ public class InGameView extends BaseView {
         arlie = new Arlie();
         healthBar = new HealthBar(maxHealth);
         scoreBar = new ScoreBar(app.getWidth(), app.getHeight());
+        popUpMenu = new PopUpMenuView();
+        popUpDeath = new PopUpDeathView();
         
         arliePane = new Pane();
         obstaclePane = new Pane();

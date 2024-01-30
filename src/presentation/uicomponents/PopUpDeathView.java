@@ -4,39 +4,49 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.stage.PopupWindow;
-import presentation.BaseView;
+import javafx.stage.Popup;
 
-public class PopUpDeathView extends PopupWindow {
+public class PopUpDeathView extends Popup {
 
-    public Pane backgroundColorPane;
-    public ImageView backgroundColor;
-    
-	public Button continueButton;
+	public Button newJourneyButton;
     public Button menuButton;
     public Button settingsButton;
+    public HBox deathTextBox;
+    public Pane popUp;
 	
 	public PopUpDeathView() {
+
+		Pane popUp = new Pane();
+		popUp.setScaleX(0.8);
+		popUp.setScaleY(0.8);
+	    popUp.setId("pop-up-death-panel");
+	    
+	    deathTextBox = new HBox();
+	    ImageView deathImage = new ImageView(new Image(getClass().getResourceAsStream("/assets/images/death-text.png")));
+	    deathTextBox.getChildren().addAll(deathImage);
+	    deathTextBox.setScaleX(0.6);
+	    deathTextBox.setScaleY(0.6);
+	    deathTextBox.setAlignment(Pos.CENTER);
 		
 		// create containers for the ui-components
         VBox mainButtonsLayout = new VBox();
 
         // create ui-components
 
-        backgroundColorPane = new Pane();
-        continueButton = new Button();
+        newJourneyButton = new Button();
         menuButton = new Button();
         settingsButton = new Button();
         
         // add style classes
-        continueButton.getStyleClass().add("menu-button");
+        newJourneyButton.getStyleClass().add("menu-button");
         menuButton.getStyleClass().add("menu-button");
         settingsButton.getStyleClass().add("menu-button");
         
         // add Id's
-        continueButton.setId("new-journey-button");
+        newJourneyButton.setId("new-journey-button");
         menuButton.setId("music-button");
         settingsButton.setId("settings-button");
 
@@ -44,16 +54,17 @@ public class PopUpDeathView extends PopupWindow {
         mainButtonsLayout.setSpacing(25);
         mainButtonsLayout.setScaleX(0.8);
         mainButtonsLayout.setScaleY(0.8);
-        mainButtonsLayout.setAlignment(Pos.CENTER);
+        mainButtonsLayout.setAlignment(Pos.BASELINE_CENTER);
+        mainButtonsLayout.getChildren().addAll(newJourneyButton, menuButton, settingsButton);
         
+        VBox components = new VBox();
+        components.getChildren().addAll(deathTextBox, mainButtonsLayout);
         
-        Image backgroundColorImage = new Image(getClass().getResourceAsStream("/assets/images/pop-up-death.png"));
-        backgroundColor = new ImageView(backgroundColorImage);
-        backgroundColorPane.getChildren().add(backgroundColor);
+        popUp.getChildren().addAll(components);
         
-        mainButtonsLayout.getChildren().addAll(continueButton, menuButton, settingsButton);
+        getContent().add(popUp);
         
-        //this.getChildren().addAll(backgroundColorPane, mainButtonsLayout);
+        this.hide();
 		
 	}
 }
