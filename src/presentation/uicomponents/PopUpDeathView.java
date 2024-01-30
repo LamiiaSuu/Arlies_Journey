@@ -47,7 +47,7 @@ public class PopUpDeathView extends Popup {
         
         // add Id's
         newJourneyButton.setId("new-journey-button");
-        menuButton.setId("music-button");
+        menuButton.setId("menu-button");
         settingsButton.setId("settings-button");
 
         // set the box for the main button layout

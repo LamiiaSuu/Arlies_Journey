@@ -57,7 +57,7 @@
     -fx-font-size: 20px;
 }
 
-#empty-button:hover {
+#empty-button:hover, #menu-button:hover, #continue-button:hover {
     -fx-rotate: -2deg;
     -fx-scale-x: 1.1;
     -fx-scale-y: 1.1;
@@ -83,6 +83,10 @@
 
 #continue-button {
     -fx-background-image: url("/assets/icons/continue-button.png");
+}
+
+#menu-button {
+    -fx-background-image: url("/assets/icons/menu-button.png");
 }
 
 #settings-button:hover {

@@ -32,10 +32,21 @@ public class PopUpMenuViewController extends BaseViewController {
 	
 	@Override
     public void initialize() {
-    	
-        continueButton.setOnAction(event -> root.hide());
-        menuButton.setOnAction(event -> app.switchView(PrimaryViewNames.MAIN_MENU_VIEW));
-        settingsButton.setOnAction(event -> app.switchView(PrimaryViewNames.SETTINGS_VIEW));
+		
+		continueButton.setOnAction((event) -> {
+			root.hide();
+        });
+        
+        
+        menuButton.setOnAction((event) -> {
+        	app.switchView(PrimaryViewNames.MAIN_MENU_VIEW);
+        	root.hide();
+        });
+        
+        settingsButton.setOnAction((event) -> {
+        	app.switchView(PrimaryViewNames.SETTINGS_VIEW);
+        	root.hide();
+        });
     }
 
 	@Override

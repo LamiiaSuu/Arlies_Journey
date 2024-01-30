@@ -30,9 +30,22 @@ public class PopUpDeathViewController extends BaseViewController {
 	@Override
     public void initialize() {
     	
-        newJourneyButton.setOnAction(event -> app.switchView(PrimaryViewNames.IN_GAME_VIEW));
-        menuButton.setOnAction(event -> app.switchView(PrimaryViewNames.MAIN_MENU_VIEW));
-        settingsButton.setOnAction(event -> app.switchView(PrimaryViewNames.SETTINGS_VIEW));
+        newJourneyButton.setOnAction((event) -> {
+        	app.switchView(PrimaryViewNames.IN_GAME_VIEW);
+        	root.hide();
+        });
+        
+        
+        menuButton.setOnAction((event) -> {
+        	app.switchView(PrimaryViewNames.MAIN_MENU_VIEW);
+        	root.hide();
+        });
+        
+        settingsButton.setOnAction((event) -> {
+        	app.switchView(PrimaryViewNames.SETTINGS_VIEW);
+        	root.hide();
+        });
+       
     }
 
 	@Override
