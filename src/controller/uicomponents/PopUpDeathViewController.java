@@ -13,49 +13,43 @@ public class PopUpDeathViewController extends BaseViewController {
 	private App app;
 	Scene scene;
 	private PopUpDeathView root;
-    private Button newJourneyButton;
-    private Button menuButton;
-    private Button settingsButton;
-    
-	public PopUpDeathViewController(App app, Scene scene) {
-        root = new PopUpDeathView();
-        newJourneyButton = root.newJourneyButton;
-        menuButton = root.menuButton;
-        settingsButton = root.settingsButton;
-        this.app = app;
+	private Button newJourneyButton;
+	private Button menuButton;
+	private Button settingsButton;
 
-        initialize();
-    }
-	
+	public PopUpDeathViewController(App app, Scene scene) {
+		root = new PopUpDeathView();
+		newJourneyButton = root.newJourneyButton;
+		menuButton = root.menuButton;
+		settingsButton = root.settingsButton;
+		this.app = app;
+
+		initialize();
+	}
+
 	@Override
-    public void initialize() {
-    	
-        newJourneyButton.setOnAction((event) -> {
-        	app.switchView(PrimaryViewNames.IN_GAME_VIEW);
-        	root.hide();
-        });
-        
-        
-        menuButton.setOnAction((event) -> {
-        	app.switchView(PrimaryViewNames.MAIN_MENU_VIEW);
-        	root.hide();
-        });
-        
-        settingsButton.setOnAction((event) -> {
-        	app.switchView(PrimaryViewNames.SETTINGS_VIEW);
-        	root.hide();
-        });
-       
-    }
+	public void initialize() {
+	}
 
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	public PopUpDeathView getPopupRoot() {
 		return root;
+	}
+
+	public Button getButton(String button) {
+		switch (button) {
+		default:
+			return newJourneyButton;
+		case "menuButton":
+			return menuButton;
+		case "settingsButton":
+			return settingsButton;
+		}
 	}
 
 }

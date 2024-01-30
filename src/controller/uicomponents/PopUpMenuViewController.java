@@ -32,21 +32,6 @@ public class PopUpMenuViewController extends BaseViewController {
 	
 	@Override
     public void initialize() {
-		
-		continueButton.setOnAction((event) -> {
-			root.hide();
-        });
-        
-        
-        menuButton.setOnAction((event) -> {
-        	app.switchView(PrimaryViewNames.MAIN_MENU_VIEW);
-        	root.hide();
-        });
-        
-        settingsButton.setOnAction((event) -> {
-        	app.switchView(PrimaryViewNames.SETTINGS_VIEW);
-        	root.hide();
-        });
     }
 
 	@Override
@@ -57,5 +42,16 @@ public class PopUpMenuViewController extends BaseViewController {
 	
 	public PopUpMenuView getPopupRoot() {
 		return root;
+	}
+	
+	public Button getButton(String button) {
+		switch (button) {
+		default:
+			return continueButton;
+		case "menuButton":
+			return menuButton;
+		case "settingsButton":
+			return settingsButton;
+		}
 	}
 }
