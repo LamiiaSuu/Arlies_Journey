@@ -36,7 +36,7 @@ public class HitBoxManager {
         }
         
         else if (obstacleType.equalsIgnoreCase("fruit-tree")) {
-            double radius2 = image2.getBoundsInParent().getHeight() * (hitboxRadiusFactor * 0.75) / 2.0;
+            double radius2 = image2.getBoundsInParent().getHeight() * (hitboxRadiusFactor * 0.60) / 2.0;
             double centerX2 = image2.getBoundsInParent().getMinX() + image2.getBoundsInParent().getWidth() / 2.0;
             double centerY2 = image2.getBoundsInParent().getMinY() + image2.getBoundsInParent().getHeight() / 2.0;
             
@@ -49,7 +49,7 @@ public class HitBoxManager {
         }
         
         else if (obstacleType.equalsIgnoreCase("bush")) {
-            double radius2 = image2.getBoundsInParent().getHeight() * (hitboxRadiusFactor * 0.75) / 2.0;
+            double radius2 = image2.getBoundsInParent().getHeight() * (hitboxRadiusFactor * 1) / 2.0;
             double centerX2 = image2.getBoundsInParent().getMinX() + image2.getBoundsInParent().getWidth() / 2.0;
             double centerY2 = image2.getBoundsInParent().getMinY() + image2.getBoundsInParent().getHeight() / 2.0;
             
@@ -62,7 +62,7 @@ public class HitBoxManager {
         }
         
         else if (obstacleType.equalsIgnoreCase("flower-bush")) {
-            double radius2 = image2.getBoundsInParent().getHeight() * (hitboxRadiusFactor * 0.75) / 2.0;
+            double radius2 = image2.getBoundsInParent().getHeight() * (hitboxRadiusFactor * 1) / 2.0;
             double centerX2 = image2.getBoundsInParent().getMinX() + image2.getBoundsInParent().getWidth() / 2.0;
             double centerY2 = image2.getBoundsInParent().getMinY() + image2.getBoundsInParent().getHeight() / 2.0;
             
@@ -88,9 +88,9 @@ public class HitBoxManager {
         }
         
         else {
-            double radius2 = image2.getBoundsInParent().getHeight() * (hitboxRadiusFactor * 0.75) / 2.0;
-            double centerX2 = image2.getBoundsInParent().getMinX() + image2.getBoundsInParent().getWidth() / 2.0;
-            double centerY2 = image2.getBoundsInParent().getMinY() + image2.getBoundsInParent().getHeight() / 2.0;
+            double radius2 = image2.getBoundsInParent().getHeight() * (hitboxRadiusFactor * 0.85) / 2.0;
+            double centerX2 = image2.getBoundsInParent().getMinX() + image2.getBoundsInParent().getWidth() / 3.5;
+            double centerY2 = image2.getBoundsInParent().getMinY() + image2.getBoundsInParent().getHeight() / 2.25;
 
             if(hitBoxVisible) {
             	drawCircleObstacles(centerX2, centerY2, radius2, gc, obstacleType);

@@ -151,7 +151,7 @@ public class InGameViewController extends BaseViewController {
 		});
 		
 		popUpDeathController.getPopupRoot().setOnHidden(event -> {
-			if(app.currentViewProperty().get().equals(PrimaryViewNames.IN_GAME_VIEW))
+			if(app.currentViewProperty().get().equals(PrimaryViewNames.IN_GAME_VIEW )&& gameOver)
 		    app.switchView(PrimaryViewNames.MAIN_MENU_VIEW);
 		});	
 		
@@ -162,8 +162,9 @@ public class InGameViewController extends BaseViewController {
 
 		popUpDeathController.getButton("newJourney").setOnAction(event -> {
 			if (gameOver) {
-				popUpDeathController.getPopupRoot().hide();
 				resetGame();
+				popUpDeathController.getPopupRoot().hide();
+				
 			}
 		});
 		
@@ -348,12 +349,12 @@ public class InGameViewController extends BaseViewController {
 	@Override
 	public void update() {
 		arlieController.update();
-		obstacleGen.update(this);
+
 		scoreBoardController.update();
 		HitBoxManager.clearCanvas(hitBoxGC);
 		player.analyze();
 		if (player.isBeat()) {
-			System.out.println("beat");
+			obstacleGen.update(this);
 		}
 
 	}

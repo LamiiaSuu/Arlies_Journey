@@ -2,20 +2,15 @@ package application;
 
 import java.util.HashMap;
 
-import business.game.elements.Arlie;
 import business.music.MP3Player;
 import controller.InGameViewController;
-import controller.JourneySelectionViewController;
 import controller.MainMenuViewController;
 import controller.SettingsMenuViewController;
 import controller.MusicMenuViewController;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.stage.Stage;
-import presentation.InGameView;
 import presentation.PrimaryViewNames;
-import presentation.SettingsMenuView;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
@@ -50,10 +45,6 @@ public class App extends Application {
 		inGameViewController = new InGameViewController(this, scene, player, mainMenuViewController);
 		inGameView = inGameViewController.getRoot();
 		primaryViews.put(PrimaryViewNames.IN_GAME_VIEW, inGameView);
-
-		JourneySelectionViewController journeySelectionViewController = new JourneySelectionViewController(this, scene);
-		journeySelectionView = journeySelectionViewController.getRoot();
-		primaryViews.put(PrimaryViewNames.JOURNEY_SELECTION_VIEW, journeySelectionView);
 		
 		SettingsMenuViewController settingsMenuViewController = new SettingsMenuViewController(this, scene, player);
 		settingsMenuView = settingsMenuViewController.getRoot();

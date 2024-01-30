@@ -25,7 +25,7 @@ import java.util.List;
 
 
 public class MP3Player {
-    private static final String STANDARD_PLAYLIST = "journey";
+    private static final String STANDARD_SONG = "src/assets/songs/spezials.mp3";
     private static final String JUMP_SOUND_PATH = "/assets/sounds/jump-sound.mp3";
     private static final String DEATH_SOUND_PATH = "/assets/sounds/oof.mp3";
     private static final String COLLIDED_SOUND_PATH = "/assets/sounds/collided-sound.mp3";
@@ -56,12 +56,11 @@ public class MP3Player {
     	shuffle = new SimpleBooleanProperty(false);
     	currentlyPlayingTrack = new SimpleObjectProperty<Track>();
     	
-        playlist = new PlaylistManager().getPlaylist(STANDARD_PLAYLIST);
         minim = new SimpleMinim(true);
-        audioPlayer = minim.loadFile(playlist.getTrack(trackNumber).getPath());
+        audioPlayer = minim.loadFile(STANDARD_SONG);
         volume = new SimpleDoubleProperty();
         beatDetect = new BeatDetect(1024, 41000.0f);
-        beatDetect.setSensitivity(850);
+        beatDetect.setSensitivity(750);
 
         
         volume(STANDARD_VOLUME);
@@ -75,22 +74,21 @@ public class MP3Player {
     
     public void analyze() {
 
-            // Get the mixed audio data from the audio player
+
             AudioBuffer mix = audioPlayer.mix;
             
             
-            // Convert the mixed audio data to a float array
+
             float[] mixedAudio = mix.toArray();
             
 
-
-            // Pass the mixed audio data to BeatDetect for analysis
             beatDetect.detect(mixedAudio);
             
     }
     
     public boolean isBeat() {
-        return beatDetect.isOnset(1);
+    	
+        return beatDetect.isOnset(0);
     }
 
     

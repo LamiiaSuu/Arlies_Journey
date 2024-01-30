@@ -50,9 +50,32 @@ public class ObstacleGenerator {
         this.groundY = groundY;
     }
 
+//    public void update(InGameViewController inGameViewController) {
+//        if (timer == interval) {
+//            timer = 0;
+//            inGameViewController.generatedObstacle();
+//            int obstacleToSpawn = random.nextInt(1000);
+//            
+//            if(obstacleToSpawn>990) {
+//            	generateZeppelin();
+//            }else if(obstacleToSpawn>845) {
+//            	generateFlowerBush();
+//            }else if(obstacleToSpawn>650) {
+//            	generateFruitTree();
+//            }else if(obstacleToSpawn>500) {
+//            	generateBush();
+//            }else if(obstacleToSpawn>250) {
+//            	generateTree();
+//            }else if(obstacleToSpawn>0) {
+//            	generateBalloon();
+//            }
+//        } else {
+//            timer++;
+//        }
+//    }
+    
     public void update(InGameViewController inGameViewController) {
-        if (timer == interval) {
-            timer = 0;
+
             inGameViewController.generatedObstacle();
             int obstacleToSpawn = random.nextInt(1000);
             
@@ -69,9 +92,7 @@ public class ObstacleGenerator {
             }else if(obstacleToSpawn>0) {
             	generateBalloon();
             }
-        } else {
-            timer++;
-        }
+
     }
 
     private void generateTree() {
