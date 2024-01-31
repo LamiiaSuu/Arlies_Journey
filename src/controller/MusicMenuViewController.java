@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
+import javazoom.jl.player.Player;
 import presentation.MusicMenuView;
 import presentation.PrimaryViewNames;
 
@@ -18,13 +19,16 @@ public class MusicMenuViewController extends BaseViewController{
 	public Button backButton;
 	MusicMenuView root;
 	App app;
-	
+	MP3Player player;
+	MainMenuViewController mainMenuViewController;
     private RotateTransition rotateAnimation;
     private ScaleTransition jumpAnimation;
 
-    public MusicMenuViewController(App app, Scene scene, MP3Player player) {
+    public MusicMenuViewController(App app, Scene scene, MP3Player player, MainMenuViewController mainMenuViewController) {
         this.root = new MusicMenuView(this);
         this.app = app;
+        this.player = player;
+        this.mainMenuViewController = mainMenuViewController;
         backButton = root.backButton;
         
 
@@ -63,7 +67,11 @@ public class MusicMenuViewController extends BaseViewController{
                 songButton.setId("empty-button"); 
 
 
-                songButton.setOnAction(event -> playSong(file));
+                songButton.setOnAction(event -> {
+                	playSong(file);
+                	mainMenuViewController.hideContinue();
+                	app.switchView(PrimaryViewNames.MAIN_MENU_VIEW);
+                });
 
 
                 root.songButtons.add(songButton);
@@ -119,9 +127,7 @@ public class MusicMenuViewController extends BaseViewController{
     }
     
     public void playSong(File file) {
-    	//HAS TO RESET GAME!
-
-        System.out.println("Playing: " + file.getName());
+    	player.selectSong(file.getName());
     }
 
 	@Override

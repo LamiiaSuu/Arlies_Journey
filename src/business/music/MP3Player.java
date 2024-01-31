@@ -1,31 +1,23 @@
 package business.music;
 
-import de.hsrm.mi.eibo.simpleplayer.SimpleAudioPlayer;
 import de.hsrm.mi.eibo.simpleplayer.SimpleMinim;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleFloatProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.util.Duration;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import java.util.Random;
+
 
 import ddf.minim.analysis.BeatDetect;
 import ddf.minim.AudioBuffer;
 import ddf.minim.AudioPlayer;
 import ddf.minim.Minim;
-import ddf.minim.analysis.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
 public class MP3Player {
-    private static final String STANDARD_SONG = "src/assets/songs/spezials.mp3";
+    private static final String STANDARD_SONG = "spezials.mp3";
     private static final String JUMP_SOUND_PATH = "/assets/sounds/jump-sound.mp3";
     private static final String DEATH_SOUND_PATH = "/assets/sounds/oof.mp3";
     private static final String COLLIDED_SOUND_PATH = "/assets/sounds/collided-sound.mp3";
@@ -34,13 +26,12 @@ public class MP3Player {
     private static final float MEDIUM_VOLUME = 0.25f;
     private static final float HIGH_VOLUME = 0.5f;
     
+    private String selectedSong;
+    private String selectedSongPath = "src/assets/songs/" + STANDARD_SONG;
+    
     private Minim minim;
     private AudioPlayer audioPlayer;
-    private Playlist playlist;
     private Timeline endOfTrackChecker;
-    private List<Integer> shuffledTracks;
-    private Object[] shuffledTracksArray;
-    private int trackNumber = 0;
     
     private BeatDetect beatDetect;
     
@@ -57,7 +48,7 @@ public class MP3Player {
     	currentlyPlayingTrack = new SimpleObjectProperty<Track>();
     	
         minim = new SimpleMinim(true);
-        audioPlayer = minim.loadFile(STANDARD_SONG);
+        audioPlayer = minim.loadFile(selectedSongPath);
         volume = new SimpleDoubleProperty();
         beatDetect = new BeatDetect(1024, 41000.0f);
         beatDetect.setSensitivity(750);
@@ -90,6 +81,7 @@ public class MP3Player {
     	
         return beatDetect.isOnset(0);
     }
+    
 
     
     public void playDeathSound() {
@@ -123,9 +115,7 @@ public class MP3Player {
 
     
     
-    public void play(String playlistName) {
-        playlist = new PlaylistManager().getPlaylist(playlistName);
-        trackNumber = 0;
+    public void play() {
         playCurrentTrack();
         
     }
@@ -247,13 +237,20 @@ public class MP3Player {
 //        }
 //    }
 
-
+    public void selectSong(String songName) {
+    	selectedSong = songName;
+    	updateSongPath();
+    	audioPlayer = minim.loadFile(selectedSongPath);
+    	volume(volume.get());
+    }
+    
+    public void updateSongPath() {
+    	selectedSongPath = "src/assets/songs/" + selectedSong;
+    }
 
     private void playCurrentTrack() {
         audioPlayer.pause();
-        audioPlayer = minim.loadFile(playlist.getTrack(trackNumber).getPath());
-        currentlyPlayingTrack.set(playlist.getTrack(trackNumber));
-        
+        audioPlayer = minim.loadFile(selectedSongPath);
         audioPlayer.play();
         volume(volume.get());
     }
@@ -348,13 +345,6 @@ public class MP3Player {
         return 0.0; // Return 0 if no audio player or not playing
     }
 
-    public Track getCurrentTrack() {
-        if (shuffle.get()) {
-            return playlist.getTrack((int) shuffledTracksArray[trackNumber]);
-        } else {
-            return playlist.getTrack(trackNumber);
-        }
-    }
     
     public void seek(double position) {
         if (audioPlayer != null) {

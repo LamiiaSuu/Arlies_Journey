@@ -50,7 +50,7 @@ public class App extends Application {
 		settingsMenuView = settingsMenuViewController.getRoot();
 		primaryViews.put(PrimaryViewNames.SETTINGS_VIEW, settingsMenuView);
 		
-		MusicMenuViewController musicMenuViewController = new MusicMenuViewController(this, scene, player);
+		MusicMenuViewController musicMenuViewController = new MusicMenuViewController(this, scene, player, mainMenuViewController);
 		musicMenuView = musicMenuViewController.getRoot();
 		primaryViews.put(PrimaryViewNames.MUSIC_VIEW, musicMenuView);
 	}
