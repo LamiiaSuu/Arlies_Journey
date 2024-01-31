@@ -26,6 +26,7 @@ public class ArlieController extends BaseViewController {
 	private static final double ARLIE_RUNNING_ANIMATION_INTENSITY = 7;
 	private static final double ARLIE_RUNNING_ANIMATION_FREQUENCY_MILLIS = 200;
 	private static final boolean SMALL_CROUCH = false;
+	private double adjustedVelocity;
 	private double adjustedGravity;
 	private double jumpVelocity;
 	private double gravityModifier;
@@ -174,9 +175,11 @@ public class ArlieController extends BaseViewController {
     
     public void setFPS(int fps) {
     	if(fps == 60) {
-    		adjustedGravity = 0.9;
+    		adjustedVelocity = JUMP_INITIAL_VELOCITY*1.1;
+    		adjustedGravity = BASE_GRAVITY*1.2;
     	}else {
     		adjustedGravity = BASE_GRAVITY;
+    		adjustedVelocity = JUMP_INITIAL_VELOCITY;
     	}
     }
 
@@ -208,7 +211,7 @@ public class ArlieController extends BaseViewController {
             double newY = arlieBody.getTranslateY() + jumpVelocity;
             arlieBody.setTranslateY(newY);
 
-            double rotationSpeed = (1 - Math.exp(jumpVelocity / JUMP_INITIAL_VELOCITY)) * 2;
+            double rotationSpeed = (1 - Math.exp(jumpVelocity / adjustedVelocity)) * 2;
             double rotation = arlieBody.getRotate() + rotationSpeed;
 
             if (doubleJumped) {
@@ -219,7 +222,7 @@ public class ArlieController extends BaseViewController {
 //                rotation -= rotationPerTick;
                 
               //Instead of this one could use jumpVelocity to calculate how many ticks until Arlie reaches the ground. The ticks could be equally, or through a Math.abs(Math.exp) to get a smooth roll with Arlie always landing on his "feet"
-            	rotationSpeed = ((Math.cos(jumpVelocity / JUMP_INITIAL_VELOCITY)) * 10);
+            	rotationSpeed = ((Math.cos(jumpVelocity / adjustedVelocity)) * 10);
             	rotation = arlieBody.getRotate() + rotationSpeed;
             }
 
@@ -315,11 +318,11 @@ public class ArlieController extends BaseViewController {
     		doubleJumpable = false;
     		arlie.setConditionProperty(ArlieConditions.JUMPING);
     		player.playJumpSound();
-    		jumpVelocity = JUMP_INITIAL_VELOCITY;
+    		jumpVelocity = adjustedVelocity;
     	
     	//Double Jump!
     	}else if (arlie.getConditionProperty() == ArlieConditions.JUMPING && doubleJumpable && !doubleJumped || arlie.getConditionProperty() == ArlieConditions.CONFUSED) {
-    		jumpVelocity = 0.5*JUMP_INITIAL_VELOCITY;
+    		jumpVelocity = 0.5*adjustedVelocity;
     		doubleJumpable = false;
     		doubleJumped = true;
 
