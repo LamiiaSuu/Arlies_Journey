@@ -203,9 +203,9 @@ public class ObstacleGenerator {
             public void handle(long now) {
             	double speed = 5.0;
 	           	if(fps == 60) {
-	           		speed = 10;
+	           		speed = 12;
 	        	 } else if(fps == 540) {
-	        		 speed = 1.11;
+	        		 speed = 1.33;
 	        	 }
                 obstacle.setTranslateX(obstacle.getTranslateX() - speed);
 

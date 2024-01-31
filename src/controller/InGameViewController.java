@@ -291,7 +291,7 @@ public class InGameViewController extends BaseViewController {
 			gameLoopOffSet = 1;
 			break;
 		case 540:
-			gameLoopOffSet = 8;
+			gameLoopOffSet = 7;
 			break;
 		}
 	}

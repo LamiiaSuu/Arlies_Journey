@@ -36,11 +36,11 @@ public class FloorScroller {
             @Override
             public void handle(long now) {
             	 if(fps == 60) {
-            		 y -= 10;
+            		 y -= 12;
             	 }else if(fps == 144){
             		 y -= 5;
             	 }else {
-            		 y -= 1.11;
+            		 y -= 1.33;
             	 }
                  for (int i = 0; i < imageViewFloor.length; i++) {
                      double newX = y + IMAGE_WIDTH * i;
