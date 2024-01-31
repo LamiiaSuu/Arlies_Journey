@@ -4,6 +4,7 @@ import application.App;
 import business.game.elements.Arlie.ArlieConditions;
 import business.music.MP3Player;
 import controller.BaseViewController;
+import controller.InGameViewController;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -15,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import javafx.scene.image.Image;
+import javafx.scene.effect.*;
 
 
 public class ArlieController extends BaseViewController {
@@ -32,7 +34,15 @@ public class ArlieController extends BaseViewController {
 	private boolean doubleJumped;
 	private long lastUpdateTime = System.currentTimeMillis();
 	
+	InGameViewController inGameViewController;
 	MP3Player player;
+	ColorAdjust colorAdjust;
+	ColorAdjust godColorAdjust;
+	Bloom bloom;
+	Glow glow;
+	Glow godGlow;
+	Blend blend;
+	Blend godBlend;
 	
     private SimpleBooleanProperty confusedLandedProperty;
     
@@ -47,14 +57,14 @@ public class ArlieController extends BaseViewController {
     
    
 
-    public ArlieController(App app, Pane root, Arlie arlie, Scene scene, MP3Player player) {
+    public ArlieController(App app, Pane root, Arlie arlie, Scene scene, MP3Player player, InGameViewController inGameViewController) {
         if (root != null) {
             this.root = root;
             this.app = app;
             this.arlie = arlie;
             this.arlieBody = arlie.arlieBody;
             this.player = player;
-            
+            this.inGameViewController = inGameViewController;
             
             root.setFocusTraversable(true);
             root.requestFocus();
@@ -68,6 +78,32 @@ public class ArlieController extends BaseViewController {
 	@SuppressWarnings("unchecked")
 	@Override
     public void initialize() {
+		
+		colorAdjust = new ColorAdjust();
+		
+		godColorAdjust = new ColorAdjust();
+		
+		blend = new Blend();
+		
+		godBlend = new Blend();
+		
+		glow = new Glow();
+		
+		godGlow = new Glow();
+		
+		godGlow.setLevel(0.55);
+		godColorAdjust.setHue(-0.9);
+		godColorAdjust.setBrightness(-0.1);
+		godBlend.setBottomInput(godGlow);
+		godBlend.setTopInput(godColorAdjust);
+		
+		
+    	colorAdjust.setHue(-0.48);
+    	glow.setLevel(0.5);
+    	blend.setBottomInput(glow);
+    	blend.setTopInput(colorAdjust);
+		
+		
 		
 		confusedLandedProperty = new SimpleBooleanProperty(false);
         
@@ -282,6 +318,26 @@ public class ArlieController extends BaseViewController {
     	
     	
     }
+    
+    public void setInvulnerableEffect() {
+//    	arlieBody.setEffect(bloom);
+//    	arlieBody.setEffect(colorAdjust);
+    	if(!inGameViewController.godMode && arlieBody.getEffect() == null) {
+    		arlieBody.setEffect(blend);
+    	}
+    	
+    }
+    
+    public void setGodModeEffect() {
+    	arlieBody.setEffect(godBlend);
+    }
+    
+    public void clearInvulnerableEffect() {
+    	if(arlieBody.getEffect() != null && !inGameViewController.godMode) {
+    		arlieBody.setEffect(null);
+    	}
+    	
+    }
 
     
     private void loadArlieImage() {
@@ -317,7 +373,10 @@ public class ArlieController extends BaseViewController {
     
     public void confusedCircling() {
         	
-
+		if(arlieBody.getEffect() != null) {
+    		arlieBody.setEffect(null);
+    	}
+    	
             rotateAnimation = new RotateTransition(Duration.seconds(1.0), arlieBody);
             rotateAnimation.setFromAngle(-3); 
             rotateAnimation.setToAngle(6);   
@@ -326,6 +385,7 @@ public class ArlieController extends BaseViewController {
             rotateAnimation.setAutoReverse(true);
 
             rotateAnimation.play();
+            
         
     }
     

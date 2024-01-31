@@ -97,7 +97,7 @@ public class MP3Player {
     	
     	player = minim.loadFile(getClass().getResource(JUMP_SOUND_PATH).getPath());
     	player.play();
-        volumeSFX(player, volume.get()*2);
+        volumeSFX(player, volume.get()*1.5);
     }
     
 //    public void playLandSound() {

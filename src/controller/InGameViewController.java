@@ -27,16 +27,17 @@ import presentation.uicomponents.PopUpMenuView;
 
 public class InGameViewController extends BaseViewController {
 
-	private static final Duration COLLISION_INTERVAL = Duration.seconds(2);
+	private static final Duration COLLISION_INTERVAL = Duration.seconds(1.5);
 	private static final int MAX_HEALTH = 3;
 
 	private boolean gamePaused = false;
 	private boolean gameOver = false;
-	private boolean godMode = false;
+	public boolean godMode = false;
 	private boolean initializationPaused = false;
 	private Timeline timeline;
 	private double groundY;
 	private long lastCollisionTime = 0;
+	private long currentTime;
 	MP3Player player;
 	InGameView root;
 	ArlieController arlieController;
@@ -62,7 +63,7 @@ public class InGameViewController extends BaseViewController {
 		this.mainMenuViewController = mainMenuViewController;
 
 		floorScroller = new FloorScroller(root.getGroundPane());
-		arlieController = new ArlieController(app, root.getArliePane(), root.arlie, scene, player);
+		arlieController = new ArlieController(app, root.getArliePane(), root.arlie, scene, player, this);
 		obstacleGen = new ObstacleGenerator(root.getObstaclePane(), root.getHitBoxGraphicsContext(), scene,
 				arlieController, this);
 		backgroundScroll = new BackgroundScroll(root.getBackgroundPane());
@@ -146,6 +147,7 @@ public class InGameViewController extends BaseViewController {
 					arlieController.confusedCircling();
 					mainMenuViewController.hideContinue();
 					popUpDeathController.getPopupRoot().show(app.getStage());
+
 				}
 			}
 		});
@@ -261,10 +263,12 @@ public class InGameViewController extends BaseViewController {
 	public void toggleGodMode() {
 		if (godMode) {
 			godMode = false;
+			arlieController.clearInvulnerableEffect();
 		} else {
+			arlieController.setGodModeEffect();
 			godMode = true;
 		}
-
+		
 		healthBarController.toggleGodMode(godMode);
 
 	}
@@ -340,6 +344,7 @@ public class InGameViewController extends BaseViewController {
 		gameOver = false;
 		godMode = false;
 		root.arlie.arlieBody.setTranslateY(groundY);
+		arlieController.clearInvulnerableEffect();
 	}
 
 	public void toggleHitBoxView() {
@@ -349,7 +354,7 @@ public class InGameViewController extends BaseViewController {
 	@Override
 	public void update() {
 		arlieController.update();
-
+		updateInvulnerableEffect();
 		scoreBoardController.update();
 		HitBoxManager.clearCanvas(hitBoxGC);
 		player.analyze();
@@ -376,7 +381,7 @@ public class InGameViewController extends BaseViewController {
 
 	public void arlieCollided() {
 
-		long currentTime = System.currentTimeMillis();
+		currentTime = System.currentTimeMillis();
 
 		if (currentTime - lastCollisionTime >= COLLISION_INTERVAL.toMillis()) {
 
@@ -386,8 +391,21 @@ public class InGameViewController extends BaseViewController {
 			lastCollisionTime = currentTime;
 
 			player.playCollidedSound();
+			
+			
 		}
-
+		arlieController.setInvulnerableEffect();
+	}
+	
+	public void updateInvulnerableEffect() {
+		
+		currentTime = System.currentTimeMillis();
+		
+		if (currentTime - lastCollisionTime >= COLLISION_INTERVAL.toMillis()) {
+			
+			arlieController.clearInvulnerableEffect();
+			
+		}
 	}
 
 	public void setGround() {
