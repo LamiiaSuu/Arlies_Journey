@@ -25,6 +25,9 @@ public class MP3Player {
     private static final float LOW_VOLUME = 0.125f;
     private static final float MEDIUM_VOLUME = 0.25f;
     private static final float HIGH_VOLUME = 0.5f;
+    private static final int DIFFICULTY_HARD = 600;
+    private static final int DIFFICULTY_MEDIUM = 750;
+    private static final int DIFFICULTY_EASY = 800;
     
     private String selectedSong;
     private String selectedSongPath = "src/assets/songs/" + STANDARD_SONG;
@@ -51,7 +54,7 @@ public class MP3Player {
         audioPlayer = minim.loadFile(selectedSongPath);
         volume = new SimpleDoubleProperty();
         beatDetect = new BeatDetect(1024, 41000.0f);
-        beatDetect.setSensitivity(750);
+        beatDetect.setSensitivity(DIFFICULTY_MEDIUM);
 
         
         volume(STANDARD_VOLUME);
