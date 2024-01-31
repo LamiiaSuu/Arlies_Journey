@@ -1,10 +1,15 @@
 package controller.uicomponents;
 
+import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +25,10 @@ import business.game.elements.Zeppelin;
 import controller.InGameViewController;
 
 public class ObstacleGenerator {
-
+	
+	//FPS_60 = 16, FPS_144 = 7, FPS_240 = 4
+    private static final int FPS = 7;
+	
     private int timer;
     private int interval;
     private int hitBoxCounter;
@@ -34,6 +42,7 @@ public class ObstacleGenerator {
     private ArlieController arlieController;
     private InGameViewController inGameViewController;
     private List<AnimationTimer> timers;
+    private List<Timeline> timelines;
 
     public ObstacleGenerator(Pane gamePane, GraphicsContext gc, Scene scene, ArlieController arlieController, InGameViewController inGameViewController) {
         this.inGameViewController = inGameViewController;
@@ -44,6 +53,7 @@ public class ObstacleGenerator {
         this.interval = 60;
         this.random = new Random();
         this.timers = new ArrayList<>();
+        this.timelines = new ArrayList<>();
         this.hitBoxGC = gc;
         this.hitBoxCounter = 0;
     }
@@ -77,7 +87,7 @@ public class ObstacleGenerator {
 //    }
     
     public void update(InGameViewController inGameViewController) {
-
+    	System.out.println(Arrays.toString(timelines.toArray()));
             inGameViewController.generatedObstacle();
             int obstacleToSpawn = random.nextInt(1000);
             
@@ -108,11 +118,10 @@ public class ObstacleGenerator {
 
         gamePane.getChildren().add(obstacle);
 
-        AnimationTimer animTimer = createAnimationTimer(obstacle, "tree");
-        animTimer.start();
-        timers.add(animTimer);
+        Timeline timeline = createTimeline(obstacle, "tree");
+        timelines.add(timeline);
+        timeline.play();
     }
-    
 
     private void generateBalloon() {
         int balloonType = random.nextInt(6) + 1;
@@ -125,11 +134,11 @@ public class ObstacleGenerator {
 
         gamePane.getChildren().add(obstacle);
 
-        AnimationTimer animTimer = createAnimationTimer(obstacle, "balloon");
-        animTimer.start();
-        timers.add(animTimer);
+        Timeline timeline = createTimeline(obstacle, "balloon");
+        timelines.add(timeline);
+        timeline.play();
     }
-    
+
     private void generateFruitTree() {
         int treeType = random.nextInt(4) + 1;
         double fitHeight = random.nextInt(100) + 250;
@@ -141,11 +150,11 @@ public class ObstacleGenerator {
 
         gamePane.getChildren().add(obstacle);
 
-        AnimationTimer animTimer = createAnimationTimer(obstacle, "fruit-tree");
-        animTimer.start();
-        timers.add(animTimer);
+        Timeline timeline = createTimeline(obstacle, "fruit-tree");
+        timelines.add(timeline);
+        timeline.play();
     }
-    
+
     private void generateBush() {
         int bushType = random.nextInt(5) + 1;
         double fitHeight = random.nextInt(100) + 100;
@@ -157,11 +166,11 @@ public class ObstacleGenerator {
 
         gamePane.getChildren().add(obstacle);
 
-        AnimationTimer animTimer = createAnimationTimer(obstacle, "bush");
-        animTimer.start();
-        timers.add(animTimer);
+        Timeline timeline = createTimeline(obstacle, "bush");
+        timelines.add(timeline);
+        timeline.play();
     }
-    
+
     private void generateFlowerBush() {
         int bushType = random.nextInt(4) + 1;
         double fitHeight = random.nextInt(100) + 100;
@@ -173,13 +182,12 @@ public class ObstacleGenerator {
 
         gamePane.getChildren().add(obstacle);
 
-        AnimationTimer animTimer = createAnimationTimer(obstacle, "flower-bush");
-        animTimer.start();
-        timers.add(animTimer);
+        Timeline timeline = createTimeline(obstacle, "flower-bush");
+        timelines.add(timeline);
+        timeline.play();
     }
-    
+
     private void generateZeppelin() {
-//        int bushType = random.nextInt(1) + 1; // Change face later?
         double fitHeight = random.nextInt(150) + 200;
 
         Zeppelin obstacle = new Zeppelin(fitHeight);
@@ -189,45 +197,38 @@ public class ObstacleGenerator {
 
         gamePane.getChildren().add(obstacle);
 
-        AnimationTimer animTimer = createAnimationTimer(obstacle, "zeppelin");
-        animTimer.start();
-        timers.add(animTimer);
+        Timeline timeline = createTimeline(obstacle, "zeppelin");
+        timelines.add(timeline);
+        timeline.play();
     }
-    
-    
-    	//DEV NOTES:
-    //still kind of experimental, needs more fine tuning. Animationtimers are frame-based, not time-based. This implementation is better for everything that doesn't run on 144hz- yet it feels kind of wonky still.
-    //The normal animationTimer method below works best on my pc.
-    //Timelines do not look natural at all...
-    private AnimationTimer createAnimationTimer(ImageView obstacle, String obstacleType) {
-        long[] lastTime = {0};
 
-        return new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                if (lastTime[0] == 0) {
-                    lastTime[0] = now;
-                    return;
-                }
+    private Timeline createTimeline(ImageView obstacle, String obstacleType) {
+        final Timeline[] timelineHolder = {null}; 
 
-                double elapsedTime = (now - lastTime[0]) / 1e9;
-                lastTime[0] = now;
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.millis(FPS/2), event -> {
+                    double speed = 2.5;
+                    obstacle.setTranslateX(obstacle.getTranslateX() - speed);
 
-                double speed = 720.0;
-                double deltaX = speed * elapsedTime;
+                    if (obstacle.getTranslateX() + obstacle.getBoundsInLocal().getWidth() < 0) {
+                        gamePane.getChildren().remove(obstacle);
+                        if (timelineHolder[0] != null) {
+                            timelineHolder[0].stop();
+                            timelines.remove(timelineHolder[0]);
+                        }
+                    } else {
+                        checkCollision(obstacle, obstacleType);
+                    }
+                })
+        );
+        timeline.setCycleCount(Animation.INDEFINITE);
 
-                obstacle.setTranslateX(obstacle.getTranslateX() - deltaX);
+        timelineHolder[0] = timeline;
 
-                if (obstacle.getTranslateX() + obstacle.getBoundsInLocal().getWidth() < 0) {
-                    gamePane.getChildren().remove(obstacle);
-                    stop();
-                    timers.remove(this);
-                } else {
-                    checkCollision(obstacle, obstacleType);
-                }
-            }
-        };
+        return timeline;
     }
+
+
 
 
     
@@ -272,17 +273,11 @@ public class ObstacleGenerator {
     
 
     public void stopTimer() {
-        for (AnimationTimer timer : timers) {
-            timer.stop();
-        }
+        timelines.forEach(Timeline::stop);
     }
 
-
     public void startTimer() {
-        // Restart all timers
-        for (AnimationTimer timer : timers) {
-            timer.start();
-        }
+        timelines.forEach(Timeline::play);
     }
     
     public void toggleHitBoxVisibility() {
@@ -295,16 +290,10 @@ public class ObstacleGenerator {
     }
     
     public void reset() {
-    	while (!timers.isEmpty()) {
-    		timers.get(0).stop();
-    		timers.remove(timers.get(0));
-    	}
-    	
-    	
-    	while (!gamePane.getChildren().isEmpty()) {
-    		gamePane.getChildren().removeAll(gamePane.getChildren().get(0));
-    	}
+        timelines.forEach(Timeline::stop);
+        gamePane.getChildren().clear();
     }
+
 }
 
 // TIMELINE VERSION - STILL KINDA WHACKY AND WONKY. MARIO BENUTZ DAS FÜRS BALANCING UND HITBOXES, DAS HAT SCHON THE RIGHT SPEED AN SICH

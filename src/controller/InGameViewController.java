@@ -29,6 +29,8 @@ public class InGameViewController extends BaseViewController {
 
 	private static final Duration COLLISION_INTERVAL = Duration.seconds(1.5);
 	private static final int MAX_HEALTH = 3;
+	//FPS_60 = 16, FPS_144 = 7, FPS_240 = 4
+    private static final int FPS = 7;
 
 	private boolean gamePaused = false;
 	private boolean gameOver = false;
@@ -101,7 +103,7 @@ public class InGameViewController extends BaseViewController {
 			}
 		});
 
-		timeline = new Timeline(new KeyFrame(Duration.millis(16), event -> update()));
+		timeline = new Timeline(new KeyFrame(Duration.millis(FPS*2.4), event -> update()));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
 
