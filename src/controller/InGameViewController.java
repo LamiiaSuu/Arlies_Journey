@@ -12,6 +12,7 @@ import controller.uicomponents.PopUpDeathViewController;
 import controller.uicomponents.PopUpMenuViewController;
 import controller.uicomponents.ScoreBoardController;
 import javafx.animation.Animation;
+import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
@@ -34,10 +35,12 @@ public class InGameViewController extends BaseViewController {
 	private boolean gameOver = false;
 	public boolean godMode = false;
 	private boolean initializationPaused = false;
-	private Timeline timeline;
+	private AnimationTimer gameLoop;
 	private double groundY;
 	private long lastCollisionTime = 0;
 	private long currentTime;
+	private double gameLoopOffSet = 1;
+	private double gameLoopCounter = 0;
 	MP3Player player;
 	InGameView root;
 	ArlieController arlieController;
@@ -101,9 +104,21 @@ public class InGameViewController extends BaseViewController {
 			}
 		});
 
-		timeline = new Timeline(new KeyFrame(Duration.millis(16), event -> update()));
-		timeline.setCycleCount(Animation.INDEFINITE);
-		timeline.play();
+		
+		gameLoop = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+            	
+            	if(gameLoopCounter == gameLoopOffSet) {
+            		gameLoopCounter = 0;
+            		update();
+            	}
+            	
+            	else {
+            		gameLoopCounter++;
+            	}
+            }
+        };
 
 		scene.setOnKeyPressed(event -> {
 			if(app.currentViewProperty().get().equals(PrimaryViewNames.IN_GAME_VIEW))
@@ -305,7 +320,7 @@ public class InGameViewController extends BaseViewController {
 	public void pauseGame() {
 		if (!gamePaused) {
 			obstacleGen.stopTimer();
-			timeline.pause();
+			gameLoop.stop();
 			backgroundScroll.stopTimer();
 			floorScroller.stopTimer();
 			gamePaused = true;
@@ -321,7 +336,7 @@ public class InGameViewController extends BaseViewController {
 	// Resume the game
 	public void resumeGame() {
 		if (gamePaused && !gameOver) {
-			timeline.play();
+			gameLoop.start();
 			obstacleGen.startTimer();
 			backgroundScroll.startTimer();
 			floorScroller.startTimer();
@@ -339,7 +354,7 @@ public class InGameViewController extends BaseViewController {
 		player.resume();
 		scoreBoardController.setScore(0);
 		arlieController.reset();
-		timeline.play();
+		gameLoop.start();
 		gamePaused = false;
 		gameOver = false;
 		godMode = false;

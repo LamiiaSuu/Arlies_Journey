@@ -21,8 +21,8 @@ import javafx.scene.effect.*;
 
 public class ArlieController extends BaseViewController {
 
-	private static final double GRAVITY = 1.0; 
-	private static final double JUMP_INITIAL_VELOCITY = -25.0;
+	private static final double GRAVITY = 0.75; 
+	private static final double JUMP_INITIAL_VELOCITY = -22;
 	private static final double ARLIE_RUNNING_ANIMATION_INTENSITY = 7;
 	private static final double ARLIE_RUNNING_ANIMATION_FREQUENCY_MILLIS = 200;
 	private static final boolean SMALL_CROUCH = false;
@@ -210,7 +210,7 @@ public class ArlieController extends BaseViewController {
 //                rotation -= rotationPerTick;
                 
               //Instead of this one could use jumpVelocity to calculate how many ticks until Arlie reaches the ground. The ticks could be equally, or through a Math.abs(Math.exp) to get a smooth roll with Arlie always landing on his "feet"
-            	rotationSpeed = ((Math.cos(jumpVelocity / JUMP_INITIAL_VELOCITY)) * 12);
+            	rotationSpeed = ((Math.cos(jumpVelocity / JUMP_INITIAL_VELOCITY)) * 10);
             	rotation = arlieBody.getRotate() + rotationSpeed;
             }
 
