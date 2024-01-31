@@ -174,7 +174,7 @@ public class ArlieController extends BaseViewController {
     
     public void setFPS(int fps) {
     	if(fps == 60) {
-    		adjustedGravity = 0.88;
+    		adjustedGravity = 0.9;
     	}else {
     		adjustedGravity = BASE_GRAVITY;
     	}
