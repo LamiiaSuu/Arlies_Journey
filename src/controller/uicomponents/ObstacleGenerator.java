@@ -23,6 +23,7 @@ public class ObstacleGenerator {
     private int timer;
     private int interval;
     private int hitBoxCounter;
+    private int fps;
     private double groundY;
     private boolean hitBoxVisible;
     private Random random;
@@ -44,6 +45,10 @@ public class ObstacleGenerator {
         this.timers = new ArrayList<>();
         this.hitBoxGC = gc;
         this.hitBoxCounter = 0;
+    }
+    
+    public void setFPS(int fps) {
+    	this.fps = fps;
     }
 
     public void setGround(double groundY) {
@@ -196,7 +201,12 @@ public class ObstacleGenerator {
         return new AnimationTimer() {
             @Override
             public void handle(long now) {
-                double speed = 5.0;
+            	double speed = 5.0;
+	           	if(fps == 60) {
+	           		speed = 10;
+	        	 } else if(fps == 540) {
+	        		 speed = 1.11;
+	        	 }
                 obstacle.setTranslateX(obstacle.getTranslateX() - speed);
 
                 if (obstacle.getTranslateX() + obstacle.getBoundsInLocal().getWidth() < 0) {

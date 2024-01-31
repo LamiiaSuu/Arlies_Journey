@@ -6,15 +6,12 @@ import controller.uicomponents.VolumeViewController;
 import javafx.animation.RotateTransition;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
-import presentation.MainMenuView;
 import presentation.PrimaryViewNames;
 import presentation.SettingsMenuView;
 import presentation.uicomponents.CurrentSongView;
-import presentation.uicomponents.TitleView;
 import presentation.uicomponents.VolumeView;
 import presentation.uicomponents.VolumeView.VolumeConditions;
 import javafx.animation.ScaleTransition;
@@ -23,27 +20,31 @@ public class SettingsMenuViewController extends BaseViewController {
     private App app;
     SettingsMenuView root;
     VolumeViewController volumeViewController;
-    public Button placeHolder;
+    MainMenuViewController mainMenuViewController;
+    public Button FPSButton;
     public Button placeHolder1;
     public Button placeHolder2;
     public Button backButton;
     public Button volumeButton;
     public VolumeView volumeView;
     public CurrentSongView currentSongView;
+    private InGameViewController inGameViewController;
     private ImageView arliesJourneyImageView;
     private MP3Player player;
     
     private RotateTransition rotateAnimation;
     private ScaleTransition jumpAnimation;
 
-    public SettingsMenuViewController(App app, Scene scene, MP3Player player) {
+    public SettingsMenuViewController(App app, Scene scene, MP3Player player, InGameViewController inGameViewController, MainMenuViewController mainMenuViewController) {
         root = new SettingsMenuView();
         arliesJourneyImageView = root.titleView.title;
         backButton = root.backButton;
-        placeHolder = root.placeHolder;
+        FPSButton = root.FPSButton;
         placeHolder1 = root.placeHolder1;
         placeHolder2 = root.placeHolder2;
         volumeButton = root.volumeView.volumeButton;
+        this.inGameViewController = inGameViewController;
+        this.mainMenuViewController = mainMenuViewController;
         this.app = app;
         this.player = player;
 
@@ -65,6 +66,25 @@ public class SettingsMenuViewController extends BaseViewController {
         //It actually lags without stopping the animation xD
     	backButton.setOnAction(event -> stopBackAnimation(backButton));
         backButton.setOnAction(event -> app.switchView(PrimaryViewNames.MAIN_MENU_VIEW));
+        
+        FPSButton.setOnAction(event -> {
+
+        	if(inGameViewController.getFPS() == 60) {
+        		FPSButton.setId("fps-144-button");
+        		inGameViewController.setFPS(144);
+        		mainMenuViewController.hideContinue();
+        	}else if(inGameViewController.getFPS() == 144){
+        		
+        		FPSButton.setId("fps-540-button");
+        		inGameViewController.setFPS(540);
+        		mainMenuViewController.hideContinue();
+        	}else {
+        		FPSButton.setId("fps-60-button");
+        		inGameViewController.setFPS(60);
+        		mainMenuViewController.hideContinue();
+        	}
+        	System.out.println(inGameViewController.getFPS());
+        });
         
 //      musicButton.setOnMouseEntered(event -> jumpAnimation(musicButton));
 //      musicButton.setOnMouseExited(event -> stopAnimation(musicButton));

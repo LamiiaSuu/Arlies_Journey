@@ -17,10 +17,15 @@ public class FloorScroller {
     private Pane root;
     private AnimationTimer timer;
     private Image[] imagesFloor;
+    private int fps;
 
     public FloorScroller(Pane root) {
         this.root = root;
         start();
+    }
+    
+    public void setFPS(int fps) {
+    	this.fps = fps;
     }
 
     public void start() {
@@ -30,7 +35,13 @@ public class FloorScroller {
     	timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-            	 y -= 5;
+            	 if(fps == 60) {
+            		 y -= 10;
+            	 }else if(fps == 144){
+            		 y -= 5;
+            	 }else {
+            		 y -= 1.11;
+            	 }
                  for (int i = 0; i < imageViewFloor.length; i++) {
                      double newX = y + IMAGE_WIDTH * i;
 

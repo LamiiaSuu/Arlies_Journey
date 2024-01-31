@@ -41,6 +41,7 @@ public class InGameViewController extends BaseViewController {
 	private long currentTime;
 	private double gameLoopOffSet = 1;
 	private double gameLoopCounter = 0;
+	private int fps;
 	MP3Player player;
 	InGameView root;
 	ArlieController arlieController;
@@ -64,6 +65,7 @@ public class InGameViewController extends BaseViewController {
 		this.player = player;
 		this.hitBoxGC = root.getHitBoxGraphicsContext();
 		this.mainMenuViewController = mainMenuViewController;
+		this.fps = 60;
 
 		floorScroller = new FloorScroller(root.getGroundPane());
 		arlieController = new ArlieController(app, root.getArliePane(), root.arlie, scene, player, this);
@@ -83,6 +85,8 @@ public class InGameViewController extends BaseViewController {
 	public void initialize() {
 
 		groundY = scene.getHeight() * 0.6;
+		
+		setFPS(fps);
 
 		setGround();
 
@@ -273,6 +277,27 @@ public class InGameViewController extends BaseViewController {
 			break;
 
 		}
+	}
+	
+	public void setFPS(int fps) {
+		this.fps = fps;
+		floorScroller.setFPS(fps);
+		obstacleGen.setFPS(fps);
+		switch (fps) {
+		case 60: 
+			gameLoopOffSet = 0;
+			break;
+		case 144:
+			gameLoopOffSet = 1;
+			break;
+		case 540:
+			gameLoopOffSet = 8;
+			break;
+		}
+	}
+	
+	public int getFPS() {
+		return fps;
 	}
 
 	public void toggleGodMode() {

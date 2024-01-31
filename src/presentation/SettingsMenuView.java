@@ -14,10 +14,11 @@ import javafx.scene.layout.VBox;
 import presentation.uicomponents.*;
 
 public class SettingsMenuView extends BaseView {
-    public Button placeHolder;
+    public Button FPSButton;
     public Button placeHolder1;
     public Button placeHolder2;
     public Button backButton;
+    public Button optimizedFor;
     public VolumeView volumeView;
     public CurrentSongView currentSongView;
     public TitleView titleView;
@@ -28,31 +29,38 @@ public class SettingsMenuView extends BaseView {
         HBox mainButtonsLayout = new HBox();
 
         // create ui-components
-        placeHolder = new Button();
+        FPSButton = new Button();
         placeHolder1 = new Button();
         placeHolder2 = new Button();
         backButton = new Button();
+        optimizedFor = new Button();
         volumeView = new VolumeView();
         currentSongView = new CurrentSongView();
         titleView = new TitleView();
         
         // add style classes
-        placeHolder.getStyleClass().add("menu-button");
+        FPSButton.getStyleClass().add("menu-button");
         placeHolder1.getStyleClass().add("menu-button");
         placeHolder2.getStyleClass().add("menu-button");
         backButton.getStyleClass().add("menu-button");
+        optimizedFor.getStyleClass().add("menu-button");
         
         // add Id's
-        placeHolder.setId("settings-button");
+        FPSButton.setId("fps-60-button");
         placeHolder1.setId("settings-button");
         placeHolder2.setId("settings-button");
         backButton.setId("back-button");
-
+        optimizedFor.setId("optimized-for");
+        
         // set the box for the main button layout
         mainButtonsLayout.setSpacing(25);
         mainButtonsLayout.setScaleX(0.8);
         mainButtonsLayout.setScaleY(0.8);
         mainButtonsLayout.setAlignment(Pos.CENTER);
+        optimizedFor.setScaleX(0.8);
+        optimizedFor.setScaleY(0.8);
+        optimizedFor.setTranslateY(120);
+        optimizedFor.setTranslateX(78);
        
         // set the volume view
         volumeView.setScaleX(0.4);
@@ -70,11 +78,12 @@ public class SettingsMenuView extends BaseView {
         
         // add all to gridPane
 //        add(titleView, 0, 0, 3, 1);
+        add(optimizedFor, 0, 0);
         add(mainButtonsLayout, 0, 1);
         add(volumeView, 2, 2);
         add(backButton, 0, 2);
 
-        mainButtonsLayout.getChildren().addAll(placeHolder, placeHolder1, placeHolder2);
+        mainButtonsLayout.getChildren().addAll(FPSButton, placeHolder1, placeHolder2);
 
         setId("main-menu-panel");
     }

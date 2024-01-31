@@ -46,7 +46,7 @@ public class App extends Application {
 		inGameView = inGameViewController.getRoot();
 		primaryViews.put(PrimaryViewNames.IN_GAME_VIEW, inGameView);
 		
-		SettingsMenuViewController settingsMenuViewController = new SettingsMenuViewController(this, scene, player);
+		SettingsMenuViewController settingsMenuViewController = new SettingsMenuViewController(this, scene, player, inGameViewController, mainMenuViewController);
 		settingsMenuView = settingsMenuViewController.getRoot();
 		primaryViews.put(PrimaryViewNames.SETTINGS_VIEW, settingsMenuView);
 		
