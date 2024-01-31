@@ -283,6 +283,7 @@ public class InGameViewController extends BaseViewController {
 		this.fps = fps;
 		floorScroller.setFPS(fps);
 		obstacleGen.setFPS(fps);
+		arlieController.setFPS(fps);
 		switch (fps) {
 		case 60: 
 			gameLoopOffSet = 0;

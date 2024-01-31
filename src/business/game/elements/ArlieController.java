@@ -21,11 +21,12 @@ import javafx.scene.effect.*;
 
 public class ArlieController extends BaseViewController {
 
-	private static final double GRAVITY = 0.75; 
+	private static final double BASE_GRAVITY = 0.75; 
 	private static final double JUMP_INITIAL_VELOCITY = -22;
 	private static final double ARLIE_RUNNING_ANIMATION_INTENSITY = 7;
 	private static final double ARLIE_RUNNING_ANIMATION_FREQUENCY_MILLIS = 200;
 	private static final boolean SMALL_CROUCH = false;
+	private double adjustedGravity;
 	private double jumpVelocity;
 	private double gravityModifier;
 	public double groundY;
@@ -170,6 +171,14 @@ public class ArlieController extends BaseViewController {
         arlie.setConditionProperty(ArlieConditions.CONFUSED);
         jump();
     }
+    
+    public void setFPS(int fps) {
+    	if(fps == 60) {
+    		adjustedGravity = 0.62;
+    	}else {
+    		adjustedGravity = BASE_GRAVITY;
+    	}
+    }
 
     
     //DOUBLE FLIP ARLIEEEE WOOOOOOOOOOHOOOOOOOOOO
@@ -216,7 +225,7 @@ public class ArlieController extends BaseViewController {
 
             arlieBody.setRotate(rotation);
 
-            jumpVelocity += (GRAVITY * gravityModifier);
+            jumpVelocity += (adjustedGravity * gravityModifier);
 
             if (newY >= groundY) {
             	if(arlie.getConditionProperty() != ArlieConditions.CONFUSED) {
