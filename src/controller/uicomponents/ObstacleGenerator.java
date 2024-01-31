@@ -6,6 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -23,6 +24,7 @@ public class ObstacleGenerator {
     private int timer;
     private int interval;
     private int hitBoxCounter;
+    private long lastTime;
     private double groundY;
     private boolean hitBoxVisible;
     private Random random;
@@ -191,13 +193,30 @@ public class ObstacleGenerator {
         animTimer.start();
         timers.add(animTimer);
     }
-
+    
+    
+    	//DEV NOTES:
+    //still kind of experimental, needs more fine tuning. Animationtimers are frame-based, not time-based. This implementation is better for everything that doesn't run on 144hz- yet it feels kind of wonky still.
+    //The normal animationTimer method below works best on my pc.
+    //Timelines do not look natural at all...
     private AnimationTimer createAnimationTimer(ImageView obstacle, String obstacleType) {
+        long[] lastTime = {0};
+
         return new AnimationTimer() {
             @Override
             public void handle(long now) {
-                double speed = 5.0;
-                obstacle.setTranslateX(obstacle.getTranslateX() - speed);
+                if (lastTime[0] == 0) {
+                    lastTime[0] = now;
+                    return;
+                }
+
+                double elapsedTime = (now - lastTime[0]) / 1e9;
+                lastTime[0] = now;
+
+                double speed = 720.0;
+                double deltaX = speed * elapsedTime;
+
+                obstacle.setTranslateX(obstacle.getTranslateX() - deltaX);
 
                 if (obstacle.getTranslateX() + obstacle.getBoundsInLocal().getWidth() < 0) {
                     gamePane.getChildren().remove(obstacle);
@@ -209,6 +228,28 @@ public class ObstacleGenerator {
             }
         };
     }
+
+
+    
+    //For me personally, this is still the best version. It doesn't work for every user though, so use with care!
+//    private AnimationTimer createAnimationTimer(ImageView obstacle, String obstacleType) {
+//	System.out.println(Arrays.toString(timers.toArray()));
+//        return new AnimationTimer() {
+//            @Override
+//            public void handle(long now) {
+//                double speed = 5.0;
+//                obstacle.setTranslateX(obstacle.getTranslateX() - speed);
+//
+//                if (obstacle.getTranslateX() + obstacle.getBoundsInLocal().getWidth() < 0) {
+//                    gamePane.getChildren().remove(obstacle);
+//                    stop();
+//                    timers.remove(this);
+//                } else {
+//                    checkCollision(obstacle, obstacleType);
+//                }
+//            }
+//        };
+//    }
 
     private void checkCollision(ImageView obstacle, String obstacleType) {
     	

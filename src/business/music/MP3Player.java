@@ -21,6 +21,9 @@ public class MP3Player {
     private static final String JUMP_SOUND_PATH = "/assets/sounds/jump-sound.mp3";
     private static final String DEATH_SOUND_PATH = "/assets/sounds/oof.mp3";
     private static final String COLLIDED_SOUND_PATH = "/assets/sounds/collided-sound.mp3";
+    private static final int DIFFICULTY_HARD = 600;
+    private static final int DIFFICULTY_MEDIUM = 750;
+    private static final int DIFFICULTY_EASY = 800;
     private static final float STANDARD_VOLUME = 0.125f;
     private static final float LOW_VOLUME = 0.125f;
     private static final float MEDIUM_VOLUME = 0.25f;
@@ -51,7 +54,7 @@ public class MP3Player {
         audioPlayer = minim.loadFile(selectedSongPath);
         volume = new SimpleDoubleProperty();
         beatDetect = new BeatDetect(1024, 41000.0f);
-        beatDetect.setSensitivity(750);
+        beatDetect.setSensitivity(DIFFICULTY_MEDIUM);
 
         
         volume(STANDARD_VOLUME);
