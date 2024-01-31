@@ -16,12 +16,13 @@ import presentation.uicomponents.*;
 public class SettingsMenuView extends BaseView {
     public Button FPSButton;
     public Button placeHolder1;
-    public Button placeHolder2;
+    public Button difficultyButton;
     public Button backButton;
     public Button optimizedFor;
     public VolumeView volumeView;
     public CurrentSongView currentSongView;
     public TitleView titleView;
+
 
     public SettingsMenuView() {
     	
@@ -31,7 +32,7 @@ public class SettingsMenuView extends BaseView {
         // create ui-components
         FPSButton = new Button();
         placeHolder1 = new Button();
-        placeHolder2 = new Button();
+        difficultyButton = new Button();
         backButton = new Button();
         optimizedFor = new Button();
         volumeView = new VolumeView();
@@ -41,14 +42,14 @@ public class SettingsMenuView extends BaseView {
         // add style classes
         FPSButton.getStyleClass().add("menu-button");
         placeHolder1.getStyleClass().add("menu-button");
-        placeHolder2.getStyleClass().add("menu-button");
+        difficultyButton.getStyleClass().add("menu-button");
         backButton.getStyleClass().add("menu-button");
         optimizedFor.getStyleClass().add("menu-button");
         
         // add Id's
         FPSButton.setId("fps-60-button");
         placeHolder1.setId("settings-button");
-        placeHolder2.setId("settings-button");
+        difficultyButton.setId("settings-button");
         backButton.setId("back-button");
         optimizedFor.setId("optimized-for");
         
@@ -83,7 +84,7 @@ public class SettingsMenuView extends BaseView {
         add(volumeView, 2, 2);
         add(backButton, 0, 2);
 
-        mainButtonsLayout.getChildren().addAll(FPSButton, placeHolder1, placeHolder2);
+        mainButtonsLayout.getChildren().addAll(FPSButton, placeHolder1, difficultyButton);
 
         setId("main-menu-panel");
     }

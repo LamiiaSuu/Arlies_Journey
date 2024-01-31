@@ -2,6 +2,7 @@ package controller;
 
 import application.App;
 import business.music.MP3Player;
+import controller.uicomponents.Difficulty;
 import controller.uicomponents.VolumeViewController;
 import javafx.animation.RotateTransition;
 import javafx.scene.Scene;
@@ -23,7 +24,7 @@ public class SettingsMenuViewController extends BaseViewController {
     MainMenuViewController mainMenuViewController;
     public Button FPSButton;
     public Button placeHolder1;
-    public Button placeHolder2;
+    public Button difficultyButton;
     public Button backButton;
     public Button volumeButton;
     public VolumeView volumeView;
@@ -41,7 +42,7 @@ public class SettingsMenuViewController extends BaseViewController {
         backButton = root.backButton;
         FPSButton = root.FPSButton;
         placeHolder1 = root.placeHolder1;
-        placeHolder2 = root.placeHolder2;
+        difficultyButton = root.difficultyButton;
         volumeButton = root.volumeView.volumeButton;
         this.inGameViewController = inGameViewController;
         this.mainMenuViewController = mainMenuViewController;
@@ -84,6 +85,22 @@ public class SettingsMenuViewController extends BaseViewController {
         		mainMenuViewController.hideContinue();
         	}
         	System.out.println(inGameViewController.getFPS());
+        });
+        
+        difficultyButton.setOnAction(event -> {
+        	
+        	mainMenuViewController.hideContinue();
+        	
+        	if(inGameViewController.getDifficulty() == Difficulty.EASY) {
+        		inGameViewController.setDifficulty(Difficulty.MEDIUM);
+        	}else if(inGameViewController.getDifficulty() == Difficulty.MEDIUM){
+        		inGameViewController.setDifficulty(Difficulty.HARD);
+
+        	}else if (inGameViewController.getDifficulty() == Difficulty.HARD){
+        		inGameViewController.setDifficulty(Difficulty.EASY);
+        	}
+        	
+        	System.out.println(inGameViewController.getDifficulty().toString());
         });
         
 //      musicButton.setOnMouseEntered(event -> jumpAnimation(musicButton));

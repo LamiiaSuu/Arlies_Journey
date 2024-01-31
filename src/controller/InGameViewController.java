@@ -11,6 +11,7 @@ import controller.uicomponents.ObstacleGenerator;
 import controller.uicomponents.PopUpDeathViewController;
 import controller.uicomponents.PopUpMenuViewController;
 import controller.uicomponents.ScoreBoardController;
+import controller.uicomponents.Difficulty;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
@@ -25,6 +26,7 @@ import javafx.util.Duration;
 import presentation.InGameView;
 import presentation.PrimaryViewNames;
 import presentation.uicomponents.PopUpMenuView;
+
 
 public class InGameViewController extends BaseViewController {
 
@@ -41,6 +43,7 @@ public class InGameViewController extends BaseViewController {
 	private long currentTime;
 	private double gameLoopOffSet = 1;
 	private double gameLoopCounter = 0;
+	private Difficulty difficulty = Difficulty.MEDIUM;
 	private int fps;
 	MP3Player player;
 	InGameView root;
@@ -87,6 +90,7 @@ public class InGameViewController extends BaseViewController {
 		groundY = scene.getHeight() * 0.6;
 		
 		setFPS(fps);
+		setDifficulty(difficulty);
 
 		setGround();
 
@@ -299,6 +303,17 @@ public class InGameViewController extends BaseViewController {
 	
 	public int getFPS() {
 		return fps;
+	}
+	
+	public void setDifficulty(Difficulty difficulty) {
+
+			player.setDifficulty(difficulty);
+			this.difficulty = difficulty;
+
+	}
+	
+	public Difficulty getDifficulty() {
+		return difficulty;
 	}
 
 	public void toggleGodMode() {

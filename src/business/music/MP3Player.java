@@ -15,6 +15,8 @@ import ddf.minim.Minim;
 
 import java.util.List;
 
+import controller.uicomponents.Difficulty;
+
 
 public class MP3Player {
     private static final String STANDARD_SONG = "spezials.mp3";
@@ -25,9 +27,9 @@ public class MP3Player {
     private static final float LOW_VOLUME = 0.125f;
     private static final float MEDIUM_VOLUME = 0.25f;
     private static final float HIGH_VOLUME = 0.5f;
-    private static final int DIFFICULTY_HARD = 600;
+    private static final int DIFFICULTY_HARD = 550;
     private static final int DIFFICULTY_MEDIUM = 750;
-    private static final int DIFFICULTY_EASY = 800;
+    private static final int DIFFICULTY_EASY = 1050;
     
     private String selectedSong;
     private String selectedSongPath = "src/assets/songs/" + STANDARD_SONG;
@@ -64,6 +66,16 @@ public class MP3Player {
 //        endOfTrackChecker.setCycleCount(Animation.INDEFINITE);
 //        endOfTrackChecker.play();
         
+    }
+    
+    public void setDifficulty(Difficulty difficulty) {
+    	if(difficulty == Difficulty.EASY) {
+    		beatDetect.setSensitivity(DIFFICULTY_EASY);
+    	}else if(difficulty == Difficulty.MEDIUM) {
+    		beatDetect.setSensitivity(DIFFICULTY_MEDIUM);
+    	}else if(difficulty == Difficulty.HARD) {
+    		beatDetect.setSensitivity(DIFFICULTY_HARD);
+    	}
     }
     
     public void analyze() {
