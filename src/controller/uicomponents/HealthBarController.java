@@ -1,4 +1,4 @@
-package business.game.elements;
+package controller.uicomponents;
 
 import business.game.elements.Arlie.ArlieConditions;
 import javafx.beans.property.SimpleIntegerProperty;

@@ -4,7 +4,6 @@ import application.App;
 import business.game.elements.ArlieController;
 import business.game.elements.BackgroundScroll;
 import business.game.elements.FloorScroller;
-import business.game.elements.HealthBarController;
 import business.music.MP3Player;
 import controller.uicomponents.HitBoxManager;
 import controller.uicomponents.ObstacleGenerator;
@@ -12,6 +11,8 @@ import controller.uicomponents.PopUpDeathViewController;
 import controller.uicomponents.PopUpMenuViewController;
 import controller.uicomponents.ScoreBoardController;
 import controller.uicomponents.Difficulty;
+import controller.uicomponents.GameMode;
+import controller.uicomponents.HealthBarController;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
@@ -30,8 +31,9 @@ import presentation.uicomponents.PopUpMenuView;
 
 public class InGameViewController extends BaseViewController {
 
-	private static final Duration COLLISION_INTERVAL = Duration.seconds(1.5);
+	private static final Duration COLLISION_INVULNERABILITY_INTERVAL = Duration.seconds(1.5);
 	private static final int MAX_HEALTH = 3;
+	private static final boolean CHANGE_GAMEMODE_INGAME = false;
 
 	private boolean gamePaused = false;
 	private boolean gameOver = false;
@@ -43,8 +45,12 @@ public class InGameViewController extends BaseViewController {
 	private long currentTime;
 	private double gameLoopOffSet = 1;
 	private double gameLoopCounter = 0;
+	
 	private Difficulty difficulty = Difficulty.MEDIUM;
+	private GameMode gameMode = GameMode.JOURNEY_MODE;
+	
 	private int fps;
+
 	MP3Player player;
 	InGameView root;
 	ArlieController arlieController;
@@ -231,6 +237,15 @@ public class InGameViewController extends BaseViewController {
 		});
 
 	}
+	
+	public GameMode getGameMode() {
+		return gameMode;
+	}
+	
+	public void setGameMode(GameMode gameMode) {
+		this.gameMode = gameMode; 
+		toggleGodMode();
+	}
 
 	private void handleKeyPress(KeyCode code) {
 		switch (code) {
@@ -269,7 +284,11 @@ public class InGameViewController extends BaseViewController {
 			break;
 
 		case G:
-			toggleGodMode();
+			if(CHANGE_GAMEMODE_INGAME) {
+				if(gameMode != GameMode.GOD_MODE)
+					toggleGodMode();
+			}
+			
 			break;
 
 		case ESCAPE:
@@ -318,11 +337,16 @@ public class InGameViewController extends BaseViewController {
 
 	public void toggleGodMode() {
 		if (godMode) {
+			if(this.gameMode != GameMode.GOD_MODE) {
 			godMode = false;
 			arlieController.clearInvulnerableEffect();
+			}
 		} else {
-			arlieController.setGodModeEffect();
-			godMode = true;
+			
+				arlieController.setGodModeEffect();
+				godMode = true;
+			
+			
 		}
 		
 		healthBarController.toggleGodMode(godMode);
@@ -391,6 +415,8 @@ public class InGameViewController extends BaseViewController {
 		backgroundScroll.reset();
 		floorScroller.reset();
 		healthBarController.setHitPoints(MAX_HEALTH);
+		if(gameMode == GameMode.GOD_MODE)
+		healthBarController.toggleGodMode(godMode);
 		player.seek(0);
 		player.resume();
 		scoreBoardController.setScore(0);
@@ -398,8 +424,10 @@ public class InGameViewController extends BaseViewController {
 		gameLoop.start();
 		gamePaused = false;
 		gameOver = false;
+		if(gameMode != GameMode.GOD_MODE)
 		godMode = false;
 		root.arlie.arlieBody.setTranslateY(groundY);
+		if(gameMode != GameMode.GOD_MODE)
 		arlieController.clearInvulnerableEffect();
 	}
 
@@ -439,7 +467,7 @@ public class InGameViewController extends BaseViewController {
 
 		currentTime = System.currentTimeMillis();
 
-		if (currentTime - lastCollisionTime >= COLLISION_INTERVAL.toMillis()) {
+		if (currentTime - lastCollisionTime >= COLLISION_INVULNERABILITY_INTERVAL.toMillis()) {
 
 			if (!godMode)
 				healthBarController.damage();
@@ -457,7 +485,7 @@ public class InGameViewController extends BaseViewController {
 		
 		currentTime = System.currentTimeMillis();
 		
-		if (currentTime - lastCollisionTime >= COLLISION_INTERVAL.toMillis()) {
+		if (currentTime - lastCollisionTime >= COLLISION_INVULNERABILITY_INTERVAL.toMillis()) {
 			
 			arlieController.clearInvulnerableEffect();
 			

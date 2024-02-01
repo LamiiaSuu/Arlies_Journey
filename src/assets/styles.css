@@ -1,4 +1,4 @@
-#new-journey-button, #optimized-for, #fps-540-button, #fps-144-button, #fps-60-button, #new-journey-button-anim, #settings-button-anim, #music-button-anim, #menu-button, #continue-button, #song-scroll-pane, #music-button, #empty-button, #settings-button, #volume-button, #volume-button-mute, #volume-button-low, #volume-button-medium, #volume-button-high, #title-label, #back-button {
+#new-journey-button, #journey-button, #god-button, #game-mode, #difficulty, #hard-button, #medium-button, #easy-button, #optimized-for, #fps-540-button, #fps-144-button, #fps-60-button, #new-journey-button-anim, #settings-button-anim, #music-button-anim, #menu-button, #continue-button, #song-scroll-pane, #music-button, #empty-button, #settings-button, #volume-button, #volume-button-mute, #volume-button-low, #volume-button-medium, #volume-button-high, #title-label, #back-button {
     -fx-background-color: transparent;
     -fx-background-repeat: no-repeat no-repeat;
     -fx-background-position: center;
@@ -13,6 +13,65 @@
     -fx-min-width: 245px;
     -fx-min-height: 245px;
 }
+
+#journey-button {
+    -fx-background-image: url("/assets/icons/journey.png");
+}
+
+#journey-button:hover {
+    -fx-rotate: -2deg;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+#god-button {
+    -fx-background-image: url("/assets/icons/god.png");
+}
+
+#god-button:hover {
+    -fx-rotate: -2deg;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+#game-mode {
+    -fx-background-image: url("/assets/icons/game-mode.png");
+}
+
+#difficulty {
+    -fx-background-image: url("/assets/icons/difficulty.png");
+}
+
+#easy-button {
+    -fx-background-image: url("/assets/icons/easy.png");
+}
+
+#easy-button:hover {
+    -fx-rotate: -2deg;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+#medium-button {
+    -fx-background-image: url("/assets/icons/medium.png");
+}
+
+#medium-button:hover {
+    -fx-rotate: -2deg;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+#hard-button {
+    -fx-background-image: url("/assets/icons/hard.png");
+}
+
+#hard-button:hover {
+    -fx-rotate: -2deg;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
 
 #optimized-for {
     -fx-background-image: url("/assets/icons/optimized-for.png");

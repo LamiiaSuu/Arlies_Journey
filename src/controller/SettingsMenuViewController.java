@@ -3,6 +3,7 @@ package controller;
 import application.App;
 import business.music.MP3Player;
 import controller.uicomponents.Difficulty;
+import controller.uicomponents.GameMode;
 import controller.uicomponents.VolumeViewController;
 import javafx.animation.RotateTransition;
 import javafx.scene.Scene;
@@ -23,7 +24,7 @@ public class SettingsMenuViewController extends BaseViewController {
     VolumeViewController volumeViewController;
     MainMenuViewController mainMenuViewController;
     public Button FPSButton;
-    public Button placeHolder1;
+    public Button gameModeButton;
     public Button difficultyButton;
     public Button backButton;
     public Button volumeButton;
@@ -41,7 +42,7 @@ public class SettingsMenuViewController extends BaseViewController {
         arliesJourneyImageView = root.titleView.title;
         backButton = root.backButton;
         FPSButton = root.FPSButton;
-        placeHolder1 = root.placeHolder1;
+        gameModeButton = root.gameModeButton;
         difficultyButton = root.difficultyButton;
         volumeButton = root.volumeView.volumeButton;
         this.inGameViewController = inGameViewController;
@@ -92,15 +93,33 @@ public class SettingsMenuViewController extends BaseViewController {
         	mainMenuViewController.hideContinue();
         	
         	if(inGameViewController.getDifficulty() == Difficulty.EASY) {
+        		difficultyButton.setId("medium-button");
         		inGameViewController.setDifficulty(Difficulty.MEDIUM);
         	}else if(inGameViewController.getDifficulty() == Difficulty.MEDIUM){
+        		difficultyButton.setId("hard-button");
         		inGameViewController.setDifficulty(Difficulty.HARD);
 
         	}else if (inGameViewController.getDifficulty() == Difficulty.HARD){
+        		difficultyButton.setId("easy-button");
         		inGameViewController.setDifficulty(Difficulty.EASY);
         	}
         	
         	System.out.println(inGameViewController.getDifficulty().toString());
+        });
+        
+        gameModeButton.setOnAction(event -> {
+        	
+        	mainMenuViewController.hideContinue();
+        	
+        	if(inGameViewController.getGameMode() == GameMode.JOURNEY_MODE) {
+        		gameModeButton.setId("god-button");
+        		inGameViewController.setGameMode(GameMode.GOD_MODE);
+        	}else if(inGameViewController.getGameMode() == GameMode.GOD_MODE){
+        		gameModeButton.setId("journey-button");
+        		inGameViewController.setGameMode(GameMode.JOURNEY_MODE);
+        	}
+        	
+        	System.out.println(inGameViewController.getGameMode());
         });
         
 //      musicButton.setOnMouseEntered(event -> jumpAnimation(musicButton));
