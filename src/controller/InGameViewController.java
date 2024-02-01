@@ -28,7 +28,6 @@ import presentation.InGameView;
 import presentation.PrimaryViewNames;
 import presentation.uicomponents.PopUpMenuView;
 
-
 public class InGameViewController extends BaseViewController {
 
 	private static final Duration COLLISION_INVULNERABILITY_INTERVAL = Duration.seconds(1.5);
@@ -45,10 +44,10 @@ public class InGameViewController extends BaseViewController {
 	private long currentTime;
 	private double gameLoopOffSet = 1;
 	private double gameLoopCounter = 0;
-	
+
 	private Difficulty difficulty = Difficulty.MEDIUM;
 	private GameMode gameMode = GameMode.JOURNEY_MODE;
-	
+
 	private int fps;
 
 	MP3Player player;
@@ -94,7 +93,7 @@ public class InGameViewController extends BaseViewController {
 	public void initialize() {
 
 		groundY = scene.getHeight() * 0.6;
-		
+
 		setFPS(fps);
 		setDifficulty(difficulty);
 
@@ -118,25 +117,24 @@ public class InGameViewController extends BaseViewController {
 			}
 		});
 
-		
 		gameLoop = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-            	
-            	if(gameLoopCounter == gameLoopOffSet) {
-            		gameLoopCounter = 0;
-            		update();
-            	}
-            	
-            	else {
-            		gameLoopCounter++;
-            	}
-            }
-        };
+			@Override
+			public void handle(long now) {
+
+				if (gameLoopCounter == gameLoopOffSet) {
+					gameLoopCounter = 0;
+					update();
+				}
+
+				else {
+					gameLoopCounter++;
+				}
+			}
+		};
 
 		scene.setOnKeyPressed(event -> {
-			if(app.currentViewProperty().get().equals(PrimaryViewNames.IN_GAME_VIEW))
-			handleKeyPress(event.getCode());
+			if (app.currentViewProperty().get().equals(PrimaryViewNames.IN_GAME_VIEW))
+				handleKeyPress(event.getCode());
 		});
 
 		scene.setOnKeyReleased(event -> {
@@ -180,70 +178,70 @@ public class InGameViewController extends BaseViewController {
 				}
 			}
 		});
-		
+
 		popUpDeathController.getPopupRoot().setOnHidden(event -> {
-			if(app.currentViewProperty().get().equals(PrimaryViewNames.IN_GAME_VIEW )&& gameOver)
-		    app.switchView(PrimaryViewNames.MAIN_MENU_VIEW);
-		});	
-		
+			if (app.currentViewProperty().get().equals(PrimaryViewNames.IN_GAME_VIEW) && gameOver)
+				app.switchView(PrimaryViewNames.MAIN_MENU_VIEW);
+		});
+
 		popUpMenuController.getPopupRoot().setOnHidden(event -> {
-			if(app.currentViewProperty().get().equals(PrimaryViewNames.IN_GAME_VIEW))
-		    resumeGame();
-		});	
+			if (app.currentViewProperty().get().equals(PrimaryViewNames.IN_GAME_VIEW))
+				resumeGame();
+		});
 
 		popUpDeathController.getButton("newJourney").setOnAction(event -> {
 			if (gameOver) {
 				resetGame();
 				popUpDeathController.getPopupRoot().hide();
-				
+
 			}
 		});
-		
+
 		popUpDeathController.getButton("menuButton").setOnAction(event -> {
 			if (gameOver) {
 				app.switchView(PrimaryViewNames.MAIN_MENU_VIEW);
 				popUpDeathController.getPopupRoot().hide();
 			}
 		});
-		
+
 		popUpDeathController.getButton("settingsButton").setOnAction(event -> {
 			if (gameOver) {
 				app.switchView(PrimaryViewNames.SETTINGS_VIEW);
 				popUpDeathController.getPopupRoot().hide();
 			}
 		});
-		
+
 		popUpMenuController.getButton("continueButton").setOnAction(event -> {
 			if (gamePaused && !gameOver) {
 				popUpMenuController.getPopupRoot().hide();
 				resumeGame();
 			}
 		});
-		
+
 		popUpMenuController.getButton("menuButton").setOnAction(event -> {
 			if (gamePaused && !gameOver) {
-	        	app.switchView(PrimaryViewNames.MAIN_MENU_VIEW);
+				app.switchView(PrimaryViewNames.MAIN_MENU_VIEW);
 				popUpMenuController.getPopupRoot().hide();
 				pauseGame();
 			}
 		});
-		
+
 		popUpMenuController.getButton("settingsButton").setOnAction(event -> {
 			if (gamePaused && !gameOver) {
-	        	app.switchView(PrimaryViewNames.SETTINGS_VIEW);
+				app.switchView(PrimaryViewNames.SETTINGS_VIEW);
 				popUpMenuController.getPopupRoot().hide();
 				pauseGame();
 			}
 		});
 
 	}
-	
+
 	public GameMode getGameMode() {
 		return gameMode;
 	}
-	
+
 	public void setGameMode(GameMode gameMode) {
-		this.gameMode = gameMode; 
+		this.gameMode = gameMode;
 		toggleGodMode();
 	}
 
@@ -284,16 +282,16 @@ public class InGameViewController extends BaseViewController {
 			break;
 
 		case G:
-			if(CHANGE_GAMEMODE_INGAME) {
-				if(gameMode != GameMode.GOD_MODE)
+			if (CHANGE_GAMEMODE_INGAME) {
+				if (gameMode != GameMode.GOD_MODE)
 					toggleGodMode();
 			}
-			
+
 			break;
 
 		case ESCAPE:
 //            	app.switchView(PrimaryViewNames.MAIN_MENU_VIEW);
-			if ( !gamePaused && !gameOver && !popUpMenuController.getPopupRoot().isShowing()) {
+			if (!gamePaused && !gameOver && !popUpMenuController.getPopupRoot().isShowing()) {
 				pauseGame();
 				popUpMenuController.getPopupRoot().show(this.app.getStage());
 			}
@@ -301,14 +299,14 @@ public class InGameViewController extends BaseViewController {
 
 		}
 	}
-	
+
 	public void setFPS(int fps) {
 		this.fps = fps;
 		floorScroller.setFPS(fps);
 		obstacleGen.setFPS(fps);
 		arlieController.setFPS(fps);
 		switch (fps) {
-		case 60: 
+		case 60:
 			gameLoopOffSet = 0;
 			break;
 		case 144:
@@ -319,36 +317,35 @@ public class InGameViewController extends BaseViewController {
 			break;
 		}
 	}
-	
+
 	public int getFPS() {
 		return fps;
 	}
-	
+
 	public void setDifficulty(Difficulty difficulty) {
 
-			player.setDifficulty(difficulty);
-			this.difficulty = difficulty;
+		player.setDifficulty(difficulty);
+		this.difficulty = difficulty;
 
 	}
-	
+
 	public Difficulty getDifficulty() {
 		return difficulty;
 	}
 
 	public void toggleGodMode() {
 		if (godMode) {
-			if(this.gameMode != GameMode.GOD_MODE) {
-			godMode = false;
-			arlieController.clearInvulnerableEffect();
+			if (this.gameMode != GameMode.GOD_MODE) {
+				godMode = false;
+				arlieController.clearInvulnerableEffect();
 			}
 		} else {
-			
-				arlieController.setGodModeEffect();
-				godMode = true;
-			
-			
+
+			arlieController.setGodModeEffect();
+			godMode = true;
+
 		}
-		
+
 		healthBarController.toggleGodMode(godMode);
 
 	}
@@ -415,8 +412,8 @@ public class InGameViewController extends BaseViewController {
 		backgroundScroll.reset();
 		floorScroller.reset();
 		healthBarController.setHitPoints(MAX_HEALTH);
-		if(gameMode == GameMode.GOD_MODE)
-		healthBarController.toggleGodMode(godMode);
+		if (gameMode == GameMode.GOD_MODE)
+			healthBarController.toggleGodMode(godMode);
 		player.seek(0);
 		player.resume();
 		scoreBoardController.setScore(0);
@@ -424,11 +421,11 @@ public class InGameViewController extends BaseViewController {
 		gameLoop.start();
 		gamePaused = false;
 		gameOver = false;
-		if(gameMode != GameMode.GOD_MODE)
-		godMode = false;
+		if (gameMode != GameMode.GOD_MODE)
+			godMode = false;
 		root.arlie.arlieBody.setTranslateY(groundY);
-		if(gameMode != GameMode.GOD_MODE)
-		arlieController.clearInvulnerableEffect();
+		if (gameMode != GameMode.GOD_MODE)
+			arlieController.clearInvulnerableEffect();
 	}
 
 	public void toggleHitBoxView() {
@@ -457,9 +454,6 @@ public class InGameViewController extends BaseViewController {
 		gameOver = true;
 		arlieController.gameOver();
 		player.playDeathSound();
-		
-		
-
 
 	}
 
@@ -475,20 +469,19 @@ public class InGameViewController extends BaseViewController {
 			lastCollisionTime = currentTime;
 
 			player.playCollidedSound();
-			
-			
+
 		}
 		arlieController.setInvulnerableEffect();
 	}
-	
+
 	public void updateInvulnerableEffect() {
-		
+
 		currentTime = System.currentTimeMillis();
-		
+
 		if (currentTime - lastCollisionTime >= COLLISION_INVULNERABILITY_INTERVAL.toMillis()) {
-			
+
 			arlieController.clearInvulnerableEffect();
-			
+
 		}
 	}
 

@@ -13,37 +13,37 @@ import presentation.uicomponents.PopUpMenuView;
 import presentation.PrimaryViewNames;
 
 public class PopUpMenuViewController extends BaseViewController {
-	
+
 	private App app;
 	private PopUpMenuView root;
-    private Button continueButton;
-    private Button menuButton;
-    private Button settingsButton;
-    
-	public PopUpMenuViewController(App app, Scene scene) {
-        root = new PopUpMenuView();
-        continueButton = root.continueButton;
-        menuButton = root.menuButton;
-        settingsButton = root.settingsButton;
-        this.app = app;
+	private Button continueButton;
+	private Button menuButton;
+	private Button settingsButton;
 
-        initialize();
-    }
-	
+	public PopUpMenuViewController(App app, Scene scene) {
+		root = new PopUpMenuView();
+		continueButton = root.continueButton;
+		menuButton = root.menuButton;
+		settingsButton = root.settingsButton;
+		this.app = app;
+
+		initialize();
+	}
+
 	@Override
-    public void initialize() {
-    }
+	public void initialize() {
+	}
 
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	public PopUpMenuView getPopupRoot() {
 		return root;
 	}
-	
+
 	public Button getButton(String button) {
 		switch (button) {
 		default:

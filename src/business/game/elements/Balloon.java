@@ -5,14 +5,11 @@ import javafx.scene.image.ImageView;
 
 public class Balloon extends ImageView {
 
-	
-	
-    public Balloon(int balloonType, double fitHeight) {
-        
-    	
-        Image balloonImage = new Image("/assets/obstacles/balloon"+Integer.toString(balloonType)+".png");
-        this.setImage(balloonImage);
-        this.setPreserveRatio(true);
-        this.setFitHeight(fitHeight);  
-    }
+	public Balloon(int balloonType, double fitHeight) {
+
+		Image balloonImage = new Image("/assets/obstacles/balloon" + Integer.toString(balloonType) + ".png");
+		this.setImage(balloonImage);
+		this.setPreserveRatio(true);
+		this.setFitHeight(fitHeight);
+	}
 }

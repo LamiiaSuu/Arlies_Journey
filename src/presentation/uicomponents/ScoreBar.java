@@ -12,37 +12,34 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-public class ScoreBar extends HBox{
-	
-    public Label scoreBoard;
-	
+public class ScoreBar extends HBox {
+
+	public Label scoreBoard;
+
 	int score;
-	
-    public ScoreBar(double width, double height) {
 
-            
-            
-            setSpacing(50);
-            
-            scoreBoard = new Label(Integer.toString(score));
-            
-            scoreBoard.setId("score-board");
-            
-            scoreBoard.setScaleX(6);
-            scoreBoard.setScaleY(6);
-            
-            scoreBoard.setAlignment(Pos.TOP_RIGHT);
-            
-            scoreBoard.setTranslateX(width-60);
-            scoreBoard.setTranslateY(40);
-            
-            getChildren().add(scoreBoard);
+	public ScoreBar(double width, double height) {
 
+		setSpacing(50);
 
-    }
-    
-    public void initialize() {
-    	score = 0;
-    }
-    
+		scoreBoard = new Label(Integer.toString(score));
+
+		scoreBoard.setId("score-board");
+
+		scoreBoard.setScaleX(6);
+		scoreBoard.setScaleY(6);
+
+		scoreBoard.setAlignment(Pos.TOP_RIGHT);
+
+		scoreBoard.setTranslateX(width - 60);
+		scoreBoard.setTranslateY(40);
+
+		getChildren().add(scoreBoard);
+
+	}
+
+	public void initialize() {
+		score = 0;
+	}
+
 }

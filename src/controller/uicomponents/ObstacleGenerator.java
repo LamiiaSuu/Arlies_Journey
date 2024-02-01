@@ -20,40 +20,41 @@ import controller.InGameViewController;
 
 public class ObstacleGenerator {
 
-    private int timer;
-    private int interval;
-    private int hitBoxCounter;
-    private int fps;
-    private double groundY;
-    private boolean hitBoxVisible;
-    private Random random;
-    private Scene scene;
-    private Pane gamePane;
-    private GraphicsContext hitBoxGC;
-    private ArlieController arlieController;
-    private InGameViewController inGameViewController;
-    private List<AnimationTimer> timers;
+	private int timer;
+	private int interval;
+	private int hitBoxCounter;
+	private int fps;
+	private double groundY;
+	private boolean hitBoxVisible;
+	private Random random;
+	private Scene scene;
+	private Pane gamePane;
+	private GraphicsContext hitBoxGC;
+	private ArlieController arlieController;
+	private InGameViewController inGameViewController;
+	private List<AnimationTimer> timers;
 
-    public ObstacleGenerator(Pane gamePane, GraphicsContext gc, Scene scene, ArlieController arlieController, InGameViewController inGameViewController) {
-        this.inGameViewController = inGameViewController;
-        this.gamePane = gamePane;
-        this.scene = scene;
-        this.arlieController = arlieController;
-        this.timer = 0;
-        this.interval = 60;
-        this.random = new Random();
-        this.timers = new ArrayList<>();
-        this.hitBoxGC = gc;
-        this.hitBoxCounter = 0;
-    }
-    
-    public void setFPS(int fps) {
-    	this.fps = fps;
-    }
+	public ObstacleGenerator(Pane gamePane, GraphicsContext gc, Scene scene, ArlieController arlieController,
+			InGameViewController inGameViewController) {
+		this.inGameViewController = inGameViewController;
+		this.gamePane = gamePane;
+		this.scene = scene;
+		this.arlieController = arlieController;
+		this.timer = 0;
+		this.interval = 60;
+		this.random = new Random();
+		this.timers = new ArrayList<>();
+		this.hitBoxGC = gc;
+		this.hitBoxCounter = 0;
+	}
 
-    public void setGround(double groundY) {
-        this.groundY = groundY;
-    }
+	public void setFPS(int fps) {
+		this.fps = fps;
+	}
+
+	public void setGround(double groundY) {
+		this.groundY = groundY;
+	}
 
 //    public void update(InGameViewController inGameViewController) {
 //        if (timer == interval) {
@@ -78,154 +79,153 @@ public class ObstacleGenerator {
 //            timer++;
 //        }
 //    }
-    
-    public void update(InGameViewController inGameViewController) {
 
-            inGameViewController.generatedObstacle();
-            int obstacleToSpawn = random.nextInt(1000);
-            
-            if(obstacleToSpawn>990) {
-            	generateZeppelin();
-            }else if(obstacleToSpawn>845) {
-            	generateFlowerBush();
-            }else if(obstacleToSpawn>650) {
-            	generateFruitTree();
-            }else if(obstacleToSpawn>500) {
-            	generateBush();
-            }else if(obstacleToSpawn>250) {
-            	generateTree();
-            }else if(obstacleToSpawn>0) {
-            	generateBalloon();
-            }
+	public void update(InGameViewController inGameViewController) {
 
-    }
+		inGameViewController.generatedObstacle();
+		int obstacleToSpawn = random.nextInt(1000);
 
-    private void generateTree() {
-        int treeType = random.nextInt(3) + 1;
-        double fitHeight = random.nextInt(100) + 250;
+		if (obstacleToSpawn > 990) {
+			generateZeppelin();
+		} else if (obstacleToSpawn > 845) {
+			generateFlowerBush();
+		} else if (obstacleToSpawn > 650) {
+			generateFruitTree();
+		} else if (obstacleToSpawn > 500) {
+			generateBush();
+		} else if (obstacleToSpawn > 250) {
+			generateTree();
+		} else if (obstacleToSpawn > 0) {
+			generateBalloon();
+		}
 
-        Tree obstacle = new Tree(treeType, fitHeight);
+	}
 
-        obstacle.setTranslateX(scene.getWidth());
-        obstacle.setTranslateY(groundY - obstacle.getFitHeight() + 150);
+	private void generateTree() {
+		int treeType = random.nextInt(3) + 1;
+		double fitHeight = random.nextInt(100) + 250;
 
-        gamePane.getChildren().add(obstacle);
+		Tree obstacle = new Tree(treeType, fitHeight);
 
-        AnimationTimer animTimer = createAnimationTimer(obstacle, "tree");
-        animTimer.start();
-        timers.add(animTimer);
-    }
-    
+		obstacle.setTranslateX(scene.getWidth());
+		obstacle.setTranslateY(groundY - obstacle.getFitHeight() + 150);
 
-    private void generateBalloon() {
-        int balloonType = random.nextInt(6) + 1;
-        double fitHeight = random.nextInt(200) + 75;
+		gamePane.getChildren().add(obstacle);
 
-        Balloon obstacle = new Balloon(balloonType, fitHeight);
+		AnimationTimer animTimer = createAnimationTimer(obstacle, "tree");
+		animTimer.start();
+		timers.add(animTimer);
+	}
 
-        obstacle.setTranslateX(scene.getWidth());
-        obstacle.setTranslateY(groundY - (obstacle.getFitHeight() * 0.5) - random.nextInt(150));
+	private void generateBalloon() {
+		int balloonType = random.nextInt(6) + 1;
+		double fitHeight = random.nextInt(200) + 75;
 
-        gamePane.getChildren().add(obstacle);
+		Balloon obstacle = new Balloon(balloonType, fitHeight);
 
-        AnimationTimer animTimer = createAnimationTimer(obstacle, "balloon");
-        animTimer.start();
-        timers.add(animTimer);
-    }
-    
-    private void generateFruitTree() {
-        int treeType = random.nextInt(4) + 1;
-        double fitHeight = random.nextInt(100) + 250;
+		obstacle.setTranslateX(scene.getWidth());
+		obstacle.setTranslateY(groundY - (obstacle.getFitHeight() * 0.5) - random.nextInt(150));
 
-        FruitTree obstacle = new FruitTree(treeType, fitHeight);
+		gamePane.getChildren().add(obstacle);
 
-        obstacle.setTranslateX(scene.getWidth());
-        obstacle.setTranslateY(groundY - obstacle.getFitHeight() + 150);
+		AnimationTimer animTimer = createAnimationTimer(obstacle, "balloon");
+		animTimer.start();
+		timers.add(animTimer);
+	}
 
-        gamePane.getChildren().add(obstacle);
+	private void generateFruitTree() {
+		int treeType = random.nextInt(4) + 1;
+		double fitHeight = random.nextInt(100) + 250;
 
-        AnimationTimer animTimer = createAnimationTimer(obstacle, "fruit-tree");
-        animTimer.start();
-        timers.add(animTimer);
-    }
-    
-    private void generateBush() {
-        int bushType = random.nextInt(5) + 1;
-        double fitHeight = random.nextInt(100) + 100;
+		FruitTree obstacle = new FruitTree(treeType, fitHeight);
 
-        Bush obstacle = new Bush(bushType, fitHeight);
+		obstacle.setTranslateX(scene.getWidth());
+		obstacle.setTranslateY(groundY - obstacle.getFitHeight() + 150);
 
-        obstacle.setTranslateX(scene.getWidth());
-        obstacle.setTranslateY(groundY - obstacle.getFitHeight() + 150);
+		gamePane.getChildren().add(obstacle);
 
-        gamePane.getChildren().add(obstacle);
+		AnimationTimer animTimer = createAnimationTimer(obstacle, "fruit-tree");
+		animTimer.start();
+		timers.add(animTimer);
+	}
 
-        AnimationTimer animTimer = createAnimationTimer(obstacle, "bush");
-        animTimer.start();
-        timers.add(animTimer);
-    }
-    
-    private void generateFlowerBush() {
-        int bushType = random.nextInt(4) + 1;
-        double fitHeight = random.nextInt(100) + 100;
+	private void generateBush() {
+		int bushType = random.nextInt(5) + 1;
+		double fitHeight = random.nextInt(100) + 100;
 
-        FlowerBush obstacle = new FlowerBush(bushType, fitHeight);
+		Bush obstacle = new Bush(bushType, fitHeight);
 
-        obstacle.setTranslateX(scene.getWidth());
-        obstacle.setTranslateY(groundY - obstacle.getFitHeight() + 150);
+		obstacle.setTranslateX(scene.getWidth());
+		obstacle.setTranslateY(groundY - obstacle.getFitHeight() + 150);
 
-        gamePane.getChildren().add(obstacle);
+		gamePane.getChildren().add(obstacle);
 
-        AnimationTimer animTimer = createAnimationTimer(obstacle, "flower-bush");
-        animTimer.start();
-        timers.add(animTimer);
-    }
-    
-    private void generateZeppelin() {
+		AnimationTimer animTimer = createAnimationTimer(obstacle, "bush");
+		animTimer.start();
+		timers.add(animTimer);
+	}
+
+	private void generateFlowerBush() {
+		int bushType = random.nextInt(4) + 1;
+		double fitHeight = random.nextInt(100) + 100;
+
+		FlowerBush obstacle = new FlowerBush(bushType, fitHeight);
+
+		obstacle.setTranslateX(scene.getWidth());
+		obstacle.setTranslateY(groundY - obstacle.getFitHeight() + 150);
+
+		gamePane.getChildren().add(obstacle);
+
+		AnimationTimer animTimer = createAnimationTimer(obstacle, "flower-bush");
+		animTimer.start();
+		timers.add(animTimer);
+	}
+
+	private void generateZeppelin() {
 //        int bushType = random.nextInt(1) + 1; // Change face later?
-        double fitHeight = random.nextInt(150) + 200;
+		double fitHeight = random.nextInt(150) + 200;
 
-        Zeppelin obstacle = new Zeppelin(fitHeight);
+		Zeppelin obstacle = new Zeppelin(fitHeight);
 
-        obstacle.setTranslateX(scene.getWidth());
-        obstacle.setTranslateY(groundY - (obstacle.getFitHeight()) - random.nextInt(100));
+		obstacle.setTranslateX(scene.getWidth());
+		obstacle.setTranslateY(groundY - (obstacle.getFitHeight()) - random.nextInt(100));
 
-        gamePane.getChildren().add(obstacle);
+		gamePane.getChildren().add(obstacle);
 
-        AnimationTimer animTimer = createAnimationTimer(obstacle, "zeppelin");
-        animTimer.start();
-        timers.add(animTimer);
-    }
+		AnimationTimer animTimer = createAnimationTimer(obstacle, "zeppelin");
+		animTimer.start();
+		timers.add(animTimer);
+	}
 
-    private AnimationTimer createAnimationTimer(ImageView obstacle, String obstacleType) {
-        return new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-            	double speed = 5.0;
-	           	if(fps == 60) {
-	           		speed = 12;
-	        	 } else if(fps == 540) {
-	        		 speed = 1.33;
-	        	 }
-                obstacle.setTranslateX(obstacle.getTranslateX() - speed);
+	private AnimationTimer createAnimationTimer(ImageView obstacle, String obstacleType) {
+		return new AnimationTimer() {
+			@Override
+			public void handle(long now) {
+				double speed = 5.0;
+				if (fps == 60) {
+					speed = 12;
+				} else if (fps == 540) {
+					speed = 1.33;
+				}
+				obstacle.setTranslateX(obstacle.getTranslateX() - speed);
 
-                if (obstacle.getTranslateX() + obstacle.getBoundsInLocal().getWidth() < 0) {
-                    gamePane.getChildren().remove(obstacle);
-                    stop();
-                    timers.remove(this);
-                } else {
-                    checkCollision(obstacle, obstacleType);
-                }
-            }
-        };
-    }
+				if (obstacle.getTranslateX() + obstacle.getBoundsInLocal().getWidth() < 0) {
+					gamePane.getChildren().remove(obstacle);
+					stop();
+					timers.remove(this);
+				} else {
+					checkCollision(obstacle, obstacleType);
+				}
+			}
+		};
+	}
 
-    private void checkCollision(ImageView obstacle, String obstacleType) {
-    	
-    	
-        if (HitBoxManager.checkCollision(arlieController.getArlieBody(), obstacle, obstacleType, hitBoxGC, hitBoxVisible)) {
-            inGameViewController.arlieCollided();
-        }
+	private void checkCollision(ImageView obstacle, String obstacleType) {
+
+		if (HitBoxManager.checkCollision(arlieController.getArlieBody(), obstacle, obstacleType, hitBoxGC,
+				hitBoxVisible)) {
+			inGameViewController.arlieCollided();
+		}
 //        
 //        if(hitBoxVisible) {
 //            if(hitBoxCounter > timers.size()+1) {
@@ -237,43 +237,40 @@ public class ObstacleGenerator {
 //            	hitBoxCounter++;
 //            }
 //        }
-    }
-    
+	}
 
-    public void stopTimer() {
-        for (AnimationTimer timer : timers) {
-            timer.stop();
-        }
-    }
+	public void stopTimer() {
+		for (AnimationTimer timer : timers) {
+			timer.stop();
+		}
+	}
 
+	public void startTimer() {
+		// Restart all timers
+		for (AnimationTimer timer : timers) {
+			timer.start();
+		}
+	}
 
-    public void startTimer() {
-        // Restart all timers
-        for (AnimationTimer timer : timers) {
-            timer.start();
-        }
-    }
-    
-    public void toggleHitBoxVisibility() {
-    	if(hitBoxVisible) {
-    		hitBoxVisible = false;    
-    		HitBoxManager.clearCanvas(hitBoxGC);
-    	}else {
-    		hitBoxVisible = true;
-    	}
-    }
-    
-    public void reset() {
-    	while (!timers.isEmpty()) {
-    		timers.get(0).stop();
-    		timers.remove(timers.get(0));
-    	}
-    	
-    	
-    	while (!gamePane.getChildren().isEmpty()) {
-    		gamePane.getChildren().removeAll(gamePane.getChildren().get(0));
-    	}
-    }
+	public void toggleHitBoxVisibility() {
+		if (hitBoxVisible) {
+			hitBoxVisible = false;
+			HitBoxManager.clearCanvas(hitBoxGC);
+		} else {
+			hitBoxVisible = true;
+		}
+	}
+
+	public void reset() {
+		while (!timers.isEmpty()) {
+			timers.get(0).stop();
+			timers.remove(timers.get(0));
+		}
+
+		while (!gamePane.getChildren().isEmpty()) {
+			gamePane.getChildren().removeAll(gamePane.getChildren().get(0));
+		}
+	}
 }
 
 // TIMELINE VERSION - STILL KINDA WHACKY AND WONKY. MARIO BENUTZ DAS FÜRS BALANCING UND HITBOXES, DAS HAT SCHON THE RIGHT SPEED AN SICH
@@ -416,4 +413,3 @@ public class ObstacleGenerator {
 //        }
 //    }
 //}
-

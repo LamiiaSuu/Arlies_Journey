@@ -5,12 +5,11 @@ import javafx.scene.image.ImageView;
 
 public class Tree extends ImageView {
 
-    public Tree(int treeType, double fitHeight) {
-        
-    	
-        Image treeImage = new Image("/assets/obstacles/tree"+Integer.toString(treeType)+".png");
-        this.setImage(treeImage);
-        this.setPreserveRatio(true);
-        this.setFitHeight(fitHeight);  
-    }
+	public Tree(int treeType, double fitHeight) {
+
+		Image treeImage = new Image("/assets/obstacles/tree" + Integer.toString(treeType) + ".png");
+		this.setImage(treeImage);
+		this.setPreserveRatio(true);
+		this.setFitHeight(fitHeight);
+	}
 }

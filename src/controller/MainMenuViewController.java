@@ -2,7 +2,6 @@ package controller;
 
 import application.App;
 import business.music.MP3Player;
-import controller.uicomponents.VolumeViewController;
 import javafx.animation.RotateTransition;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -21,7 +20,6 @@ import javafx.geometry.Pos;
 public class MainMenuViewController extends BaseViewController {
 	private App app;
 	MainMenuView root;
-	VolumeViewController volumeViewController;
 	private Button newJourneyButton;
 //    private Button volumeButton;
 	private Button musicButton;
@@ -52,10 +50,10 @@ public class MainMenuViewController extends BaseViewController {
 
 	@Override
 	public void initialize() {
-		
+
 		continueButton.setOnMouseEntered(event -> jumpAnimation(continueButton));
 		continueButton.setOnMouseExited(event -> stopAnimation(continueButton));
-		
+
 		continueButton.setOnAction(event -> stopAnimation(continueButton));
 		continueButton.setOnAction(event -> {
 			app.switchView(PrimaryViewNames.IN_GAME_VIEW);
@@ -69,15 +67,15 @@ public class MainMenuViewController extends BaseViewController {
 			stopAnimation(newJourneyButton);
 		});
 		newJourneyButton.setOnAction(event -> {
-			if(app.getInGameViewController() != null)
-			app.getInGameViewController().resetGame();
+			if (app.getInGameViewController() != null)
+				app.getInGameViewController().resetGame();
 			app.switchView(PrimaryViewNames.IN_GAME_VIEW);
 		});
 
 		musicButton.setOnMouseEntered(event -> {
 			musicButton.setId("music-button-anim");
 			jumpAnimation(musicButton);
-			
+
 		});
 		musicButton.setOnMouseExited(event -> {
 			musicButton.setId("music-button");
@@ -118,21 +116,21 @@ public class MainMenuViewController extends BaseViewController {
 //        volumeButton.setOnAction(event -> cycleVolume());
 
 	}
-	
+
 	public void showContinue() {
 		continueButton.setVisible(true);
 //		root.mainButtonsLayout.setAlignment(Pos.BASELINE_CENTER);
 		root.mainButtonsLayout.setScaleX(0.65);
-        root.mainButtonsLayout.setScaleY(0.65);
-        root.mainButtonsLayout.setSpacing(18);
+		root.mainButtonsLayout.setScaleY(0.65);
+		root.mainButtonsLayout.setSpacing(18);
 	}
-	
+
 	public void hideContinue() {
 		continueButton.setVisible(false);
 //		root.mainButtonsLayout.setAlignment(Pos.BASELINE_CENTER);
 		root.mainButtonsLayout.setScaleX(0.8);
-        root.mainButtonsLayout.setScaleY(0.8);
-        root.mainButtonsLayout.setSpacing(25);
+		root.mainButtonsLayout.setScaleY(0.8);
+		root.mainButtonsLayout.setSpacing(25);
 	}
 
 	public void jumpAnimation(Button button) {

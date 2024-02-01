@@ -14,7 +14,6 @@ import presentation.PrimaryViewNames;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
-
 public class App extends Application {
 
 	private Stage primaryStage;
@@ -27,70 +26,67 @@ public class App extends Application {
 	Pane musicMenuView;
 	Pane settingsMenuView;
 	MP3Player player;
-	
+
 	public static void main(String[] args) {
 		launch();
 	}
-	
-	public void initialize(Scene scene){
+
+	public void initialize(Scene scene) {
 		primaryViews = new HashMap<>();
-		
+
 		player = new MP3Player();
 		player.start();
-		
+
 		MainMenuViewController mainMenuViewController = new MainMenuViewController(this, scene, player);
 		mainMenuView = mainMenuViewController.getRoot();
 		primaryViews.put(PrimaryViewNames.MAIN_MENU_VIEW, mainMenuView);
-		
+
 		inGameViewController = new InGameViewController(this, scene, player, mainMenuViewController);
 		inGameView = inGameViewController.getRoot();
 		primaryViews.put(PrimaryViewNames.IN_GAME_VIEW, inGameView);
-		
-		SettingsMenuViewController settingsMenuViewController = new SettingsMenuViewController(this, scene, player, inGameViewController, mainMenuViewController);
+
+		SettingsMenuViewController settingsMenuViewController = new SettingsMenuViewController(this, scene, player,
+				inGameViewController, mainMenuViewController);
 		settingsMenuView = settingsMenuViewController.getRoot();
 		primaryViews.put(PrimaryViewNames.SETTINGS_VIEW, settingsMenuView);
-		
-		MusicMenuViewController musicMenuViewController = new MusicMenuViewController(this, scene, player, mainMenuViewController);
+
+		MusicMenuViewController musicMenuViewController = new MusicMenuViewController(this, scene, player,
+				mainMenuViewController);
 		musicMenuView = musicMenuViewController.getRoot();
 		primaryViews.put(PrimaryViewNames.MUSIC_VIEW, musicMenuView);
 	}
-	
-	
-	
+
 	@Override
-    public void start(Stage primaryStage) throws Exception {
-		
-		
-		
-        this.primaryStage = primaryStage;
-        
-        primaryStage.setMinHeight(720);
-        primaryStage.setMinWidth(1280);
-        primaryStage.setMaxHeight(720);
-        primaryStage.setMaxWidth(1280);
-        
-        
-        Pane root = new Pane();
-        currentView = new SimpleObjectProperty<PrimaryViewNames>();
+	public void start(Stage primaryStage) throws Exception {
 
-        Scene scene = new Scene(root,  1280, 720);
-        scene.getStylesheets().add(getClass().getResource("/assets/styles.CSS").toExternalForm());
-        initialize(scene);
+		this.primaryStage = primaryStage;
 
-        primaryStage.setTitle("Arlie's Journey");
-        primaryStage.setScene(scene);
-        
-        switchView(PrimaryViewNames.MAIN_MENU_VIEW);
-        
-        primaryStage.setResizable(false);
-        primaryStage.show();
-        primaryStage.setOnCloseRequest(event -> {
-        	
-        	inGameViewController.pauseGame();
-        	player.stop();
-        	primaryStage.close();
-        });
-    }
+		primaryStage.setMinHeight(720);
+		primaryStage.setMinWidth(1280);
+		primaryStage.setMaxHeight(720);
+		primaryStage.setMaxWidth(1280);
+
+		Pane root = new Pane();
+		currentView = new SimpleObjectProperty<PrimaryViewNames>();
+
+		Scene scene = new Scene(root, 1280, 720);
+		scene.getStylesheets().add(getClass().getResource("/assets/styles.CSS").toExternalForm());
+		initialize(scene);
+
+		primaryStage.setTitle("Arlie's Journey");
+		primaryStage.setScene(scene);
+
+		switchView(PrimaryViewNames.MAIN_MENU_VIEW);
+
+		primaryStage.setResizable(false);
+		primaryStage.show();
+		primaryStage.setOnCloseRequest(event -> {
+
+			inGameViewController.pauseGame();
+			player.stop();
+			primaryStage.close();
+		});
+	}
 
 	public void switchView(PrimaryViewNames viewName) {
 		Scene currentScene = primaryStage.getScene();
@@ -102,27 +98,26 @@ public class App extends Application {
 		}
 		System.out.println(currentView);
 	}
-	
-	
-	public SimpleObjectProperty<PrimaryViewNames> currentViewProperty(){
+
+	public SimpleObjectProperty<PrimaryViewNames> currentViewProperty() {
 		return currentView;
 	}
-	
+
 	public double getWidth() {
 		return primaryStage.getMaxWidth();
 	}
-	
+
 	public double getHeight() {
-		
+
 		return primaryStage.getMaxHeight();
 	}
-	
+
 	public Stage getStage() {
 		return primaryStage;
 	}
-	
+
 	public InGameViewController getInGameViewController() {
 		return inGameViewController;
 	}
-	 
+
 }

@@ -12,18 +12,18 @@ import mp3player.scene.layout.ImageViewPane;
 import presentation.uicomponents.VolumeView.VolumeConditions;
 
 public class TitleView extends HBox {
-	
+
 	public ImageView title;
-	
+
 	public TitleView() {
-		
+
 		Image titleImage = new Image(getClass().getResourceAsStream("/assets/images/title-normal.png"));
-		
+
 		title = new ImageView(titleImage);
 		title.getStyleClass().add("title-icon");
 		title.setId("title-label");
 		setAlignment(Pos.CENTER);
-	
+
 		getChildren().addAll(title);
 	}
 
